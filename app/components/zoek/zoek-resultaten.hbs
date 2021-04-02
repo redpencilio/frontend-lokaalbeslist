@@ -1,1 +1,6 @@
 <p>Hier komen zoekresultaten!</p>
+{{#each @results.content as |result|}}
+  <Zoek::ZoekResultaat @result={{result}}/>
+  <hr/>
+{{/each}}
+

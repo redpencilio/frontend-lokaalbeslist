@@ -1,4 +1,7 @@
+{{log this.model}}
+
 <Zoek::ZoekFilter />
-<Zoek::ZoekResultaten />
+
+<Zoek::ZoekResultaten @results={{this.model}}/>
 
 {{outlet}}
