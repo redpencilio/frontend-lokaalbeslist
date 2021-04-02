@@ -1,57 +1,35 @@
 # frontend-poc-participatie
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This the frontend for the POC on civil participation, also called "Toepassing voor Allerhande Burger Participatie (TABP)".
 
-## Prerequisites
+## Setting up the backend
 
-You will need the following things properly installed on your computer.
+Information on setting up the backend can be found at <https://github.com/redpencilio/app-poc-participatie>
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with npm)
-* [Ember CLI](https://ember-cli.com/)
-* [Google Chrome](https://google.com/chrome/)
+## Running the frontend
 
-## Installation
+We advise the use of edi but have chosen to include the default ember commands to limit confusion.
 
-* `git clone <repository-url>` this repository
-* `cd frontend-poc-participatie`
-* `npm install`
+First make sure you have ember-cli installed
 
-## Running / Development
+```shell
+npm install -g ember-cli
+```
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-* Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
+Next we clone this repository, install the dependencies, and boot the development server
 
-### Code Generators
+```shell
+git clone https://github.com/redpencilio/frontend-poc-participatie.git
+cd frontend-gelinkt-notuleren
 
-Make use of the many generators for code, try `ember help generate` for more details
+# install the dependencies
+npm install
 
-### Running Tests
+# run the development server
+ember s --proxy http://localhost:81
 
-* `ember test`
-* `ember test --server`
+# or 
+npm start
+```
 
-### Linting
-
-* `npm run lint:hbs`
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
-
-### Building
-
-* `ember build` (development)
-* `ember build --environment production` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](https://emberjs.com/)
-* [ember-cli](https://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+You can visit the live reloading site at `http://localhost:4200`.
