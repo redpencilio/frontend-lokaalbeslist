@@ -1,0 +1,14 @@
+<div
+  class="is-flex is-flex-direction-row is-align-items-center is-justify-content-space-between"
+>
+  {{#if this.hasMultiplePages}}
+    <nav class="pagination is-small" role="navigation" aria-label="pagination">
+      <a class="pagination-previous" {{action 'changePage' @pagination.prev}}>
+        Vorige
+      </a>
+      <a class="pagination-next" {{action 'changePage' @pagination.next}}>
+        Volgende
+      </a>
+    </nav>
+  {{/if}}
+</div>

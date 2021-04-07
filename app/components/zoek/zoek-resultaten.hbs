@@ -1,6 +1,20 @@
-<p>Hier komen zoekresultaten!</p>
-{{#each @results.content as |result|}}
-  <Zoek::ZoekResultaat @result={{result}}/>
-  <hr/>
-{{/each}}
-
+<div class="pt-3 px-5">
+  {{! Top Bar }}
+  <div
+    class="block is-flex is-flex-direction-row is-justify-content-space-between"
+  >
+    <PaginationLabel
+      @pagination={{@results.meta.pagination}}
+      @count={{@results.meta.count}}
+    />
+    <Pagination @pagination={{@results.meta.pagination}} />
+    <SortButton />
+  </div>
+  {{! Results }}
+  {{#each @results.content as |result|}}
+    <div class="block">
+      <Zoek::ZoekResultaat @result={{result}} />
+      <hr />
+    </div>
+  {{/each}}
+</div>
