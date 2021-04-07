@@ -3,12 +3,22 @@
 >
   {{#if this.hasMultiplePages}}
     <nav class="pagination is-small" role="navigation" aria-label="pagination">
-      <a class="pagination-previous" {{action 'changePage' @pagination.prev}}>
+      <LinkTo
+        @query={{hash page=this.previousPage}}
+        class="pagination-previous"
+        disabled={{this.isFirstPage}}
+        {{action 'changePage' @pagination.prev}}
+      >
         Vorige
-      </a>
-      <a class="pagination-next" {{action 'changePage' @pagination.next}}>
+      </LinkTo>
+      <LinkTo
+        @query={{hash page=this.nextPage}}
+        class="pagination-next"
+        disabled={{this.isLastPage}}
+        {{action 'changePage' @pagination.next}}
+      >
         Volgende
-      </a>
+      </LinkTo>
     </nav>
   {{/if}}
 </div>

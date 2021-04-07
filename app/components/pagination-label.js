@@ -2,18 +2,15 @@ import Component from '@glimmer/component';
 
 export default class PaginationLabelComponent extends Component {
   get from() {
-    return this.self.number * this.pageSize;
+    let p = this.args.pagination;
+    return Number(p.self.number) * Number(p.first.size);
   }
 
   get to() {
-    return this.from + this.self.size;
-  }
-
-  get pageSize() {
-    return this.self.size;
-  }
-
-  get self() {
-    return this.args.pagination.self;
+    let p = this.args.pagination;
+    if (p.last.number == p.self.number) {
+      return this.from + Number(p.last.size);
+    }
+    return this.from + Number(p.self.size);
   }
 }

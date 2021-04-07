@@ -1,6 +1,4 @@
 import Component from '@glimmer/component';
-import { action } from '@ember/object';
-// import { tracked } from '@glimmer/tracking';
 
 // {
 //   "meta": {
@@ -26,36 +24,51 @@ import { action } from '@ember/object';
 //   }
 // }
 export default class PaginationComponent extends Component {
-  @action
-  changePage(page) {
-    // TODO: Use page everywhere?
-    this.page = page['number'] || 0;
-  }
-
+  // Booleans
+  // ---------------------------------
   get isFirstPage() {
-    return this.self.number == 0;
+    return this.self.number <= 0;
   }
 
-  get isLastPAge() {
-    return this.self.number == this.last.number;
+  get isLastPage() {
+    return this.self.number >= this.last.number;
   }
 
   get hasMultiplePages() {
     return this.last.number != 0;
   }
 
-  get from() {
-    return this.self.number * this.pageSize;
-  }
-
-  get to() {
-    return this.from + this.self.size;
-  }
+  // Numbers
+  // ---------------------------------
 
   get pageSize() {
-    return this.self.size;
+    return Number(this.self.size);
   }
 
+  get currentPage() {
+    return Number(this.self.number);
+  }
+
+  get previousPage() {
+    if (this.currentPage == 0) {
+      return 0;
+    }
+    return this.currentPage - 1;
+  }
+
+  get nextPage() {
+    if (this.currentPage == this.lastPage) {
+      return this.currentPage;
+    }
+    return this.currentPage + 1;
+  }
+
+  get lastPage() {
+    return Number(this.last.number);
+  }
+
+  // Objects
+  // ---------------------------------
   get self() {
     return this.args.pagination.self;
   }
