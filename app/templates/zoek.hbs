@@ -1,7 +1,10 @@
 {{log this.model}}
-
-<Zoek::ZoekFilter />
-
-<Zoek::ZoekResultaten @results={{this.model}}/>
-
+<div class="columns">
+  <div class="column">
+    <Zoek::ZoekFilter />
+  </div>
+  <div class="column">
+    <Zoek::ZoekResultaten @results={{this.model}} />
+  </div>
+</div>
 {{outlet}}
