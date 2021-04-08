@@ -4,20 +4,25 @@ const AGENDA_POINT_ATTRIBUTES = [
   'uri',
   'administrativeUnit',
   'administrativeUnitClassification',
-  'administrativeUnitClassificationURI',
-  'administrativeUnitURI',
   'description',
   'governingBody',
   'governingBodyClassification',
-  'governingBodyClassificationURI',
-  'governingBodyURI',
-  'id',
   'title',
-  'uri',
-  'uuid',
   'zittingPlannedStart',
   'zittingStartedAtTime',
   'zittingURI',
+
+  // Ignore
+  // ------
+  // 'administrativeUnitURI',
+  // 'administrativeUnitClassificationURI',
+  // 'governingBodyURI',
+  // 'governingBodyClassificationURI',
+
+  // Ignore Other
+  // ------------
+  // 'id', (duplicate of uri)
+  // 'uuid', (this is always empty, and it is not important for end users anyway)
 ];
 
 export default class ZoekZoekResultaatComponent extends Component {

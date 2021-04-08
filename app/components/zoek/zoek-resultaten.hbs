@@ -1,7 +1,7 @@
 <div class="pt-3 px-5">
   {{! Top Bar }}
   <div
-    class="block is-flex is-flex-direction-row is-justify-content-space-between"
+    class="is-flex is-flex-direction-row is-justify-content-space-between is-flex-wrap-wrap is-align-content-space-between"
   >
     <PaginationLabel
       @pagination={{@results.meta.pagination}}
@@ -10,6 +10,7 @@
     <Pagination @pagination={{@results.meta.pagination}} />
     <SortButton />
   </div>
+  <hr />
   {{! Results }}
   {{#each @results.content as |result|}}
     <div class="block">
