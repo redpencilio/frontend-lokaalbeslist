@@ -2,14 +2,19 @@
   class="select is-flex is-flex-direction-row is-small is-align-items-center is-justify-content-end"
 >
   <strong class="mr-2">
-    Sorteer op
+    <label for="sort-select">
+      Sorteer op
+    </label>
   </strong>
-  <select>
-    <option>
-      Relevantie
-    </option>
-    <option>
-      Datum
-    </option>
+  <select
+    name="sort options"
+    id="sort-select"
+    {{on 'change' this.optionSelected}}
+  >
+    {{#each-in this.SORT_OPTIONS as |optionId sortOption|}}
+      <option value={{optionId}} selected={{sortOption.default}}>
+        {{sortOption.text}}
+      </option>
+    {{/each-in}}
   </select>
 </div>

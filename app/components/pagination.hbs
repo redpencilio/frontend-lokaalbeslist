@@ -7,7 +7,6 @@
         @query={{hash page=this.previousPage}}
         class="pagination-previous"
         disabled={{this.isFirstPage}}
-        {{action 'changePage' @pagination.prev}}
       >
         Vorige
       </LinkTo>
@@ -15,7 +14,6 @@
         @query={{hash page=this.nextPage}}
         class="pagination-next"
         disabled={{this.isLastPage}}
-        {{action 'changePage' @pagination.next}}
       >
         Volgende
       </LinkTo>

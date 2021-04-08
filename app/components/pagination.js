@@ -53,6 +53,10 @@ export default class PaginationComponent extends Component {
     if (this.currentPage == 0) {
       return 0;
     }
+    if (this.currentPage == 1) {
+      // This way we drop the query parameter instead of setting it to zero
+      return undefined;
+    }
     return this.currentPage - 1;
   }
 
