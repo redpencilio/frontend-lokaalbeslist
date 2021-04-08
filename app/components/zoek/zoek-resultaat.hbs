@@ -1,5 +1,12 @@
-<p>
-  Dit is een zoekresultaat
+<div>
+  <h6 class="title is-6">
+    {{if @result.title @result.title 'Geen titel'}}
+  </h6>
+  {{#if (and @result.description (not-eq @result.description @result.title))}}
+    <p class="content is-italic">
+      {{@result.description}}
+    </p>
+  {{/if}}
   {{@result.uri}}
   {{@result.administrativeUnit}}
   {{@result.administrativeUnitClassification}}
@@ -11,10 +18,20 @@
   {{@result.governingBodyClassificationURI}}
   {{@result.governingBodyURI}}
   {{@result.id}}
-  {{@result.title}}
   {{@result.uri}}
   {{@result.uuid}}
   {{@result.zittingPlannedStart}}
   {{@result.zittingStartedAtTime}}
   {{@result.zittingURI}}
-</p>
+  <span class="icon-text tag is-light">
+    <span class="icon has-text-danger" {{render-feather-icons}}>
+      <i data-feather="alert-triangle" height="1rem"></i>
+    </span>
+    <span>
+      <strong>
+        {{this.numberOfEmptyProperties}}
+        ontbrekende attributen
+      </strong>
+    </span>
+  </span>
+</div>

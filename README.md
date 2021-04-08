@@ -28,8 +28,14 @@ npm install
 # run the development server
 ember s --proxy http://localhost:81
 
-# or 
+# or
 npm start
 ```
 
 You can visit the live reloading site at `http://localhost:4200`.
+
+## Dev Info
+
+### Icons
+
+We use [Feather](https://github.com/feathericons/feather) icons with a [ember-modifier](https://github.com/ember-modifier/ember-modifier) modifier as specified in [this issue](https://github.com/feathericons/feather/issues/506).
