@@ -1,20 +1,20 @@
-<div
-  class="select is-flex is-flex-direction-row is-small is-align-items-center is-justify-content-end"
->
-  <strong class="mr-2">
+<div class="is-flex is-align-items-center" style="white-space:nowrap">
+  <strong class="mr-2 is-size-7">
     <label for="sort-select">
       Sorteer op
     </label>
   </strong>
-  <select
-    name="sort options"
-    id="sort-select"
-    {{on "change" this.optionSelected}}
-  >
-    {{#each-in this.SORT_OPTIONS as |optionId sortOption|}}
-      <option value={{optionId}} selected={{sortOption.default}}>
-        {{sortOption.text}}
-      </option>
-    {{/each-in}}
-  </select>
+  <div class="select is-small">
+    <select
+      name="sort options"
+      id="sort-select"
+      {{on "change" this.optionSelected}}
+    >
+      {{#each-in this.SORT_OPTIONS as |optionId sortOption|}}
+        <option value={{optionId}} selected={{sortOption.default}}>
+          {{sortOption.text}}
+        </option>
+      {{/each-in}}
+    </select>
+  </div>
 </div>
