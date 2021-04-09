@@ -1,7 +1,7 @@
 <div class="is-flex is-flex-direction-column">
   {{! Title }}
   <h6 class="title is-6 mb-3">
-    {{if @result.title @result.title 'Geen titel'}}
+    {{if @result.title @result.title "Geen titel"}}
   </h6>
   {{! Tags }}
   <div class="is-flex is-flex-direction-row is-flex-wrap-wrap">
@@ -37,8 +37,8 @@
           </strong>
           {{pluralize
             this.numberOfEmptyProperties
-            'ontbrekend attribuut'
-            'ontbrekende attributen'
+            "ontbrekend attribuut"
+            "ontbrekende attributen"
           }}
         </span>
       </span>

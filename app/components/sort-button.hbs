@@ -9,7 +9,7 @@
   <select
     name="sort options"
     id="sort-select"
-    {{on 'change' this.optionSelected}}
+    {{on "change" this.optionSelected}}
   >
     {{#each-in this.SORT_OPTIONS as |optionId sortOption|}}
       <option value={{optionId}} selected={{sortOption.default}}>

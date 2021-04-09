@@ -5,24 +5,25 @@
         src="https://bulma.io/images/bulma-logo.png"
         width="112"
         height="28"
+        alt="XXXParticipatie"
       />
     </LinkTo>
-    <a
+    <div
       role="button"
       class="navbar-burger"
       aria-label="menu"
       aria-expanded="false"
       data-target="navbar-entries"
-      {{on 'click' this.toggleBurger}}
+      {{on "click" this.toggleBurger}}
     >
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
-    </a>
+    </div>
   </div>
   <div
     id="navbar-entries"
-    class="navbar-menu {{if this.burgerActive 'is-active'}}"
+    class="navbar-menu {{if this.burgerActive "is-active"}}"
   >
     <div class="navbar-start">
       <LinkTo @route="zoek" class="navbar-item" @activeClass="is-active">
