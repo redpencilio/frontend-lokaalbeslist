@@ -2,6 +2,17 @@ import ArrayProxy from '@ember/array/proxy';
 import { A } from '@ember/array';
 import camelCase from 'lodash.camelcase';
 
+/**
+ * Source: <https://github.com/lblod/frontend-toezicht-abb/blob/master/app/utils/mu-search.js>
+ *
+ * @param {string} basePath
+ * @param {number} page
+ * @param {number} size
+ * @param {string} sort
+ * @param {object} filter
+ * @param {function} dataMapping
+ * @returns {ArrayProxy} Search results for specified search query
+ */
 export default async function muSearch(
   basePath,
   page,
