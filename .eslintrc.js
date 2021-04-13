@@ -19,7 +19,9 @@ module.exports = {
   env: {
     browser: true,
   },
-  rules: {},
+  rules: {
+    'no-unused-vars': ['_'],
+  },
   overrides: [
     // node files
     {

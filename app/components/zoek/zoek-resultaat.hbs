@@ -6,7 +6,7 @@
   {{! Tags }}
   <div class="is-flex is-flex-direction-row is-flex-wrap-wrap">
     {{#if @result.administrativeUnit}}
-      <span class="tag icon-text is-warning is-light mr-2">
+      <span class="tag icon-text is-light mr-2 mb-1">
         <span class="icon" {{render-feather-icons}}>
           <i data-feather="map-pin" height="1rem"></i>
         </span>
@@ -16,7 +16,7 @@
       </span>
     {{/if}}
     {{#if @result.governingBodyClassification}}
-      <span class="tag icon-text is-light is-light mr-2">
+      <span class="tag icon-text is-light mr-2 mb-1">
         {{!-- <span class="icon" {{render-feather-icons}}>
           <i data-feather="pen-tool" height="1rem"></i>
         </span> --}}
@@ -25,24 +25,26 @@
         </span>
       </span>
     {{/if}}
-    {{! Empty roperties warning tags }}
-    {{#if this.numberOfEmptyProperties}}
-      <span class="tag icon-text is-light mr-2">
-        <span class="icon has-text-danger" {{render-feather-icons}}>
-          <i data-feather="alert-triangle" height="1rem"></i>
-        </span>
-        <span>
-          <strong>
-            {{this.numberOfEmptyProperties}}
-          </strong>
-          {{pluralize
-            this.numberOfEmptyProperties
-            "ontbrekend attribuut"
-            "ontbrekende attributen"
-          }}
-        </span>
-      </span>
-    {{/if}}
+    {{! Empty attributes warning tags }}
+    <Zoek::Resultaat::AttributeTag
+      class="mr-2 mb-1"
+      @entity="agendaPoint"
+      @result={{@result}}
+    />
+    <Zoek::Resultaat::AttributeTag
+      class="mr-2 mb-1"
+      @entity="zitting"
+      @nested="zittingURI"
+      @entityName="zitting"
+      @result={{@result}}
+    />
+    <Zoek::Resultaat::AttributeTag
+      class="mr-2 mb-1"
+      @entity="handling"
+      @entityName="behandeling"
+      @nested="agendaItemHandlingURI"
+      @result={{@result}}
+    />
   </div>
   {{! Description }}
   {{#if (and @result.description (not-eq @result.description @result.title))}}
@@ -86,6 +88,14 @@
       </span>
       <a href={{@result.zittingURI}} class="mr-2">
         Zitting
+      </a>
+    {{/if}}
+    {{#if @result.agendaItemHandlingURI}}
+      <span class="mr-2">
+        -
+      </span>
+      <a href={{@result.agendaItemHandlingURI}} class="mr-2">
+        Behandeling
       </a>
     {{/if}}
   </div>

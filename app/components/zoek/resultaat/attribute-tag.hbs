@@ -1,0 +1,32 @@
+{{#let
+  (pluralize
+    this.numberOfAttrsMissing "ontbrekend attribuut" "ontbrekende attributen"
+  ) as |missingAttributesText|
+}}
+  <span ...attributes class="tag icon-text is-light">
+    <span class="icon {{this.iconColor}}" {{render-feather-icons}}>
+      <i data-feather="{{this.icon}}" height="1rem"></i>
+    </span>
+    <span>
+      {{#if this.displayEntityName}}
+        {{#if (and this.isNested (not this.isNestedPresent))}}
+          Geen {{@entityName}}
+        {{else}}
+          {{capitalize @entityName}}
+        {{/if}}
+      {{/if}}
+
+      {{#if this.displayNumberOfMissingAttrs}}
+        {{! prettier-ignore }}
+        {{#if this.isNested}}
+          (<strong>{{this.numberOfAttrsMissing}}</strong> {{missingAttributesText}})
+        {{else}}
+          <strong>
+            {{this.numberOfAttrsMissing}}
+          </strong>
+          {{missingAttributesText}}
+        {{/if}}
+      {{/if}}
+    </span>
+  </span>
+{{/let}}
