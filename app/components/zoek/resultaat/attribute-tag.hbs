@@ -28,5 +28,73 @@
         {{/if}}
       {{/if}}
     </span>
+
+    <EmberPopover @side="bottom" as |popover|>
+      <div class="block">
+        <h6 class="has-text-weight-bold">
+          Attributen
+        </h6>
+        <ul>
+          {{#each this.attributes as |attribute|}}
+            {{#if (not attribute.optional)}}
+              <li>
+                <span
+                  class="icon-text {{
+                    if attribute.missing "has-text-danger" "has-text-success"
+                  }}"
+                >
+                  <span class="icon" {{render-feather-icons}}>
+                    <i
+                      data-feather={{if attribute.missing "x" "check"}}
+                      height="1rem"
+                    ></i>
+                  </span>
+                  <span>
+                    {{capitalize attribute.description}}
+                  </span>
+                </span>
+              </li>
+            {{/if}}
+          {{/each}}
+        </ul>
+      </div>
+
+      <div class="block">
+        <h6 class="has-text-weight-bold">
+          Optionele attributen
+        </h6>
+        <ul>
+          {{#each this.attributes as |attribute|}}
+            {{#if attribute.optional}}
+              <li>
+                <span
+                  class="icon-text {{
+                    if attribute.missing "has-text-danger" "has-text-success"
+                  }}"
+                >
+                  <span class="icon" {{render-feather-icons}}>
+                    <i
+                      data-feather={{if attribute.missing "x" "check"}}
+                      height="1rem"
+                    ></i>
+                  </span>
+                  <span>
+                    {{capitalize attribute.description}}
+                  </span>
+                </span>
+              </li>
+            {{/if}}
+          {{/each}}
+        </ul>
+      </div>
+
+      <button
+        class="button is-small"
+        type="button"
+        {{action "hide" target=popover}}
+      >
+        Verberg
+      </button>
+    </EmberPopover>
   </span>
 {{/let}}

@@ -1,3 +1,15 @@
+export const ENTITIES = {
+  agendaPoint: {
+    name: 'Agendapunt',
+  },
+  zitting: {
+    name: 'Zitting',
+  },
+  handling: {
+    name: 'Behandeling van Agendapunt',
+  },
+};
+
 export const AGENDA_POINT_ATTRIBUTES = {
   // ------------------------
   // Rechtstreekse attributen
@@ -23,23 +35,23 @@ export const AGENDA_POINT_ATTRIBUTES = {
     count: true,
     description: 'type van het agendapunt',
   },
-  typeURL: {
-    entity: 'agendaPoint',
-    count: false, // We don't want to count double with `type`
-  },
+  // typeURL: {
+  //   entity: 'agendaPoint',
+  //   count: false, // We don't want to count double with `type`
+  // },
   plannedPublic: {
     entity: 'agendaPoint',
     count: true,
     description: 'gepland openbaar',
   },
-  id: {
-    entity: 'agendaPoint',
-    count: false, // Duplicate of `uri`
-  },
-  uuid: {
-    entity: 'agendaPoint',
-    count: false, // This is always empty, and it is not important for end users anyway.
-  },
+  // id: {
+  //   entity: 'agendaPoint',
+  //   count: false, // Duplicate of `uri`
+  // },
+  // uuid: {
+  //   entity: 'agendaPoint',
+  //   count: false, // This is always empty, and it is not important for end users anyway.
+  // },
   references: {
     entity: 'agendaPoint',
     count: false, // Optional field
@@ -85,16 +97,16 @@ export const AGENDA_POINT_ATTRIBUTES = {
   },
 
   // We don't want to count both the URI's and the labels, and we don't display these URI's.
-  governingBodyURI: { entity: 'zitting', count: false },
-  governingBodyClassificationURI: { entity: 'zitting', count: false },
-  administrativeUnitURI: { entity: 'zitting', count: false },
-  administrativeUnitClassificationURI: { entity: 'zitting', count: false },
+  // governingBodyURI: { entity: 'zitting', count: false },
+  // governingBodyClassificationURI: { entity: 'zitting', count: false },
+  // administrativeUnitURI: { entity: 'zitting', count: false },
+  // administrativeUnitClassificationURI: { entity: 'zitting', count: false },
 
-  governingBody: {
-    entity: 'zitting',
-    count: false, // We don't display (and count) this, instead opting for `governingBodyClassification` + `administrativeUnit`.
-    description: 'bestuursorgaan',
-  },
+  // governingBody: {
+  //   entity: 'zitting',
+  //   count: false, // We don't display (and count) this, instead opting for `governingBodyClassification` + `administrativeUnit`.
+  //   description: 'bestuursorgaan',
+  // },
   governingBodyClassification: {
     entity: 'zitting',
     count: true,
@@ -105,11 +117,11 @@ export const AGENDA_POINT_ATTRIBUTES = {
     count: true,
     description: 'bestuurseenheid',
   },
-  administrativeUnitClassification: {
-    entity: 'zitting',
-    count: false, // We don't display (and count) this because it should always be 'Gemeente'.
-    description: 'type bestuurseenheid',
-  },
+  // administrativeUnitClassification: {
+  //   entity: 'zitting',
+  //   count: false, // We don't display (and count) this because it should always be 'Gemeente'.
+  //   description: 'type bestuurseenheid',
+  // },
 
   // -------------------------------------------
   // Attributen via `Behandeling van Agendapunt`
@@ -128,7 +140,8 @@ export const AGENDA_POINT_ATTRIBUTES = {
   generatedResolutionURIs: {
     entity: 'handling',
     count: false, // Optional field
-    description: 'opgemaakte besluiten naar aanleiding van het agendapunt',
+    optional: true,
+    description: 'besluiten opgemaakt naar aanleiding van het agendapunt',
   },
   // generatedResolutionTitleShorts: { entity: 'handling', count: true, description: '' },
   // generatedResolutionDescriptions: { entity: 'handling', count: true, description: '' },

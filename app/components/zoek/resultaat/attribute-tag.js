@@ -1,4 +1,4 @@
-import { AGENDA_POINT_ATTRIBUTES } from '../../../utils/attributes';
+import { AGENDA_POINT_ATTRIBUTES, ENTITIES } from '../../../utils/attributes';
 
 import Component from '@glimmer/component';
 
@@ -14,23 +14,32 @@ import Component from '@glimmer/component';
  * @argument {string | undefined} nested What the root attribute is when an entity is nested (typically the entity URL)
  */
 export default class ZoekResultaatAttributeTagComponent extends Component {
-  get numberOfAttrsMissing() {
-    return this.missingAttributes.filter(([_, { count }]) => count == true)
-      .length;
+  get ENTITIES() {
+    return ENTITIES;
   }
 
-  get missingAttributes() {
+  get AGENDA_POINT_ATTRIBUTES() {
+    return AGENDA_POINT_ATTRIBUTES;
+  }
+
+  get numberOfAttrsMissing() {
+    return this.attributes.filter(
+      ({ count, missing }) => count == true && missing == true
+    ).length;
+  }
+
+  get attributes() {
     let result = this.args.result;
-    let emptyAttrs = Object.entries(AGENDA_POINT_ATTRIBUTES)
+    let attributes = Object.entries(AGENDA_POINT_ATTRIBUTES)
       // Only get attributes from the entity we are interested in (e.g. `zitting`)
       .filter(([_, { entity }]) => entity == this.args.entity)
+      // Add wether it is present in the result
+      .map(([key, attribute]) => {
+        const missing = result[key] === null || result[key] === undefined;
+        return { missing, ...attribute };
+      });
 
-      // Only get empty attributes
-      .filter(
-        ([prop, _]) => result[prop] === null || result[prop] === undefined
-      );
-
-    return emptyAttrs;
+    return attributes;
   }
 
   get isNested() {
