@@ -1,0 +1,46 @@
+<div ...attributes class="is-flex is-flex-direction-row">
+  <a href={{@result.uri}} class="mr-2">
+    Agendapunt
+  </a>
+
+  {{! Zitting }}
+  {{#if @result.zittingURI}}
+    <span class="mr-2">
+      -
+    </span>
+    <span class="mr-2">
+      <a href={{@result.zittingURI}}>
+        Zitting
+      </a>
+
+      {{!prettier-ignore}}
+      <ItemListHorizontal
+        @sep=", "
+        @embrace={{array "(" ")"}}
+        @items={{
+          array
+          (if @result.zittingNotulenURI (hash link=@result.zittingNotulenURI name="notulen"))
+          (if @result.zittingVerslagURI (hash link=@result.zittingVerslagURI name="verslag"))
+        }} as |item|
+      ><a href={{item.link}}>{{item.name}}</a></ItemListHorizontal>
+    </span>
+  {{/if}}
+
+  {{! Behandeling }}
+  {{#if @result.agendaItemHandlingURI}}
+    <span class="mr-2">
+      -
+    </span>
+    <span class="mr-2">
+      <a href={{@result.agendaItemHandlingURI}}>
+        Behandeling
+      </a>
+      {{! prettier-ignore }}
+      <ItemListHorizontal
+        @sep=", "
+        @embrace={{array "(" ")"}}
+        @items={{this.resolutions}} as |item|
+      ><a href={{item.link}}>besluit{{if item.index (concat " " item.index)}}</a></ItemListHorizontal>
+    </span>
+  {{/if}}
+</div>

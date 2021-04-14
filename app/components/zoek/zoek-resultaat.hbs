@@ -3,6 +3,7 @@
   <h6 class="title is-6 mb-3">
     {{if @result.title @result.title "Geen titel"}}
   </h6>
+
   {{! Tags }}
   <div class="is-flex is-flex-direction-row is-flex-wrap-wrap">
     {{#if @result.administrativeUnit}}
@@ -46,12 +47,14 @@
       @result={{@result}}
     />
   </div>
+
   {{! Description }}
   {{#if (and @result.description (not-eq @result.description @result.title))}}
     <p class="content is-italic">
       {{@result.description}}
     </p>
   {{/if}}
+
   {{! Date }}
   <div class="mt-2">
     <span class="icon-text is-light mr-2">
@@ -77,26 +80,7 @@
       {{/if}}
     </span>
   </div>
+
   {{! Links }}
-  <div class="mt-2 is-flex is-flex-direction-row">
-    <a href={{@result.uri}} class="mr-2">
-      Agendapunt
-    </a>
-    {{#if @result.zittingURI}}
-      <span class="mr-2">
-        -
-      </span>
-      <a href={{@result.zittingURI}} class="mr-2">
-        Zitting
-      </a>
-    {{/if}}
-    {{#if @result.agendaItemHandlingURI}}
-      <span class="mr-2">
-        -
-      </span>
-      <a href={{@result.agendaItemHandlingURI}} class="mr-2">
-        Behandeling
-      </a>
-    {{/if}}
-  </div>
+  <Zoek::Resultaat::LinkList class="mt-2" @result={{@result}} />
 </div>

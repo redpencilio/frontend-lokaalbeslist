@@ -1,0 +1,11 @@
+{{#if this.items}}
+  {{! prettier-ignore }}
+  {{if @embrace.[0] @embrace.[0]~}}
+
+  {{~#each this.items as |item index|~}}
+    {{~yield item index~}}{{~unless (eq index this.last) @sep~}}
+  {{~/each~}}
+
+  {{! prettier-ignore }}
+  {{~if @embrace.[1] @embrace.[1]}}
+{{/if}}
