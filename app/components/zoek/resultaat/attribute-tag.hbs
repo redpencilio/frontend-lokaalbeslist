@@ -36,7 +36,7 @@
         </h6>
         <ul>
           {{#each this.attributes as |attribute|}}
-            {{#if (not attribute.optional)}}
+            {{#unless attribute.optional}}
               <li>
                 <span
                   class="icon-text {{
@@ -54,7 +54,7 @@
                   </span>
                 </span>
               </li>
-            {{/if}}
+            {{/unless}}
           {{/each}}
         </ul>
       </div>
@@ -92,6 +92,7 @@
         class="button is-small"
         type="button"
         {{action "hide" target=popover}}
+        {{! template-lint-disable no-action }}
       >
         Verberg
       </button>

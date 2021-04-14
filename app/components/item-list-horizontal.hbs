@@ -3,7 +3,7 @@
   {{if @embrace.[0] @embrace.[0]~}}
 
   {{~#each this.items as |item index|~}}
-    {{~yield item index~}}{{~unless (eq index this.last) @sep~}}
+    {{~yield item index~}}{{~if (not-eq index this.last) @sep~}}
   {{~/each~}}
 
   {{! prettier-ignore }}
