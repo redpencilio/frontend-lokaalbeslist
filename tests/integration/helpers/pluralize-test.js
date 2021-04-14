@@ -8,10 +8,10 @@ module('Integration | Helper | pluralize', function (hooks) {
 
   // TODO: Replace this with your real tests.
   test('it renders', async function (assert) {
-    this.set('inputValue', '1234');
+    this.set('inputValue', '2');
 
-    await render(hbs`{{pluralize inputValue}}`);
+    await render(hbs`{{pluralize inputValue "test" "tests"}}`);
 
-    assert.equal(this.element.textContent.trim(), '1234');
+    assert.equal(this.element.textContent.trim(), 'tests');
   });
 });

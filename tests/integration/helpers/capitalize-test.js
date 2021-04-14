@@ -8,10 +8,10 @@ module('Integration | Helper | capitalize', function (hooks) {
 
   // TODO: Replace this with your real tests.
   test('it renders', async function (assert) {
-    this.set('inputValue', '1234');
+    this.set('inputValue', 'abcd');
 
     await render(hbs`{{capitalize inputValue}}`);
 
-    assert.equal(this.element.textContent.trim(), '1234');
+    assert.equal(this.element.textContent.trim(), 'Abcd');
   });
 });
