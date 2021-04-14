@@ -25,7 +25,7 @@ export default class SortButtonComponent extends Component {
 
     // When it's the default option, set it to undefined so we clear the URL
     // otherwise prepend asc/desc modifier.
-    let sort = option == SORT_OPTIONS_DEFAULT ? undefined : `${asc}${id}`;
+    let sort = id == SORT_OPTIONS_DEFAULT ? undefined : `${asc}${id}`;
 
     return this.router.transitionTo({ queryParams: { sort } });
   }

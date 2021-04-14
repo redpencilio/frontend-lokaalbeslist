@@ -11,7 +11,7 @@
       {{on "change" this.optionSelected}}
     >
       {{#each-in this.SORT_OPTIONS as |optionId sortOption|}}
-        <option value={{optionId}} selected={{(eq optionId this.selected)}}>
+        <option value={{optionId}} selected={{eq optionId this.selected}}>
           {{sortOption.text}}
         </option>
       {{/each-in}}
