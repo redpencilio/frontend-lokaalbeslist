@@ -5,13 +5,9 @@
     </label>
   </strong>
   <div class="select is-small">
-    <select
-      name="sort options"
-      id="sort-select"
-      {{on "change" this.optionSelected}}
-    >
-      {{#each-in this.SORT_OPTIONS as |optionId sortOption|}}
-        <option value={{optionId}} selected={{eq optionId this.selected}}>
+    <select name="sort options" id="sort-select" {{on "change" this.select}}>
+      {{#each-in @options as |id sortOption|}}
+        <option value={{id}} selected={{eq id @currentlySelected}}>
           {{sortOption.text}}
         </option>
       {{/each-in}}
