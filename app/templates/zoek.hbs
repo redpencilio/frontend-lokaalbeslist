@@ -1,7 +1,10 @@
 <div class="columns px-5 py-4">
   {{! Filter }}
   <div class="column is-one-quarter-desktop is-one-third-tablet">
-    <Zoek::ZoekFilter @updateQuery={{this.updateQuery}} />
+    <Zoek::ZoekFilter
+      @updateFilters={{this.updateFilters}}
+      @fields={{this.filterFields}}
+    />
   </div>
 
   <div class="column">

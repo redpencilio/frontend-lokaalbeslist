@@ -1,6 +1,5 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 
 const SORT_OPTIONS_DEFAULT = 'relevance';
@@ -14,20 +13,49 @@ const SORT_OPTIONS = {
     ascending: false,
   },
 };
+const HAS_FIELD_MAPPING = {
+  hasZitting: 'zitting',
+  hasHandling: 'handling',
+};
 
 export default class ZoekController extends Controller {
-  @service
-  router;
+  @service router;
 
-  // https://guides.emberjs.com/release/routing/query-params/
-  queryParams = ['sort'];
+  // QueryStateManager, see setupController in Zoek Route.
+  // Most of it's state properties are tracked and trigger re-renders here.
+  qsm;
+
+  // ---------
+  // Filtering
+  // ---------
+
+  @action
+  updateFilters({ zoekterm, hasZitting, hasHandling }) {
+    // Create array of ["zitting", "handling"]
+    const has = Object.entries({ hasHandling, hasZitting })
+      .filter(([_key, value]) => value)
+      .map(([key, _value]) => HAS_FIELD_MAPPING[key]);
+
+    this.router.transitionTo({
+      queryParams: {
+        search: zoekterm,
+        has,
+      },
+    });
+  }
+
+  get filterFields() {
+    const has = new Set(this.qsm.state.has.split(','));
+    return {
+      zoekterm: this.search,
+      hasZitting: has.has('zitting'),
+      hasHandling: has.has('handling'),
+    };
+  }
 
   // -------
   // Sorting
   // -------
-
-  @tracked
-  sort = null;
 
   @action
   updateSort(id) {
@@ -43,14 +71,10 @@ export default class ZoekController extends Controller {
   }
 
   get currentSortOption() {
-    // Get sort query parameter
-    const param = this.router.currentRoute.queryParams.sort;
+    const sort = this.qsm.state.sort || SORT_OPTIONS_DEFAULT;
 
     // Remove asc/desc sign
-    const option = param && param[0] === '-' ? param.substring(1) : param;
-
-    // If it's undefined get the default option
-    return option ? option : SORT_OPTIONS_DEFAULT;
+    return sort[0] === '-' ? sort.substring(1) : sort;
   }
 
   get SORT_OPTIONS() {
