@@ -16,6 +16,8 @@ type ZoekModel = ArrayProxy<SearchResult>;
 export default class ZoekRoute extends Route<ZoekModel> {
   qsm = new QueryStateManager();
 
+  queryParams: RouteQueryParams = {};
+
   constructor() {
     super(...arguments);
 
