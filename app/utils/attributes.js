@@ -1,4 +1,22 @@
-export const ENTITIES = {
+/**
+ * An entity is an object with it's own attributes.
+ */
+interface Entity {
+  name: string;
+  nameShort: string;
+  arity: 'single' | 'multiple';
+
+  /**
+   * The attribute in {@see AGENDA_POINT_ATTRIBUTES} that points to the entity resource
+   * (as opposed to one of it's attributes).
+   */
+  rootAttribute: 'root' | string;
+}
+
+/**
+ * Entities present in the search result.
+ */
+export const ENTITIES: { [id: string]: Entity } = {
   agendaPoint: {
     name: 'Agendapunt',
     nameShort: 'agendapunt',
@@ -25,7 +43,38 @@ export const ENTITIES = {
   },
 };
 
-export const AGENDA_POINT_ATTRIBUTES = {
+interface Attribute {
+  /** The entity this attribute belongs to,with `agendaPoint` being the root one. */
+  entity: string;
+
+  /** A short description of the attribute */
+  description: string;
+
+  /** Properties related to counting and listing the missing attributes of the search result and it's entities */
+  missing: {
+    count: boolean;
+    optional?: boolean;
+  };
+
+  /** Properties related to filtering the search result */
+  filter: {
+    /** Configuration of the has-attribute and has-relation filter fields */
+    has: {
+      /** A very short name used for e.g. the checkbox label */
+      name: string;
+      /** Wether this attribute should be listed as being filterable on */
+      displayAsAttribute?: boolean;
+    };
+  };
+}
+
+/**
+ * Attributes present in the search results and their corresponding configuration.
+ *
+ * Each field represents a field that is also present in the search result with
+ * which we want to do something.
+ */
+export const AGENDA_POINT_ATTRIBUTES: { [id: string]: Attribute } = {
   // ------------------------
   // Rechtstreekse attributen
   // ------------------------
@@ -51,7 +100,12 @@ export const AGENDA_POINT_ATTRIBUTES = {
     entity: 'agendaPoint',
     description: 'type van het agendapunt',
     missing: { count: true },
-    filter: { has: { name: 'type', displayAsAttribute: false } },
+    filter: {
+      has: {
+        name: 'type',
+        displayAsAttribute: false, // It's always empty currently
+      },
+    },
   },
   // typeURL: {
   //   entity: 'agendaPoint',
@@ -173,6 +227,7 @@ export const AGENDA_POINT_ATTRIBUTES = {
     missing: { count: false, optional: true },
     filter: { has: { name: 'besluiten' } },
   },
+  // We don't care about these yet cause we should use a nested result here to make it comfortable.
   // generatedResolutionTitleShorts: { entity: 'handling', missing: { count: true, description: '' } },
   // generatedResolutionDescriptions: { entity: 'handling', missing: { count: true, description: '' } },
   // generatedResolutionMotivations: { entity: 'handling', missing: { count: true, description: '' } },

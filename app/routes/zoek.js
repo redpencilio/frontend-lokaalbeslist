@@ -1,17 +1,25 @@
 import Route from '@ember/routing/route';
-
-import muSearch from '../utils/mu-search';
+import ArrayProxy from '@ember/array/proxy';
 import { tracked } from '@glimmer/tracking';
 
-export default class ZoekRoute extends Route {
-  // See <https://guides.emberjs.com/release/routing/query-params/> and constructor.
-  queryParams = {};
+import muSearch from '../utils/mu-search';
+import { SearchResult } from 'frontend-poc-participatie/utils/search-result';
+import ZoekController from 'frontend-poc-participatie/controllers/zoek';
 
+// import type RouterService from '@ember/routing/router-service';
+// type Transition = ReturnType<RouterService.transitionTo]>;
+type Transition = any;
+type RouteQueryParam = any;
+type RouteQueryParams = { [key: string]: RouteQueryParam };
+type ZoekModel = ArrayProxy<SearchResult>;
+
+export default class ZoekRoute extends Route<ZoekModel> {
   qsm = new QueryStateManager();
 
   constructor() {
     super(...arguments);
 
+    // See <https://guides.emberjs.com/release/routing/query-params/> and constructor.
     // Trigger model refresh when query parameters change, all query parameters
     // will be an argument to `this.model`.
     PARAM_FIELDS.forEach((field) => {
@@ -20,12 +28,16 @@ export default class ZoekRoute extends Route {
   }
 
   // Add same QueryStateManager to controller
-  setupController(controller, model) {
-    super.setupController(controller, model);
+  setupController(
+    controller: ZoekController,
+    model: ZoekModel,
+    transition: Transition
+  ) {
+    super.setupController(controller, model, transition);
     controller.qsm = this.qsm;
   }
 
-  beforeModel(transition) {
+  beforeModel(transition: Transition) {
     let queryParams = transition.to.queryParams;
 
     queryParams.page = queryParams.page ? queryParams.page : undefined;
@@ -35,7 +47,7 @@ export default class ZoekRoute extends Route {
     this.transitionTo({ queryParams });
   }
 
-  async model(params) {
+  async model(params: RouteQueryParams) {
     // Update query state with URL query parameters
     // See <https://guides.emberjs.com/release/routing/query-params/> and constructor.
     this.qsm.updateFromURLQueryParams(params);
@@ -80,7 +92,7 @@ class QueryState {
 /**
  * Manage query state such as filters, pagination and sorting info.
  */
-class QueryStateManager {
+export class QueryStateManager {
   @tracked state = new QueryState();
 
   // Keep track of wether this is an initial page load
@@ -89,7 +101,7 @@ class QueryStateManager {
   // user actions or due to the initial URL.
   isInitialPageLoad = true;
 
-  updateFromURLQueryParams(params) {
+  updateFromURLQueryParams(params: any) {
     this.state.page = params.page || DEFAULT_PARAMS.page;
     this.state.sort = params.sort;
     this.state.size = params.size || DEFAULT_PARAMS.size;
@@ -100,8 +112,13 @@ class QueryStateManager {
     this.isInitialPageLoad = false;
   }
 
-  toMuSearchParams() {
-    const query = {};
+  toMuSearchParams(): {
+    page: number;
+    size: number;
+    sort: string | undefined;
+    query: any;
+  } {
+    const query: { [key: string]: string } = {};
 
     query[':sqs:'] = this.state.search ? this.state.search : '*';
 
@@ -116,9 +133,10 @@ class QueryStateManager {
     return { page, size, sort, query };
   }
 
-  filterOutDefaultValues(params) {
+  filterOutDefaultValues(params: RouteQueryParams) {
     for (let field of Object.keys(params)) {
       if (Object.prototype.hasOwnProperty.call(params, field)) {
+        // @ts-ignore
         if (params[field] === DEFAULT_PARAMS[field]) {
           params[field] = undefined;
         }
@@ -136,7 +154,7 @@ class QueryStateManager {
    * @returns An empty object or an object `{page: undefined}` when the page
    * needs to be reset.
    */
-  resetPageIfFieldsChanged(params) {
+  resetPageIfFieldsChanged(params: RouteQueryParams) {
     return this.shouldPageBeReset(params)
       ? { ...params, page: undefined }
       : params;
@@ -145,7 +163,7 @@ class QueryStateManager {
   /**
    * If any field changed, the page should be reset.
    */
-  shouldPageBeReset(params) {
+  shouldPageBeReset(params: RouteQueryParams) {
     if (this.isInitialPageLoad) {
       return false;
     }
@@ -155,6 +173,7 @@ class QueryStateManager {
         continue;
       }
 
+      // @ts-ignore
       if (params[field] !== this.state[field]) {
         return true;
       }

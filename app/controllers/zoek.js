@@ -1,6 +1,9 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
+
+import { QueryStateManager } from 'frontend-poc-participatie/routes/zoek';
 
 const SORT_OPTIONS_DEFAULT = 'relevance';
 const SORT_OPTIONS = {
@@ -14,19 +17,24 @@ const SORT_OPTIONS = {
   },
 };
 
+interface Filters {
+  search: string;
+  has: { [key: string]: boolean };
+}
+
 export default class ZoekController extends Controller {
-  @service router;
+  @service declare router: RouterService;
 
   // QueryStateManager, see setupController in Zoek Route.
   // Most of it's state properties are tracked and trigger re-renders here.
-  qsm;
+  declare qsm: QueryStateManager;
 
   // ---------
   // Filtering
   // ---------
 
   @action
-  updateFilters({ search, has }) {
+  updateFilters({ search, has }: Filters) {
     // Create array ["zitting", "handling", ...] from object {zitting: true, handling: true, ...}
     const hasAsArray = Object.entries(has)
       .filter(([_id, value]) => value)
@@ -40,12 +48,14 @@ export default class ZoekController extends Controller {
     });
   }
 
-  get filterFields() {
+  get filterFields(): Filters {
     // Create object {zitting: true, handling: true, ...} from ["zitting", "handling"]
-    const has = this.qsm.state.has.split(',').reduce((acc, attributeId) => {
-      acc[attributeId] = true;
-      return acc;
-    }, {});
+    const has = this.qsm.state.has
+      .split(',')
+      .reduce((acc: { [key: string]: boolean }, attributeId) => {
+        acc[attributeId] = true;
+        return acc;
+      }, {});
 
     const { search } = this.qsm.state;
 
@@ -60,7 +70,7 @@ export default class ZoekController extends Controller {
   // -------
 
   @action
-  updateSort(id) {
+  updateSort(id: 'relevance' | 'zittingPlannedStart') {
     const option = SORT_OPTIONS[id];
     const asc = option.ascending ? '' : '-';
 

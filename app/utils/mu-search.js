@@ -1,26 +1,20 @@
 import ArrayProxy from '@ember/array/proxy';
 import { A } from '@ember/array';
-import camelCase from 'lodash.camelcase';
+import { SearchResult } from './search-result';
 
 /**
  * Source: <https://github.com/lblod/frontend-toezicht-abb/blob/master/app/utils/mu-search.js>
- *
- * @param {string} basePath
- * @param {number} page
- * @param {number} size
- * @param {string} sort
- * @param {object} filter
- * @param {function} dataMapping
+
  * @returns {ArrayProxy} Search results for specified search query
  */
 export default async function muSearch(
-  basePath,
-  page,
-  size,
-  sort,
-  filter,
-  dataMapping
-) {
+  basePath: string,
+  page: number,
+  size: number,
+  sort: string | undefined,
+  filter: any,
+  dataMapping: (item: any) => any
+): Promise<ArrayProxy<SearchResult>> {
   let endpoint = `${basePath}/search?page[size]=${size}&page[number]=${page}`;
 
   for (let field in filter) {
@@ -28,32 +22,49 @@ export default async function muSearch(
   }
 
   if (sort) {
-    let isDesc = (sort) => sort.charAt(0) === '-';
-    endpoint += `&sort[${
-      isDesc(sort) ? camelCase(sort.substr(1)) : camelCase(sort)
-    }]=${isDesc(sort) ? 'desc' : 'asc'}`;
+    let isDesc = sort.charAt(0) === '-';
+    endpoint += isDesc ? `&sort[${sort.substr(1)}]=desc` : `&sort[${sort}]=asc`;
   }
+
   const { count, data } = await (await fetch(endpoint)).json();
   const pagination = getPaginationMetadata(page, size, count);
   const entries = A(data.map(dataMapping));
 
+  // @ts-ignore
   return ArrayProxy.create({
     content: entries,
     meta: { count, pagination },
   });
 }
 
-const getPaginationMetadata = function (pageNumber, size, total) {
-  const pagination = {};
+interface PageInfo {
+  number: number;
+  size: number;
+}
 
-  pagination.first = { number: 0, size };
+interface PaginationInfo {
+  first: PageInfo;
+  last: PageInfo;
+  self: PageInfo;
+  prev?: PageInfo;
+  next?: PageInfo;
+}
 
+function getPaginationMetadata(
+  pageNumber: number,
+  size: number,
+  total: number
+): PaginationInfo {
   const lastPageNumber =
     total % size == 0 ? Math.floor(total / size) - 1 : Math.floor(total / size);
   const lastPageSize = total % size == 0 ? size : total % size;
-  pagination.last = { number: lastPageNumber, size: lastPageSize };
+  const last = { number: lastPageNumber, size: lastPageSize };
 
-  pagination.self = { number: pageNumber, size };
+  const pagination: PaginationInfo = {
+    first: { number: 0, size },
+    self: { number: pageNumber, size },
+    last,
+  };
 
   if (pageNumber > 0) {
     pagination.prev = { number: pageNumber - 1, size };
@@ -65,4 +76,4 @@ const getPaginationMetadata = function (pageNumber, size, total) {
   }
 
   return pagination;
-};
+}
