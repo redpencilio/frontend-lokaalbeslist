@@ -13,10 +13,6 @@ const SORT_OPTIONS = {
     ascending: false,
   },
 };
-const HAS_FIELD_MAPPING = {
-  hasZitting: 'zitting',
-  hasHandling: 'handling',
-};
 
 export default class ZoekController extends Controller {
   @service router;
@@ -30,26 +26,32 @@ export default class ZoekController extends Controller {
   // ---------
 
   @action
-  updateFilters({ zoekterm, hasZitting, hasHandling }) {
-    // Create array of ["zitting", "handling"]
-    const has = Object.entries({ hasHandling, hasZitting })
-      .filter(([_key, value]) => value)
-      .map(([key, _value]) => HAS_FIELD_MAPPING[key]);
+  updateFilters({ search, has }) {
+    // Create array ["zitting", "handling", ...] from object {zitting: true, handling: true, ...}
+    const hasAsArray = Object.entries(has)
+      .filter(([_id, value]) => value)
+      .map(([id, _value]) => id);
 
     this.router.transitionTo({
       queryParams: {
-        search: zoekterm,
-        has,
+        search,
+        has: hasAsArray,
       },
     });
   }
 
   get filterFields() {
-    const has = new Set(this.qsm.state.has.split(','));
+    // Create object {zitting: true, handling: true, ...} from ["zitting", "handling"]
+    const has = this.qsm.state.has.split(',').reduce((acc, attributeId) => {
+      acc[attributeId] = true;
+      return acc;
+    }, {});
+
+    const { search } = this.qsm.state;
+
     return {
-      zoekterm: this.search,
-      hasZitting: has.has('zitting'),
-      hasHandling: has.has('handling'),
+      search,
+      has,
     };
   }
 

@@ -15,6 +15,9 @@ module.exports = function (defaults) {
     'ember-composable-helpers': {
       only: [],
     },
+    'ember-cli-string-helpers': {
+      only: ['capitalize', 'dasherize'],
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated

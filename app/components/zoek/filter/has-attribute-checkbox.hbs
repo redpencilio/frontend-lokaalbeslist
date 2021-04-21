@@ -1,0 +1,10 @@
+{{#let (concat "has-" (dasherize @label) "-label") as |labelId|}}
+  <label class="checkbox control" id={{labelId}}>
+    <input
+      ...attributes
+      aria-labelledby="has-attribute-filter-group {{labelId}}"
+      type="checkbox"
+    />
+    {{@label}}
+  </label>
+{{/let}}

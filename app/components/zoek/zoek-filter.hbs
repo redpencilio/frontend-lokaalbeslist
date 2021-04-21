@@ -10,8 +10,8 @@
         placeholder="Wilgenlaan, sport, kerkfabriek, ..."
         aria-labbeledBy="zoekterm-label"
         type="text"
-        value={{@fields.zoekterm}}
-        {{on "input" (fn this.updatePropertyDebounced "zoekterm")}}
+        value={{@fields.search}}
+        {{on "input" (fn this.updatePropertyDebounced "search")}}
       />
     </div>
   </div>
@@ -21,27 +21,51 @@
     <p id="has-relation-filter-group" class="label">
       Heeft relatie
     </p>
-
-    <div class="field is-grouped-multiline">
-      <label class="checkbox control" id="has-zitting-label">
-        <input
-          aria-labelledby="has-relation-filter-group has-zitting-label"
-          type="checkbox"
-          checked={{@fields.hasZitting}}
-          {{on "input" (fn this.updatePropertyChecked "hasZitting")}}
+    {{#each-in this.ENTITIES as |id entity|}}
+      {{#unless (eq entity.rootAttribute "root")}}
+        <Zoek::Filter::HasRelationCheckbox
+          @label={{capitalize entity.nameShort}}
+          checked={{get @fields.has entity.rootAttribute}}
+          {{on "input" (fn this.updatePropertyHas entity.rootAttribute)}}
         />
-        Zitting
-      </label>
+      {{/unless}}
+    {{/each-in}}
+  </div>
 
-      <label class="checkbox control" id="has-handling-label">
-        <input
-          aria-labelledby="has-relation-filter-group has-handling-label"
-          type="checkbox"
-          checked={{@fields.hasHandling}}
-          {{on "input" (fn this.updatePropertyChecked "hasHandling")}}
-        />
-        Behandeling
-      </label>
-    </div>
+  {{! Has-attribute Filter Group}}
+  <div class="block">
+    <p id="has-attribute-filter-group" class="label">
+      Heeft attribuut
+    </p>
+    {{#each-in this.ENTITIES as |enitityId entity|}}
+      {{#let
+        (eq entity.rootAttribute "root")
+        (eq entity.arity "multiple") as |isRoot isMultipleArity|
+      }}
+        {{#unless (or isRoot isMultipleArity)}}
+          <p
+            id="has-attribute-zitting-filter-group"
+            class="label is-small mt-2"
+          >
+            {{capitalize entity.nameShort}}
+          </p>
+        {{/unless}}
+
+        {{#each-in this.AGENDA_POINT_ATTRIBUTES as |attributeId attribute|}}
+          {{#if
+            (and
+              (eq attribute.entity enitityId)
+              (not (eq attribute.filter.has.displayAsAttribute false))
+            )
+          }}
+            <Zoek::Filter::HasAttributeCheckbox
+              @label={{capitalize attribute.filter.has.name}}
+              @checked={{get @fields.has attributeId}}
+              {{on "input" (fn this.updatePropertyHas attributeId)}}
+            />
+          {{/if}}
+        {{/each-in}}
+      {{/let}}
+    {{/each-in}}
   </div>
 </div>

@@ -65,10 +65,6 @@ const DEFAULT_PARAMS = {
   search: '', // string
   has: '', // "zitting,handling"] | "zitting" | ...
 };
-const QUERY_PARAM_ATTRIBUTE_MAPPING = {
-  zitting: 'zittingURI',
-  handling: 'agendaItemHandlingURI',
-};
 
 /**
  * POJO that is a class so we can use @tracked
@@ -111,9 +107,9 @@ class QueryStateManager {
 
     this.state.has
       .split(',')
-      .filter((attr) => attr)
-      .forEach((attribute) => {
-        query[`:has:${QUERY_PARAM_ATTRIBUTE_MAPPING[attribute]}`] = 't';
+      .filter((attr) => attr) // Deal with empty string
+      .forEach((attributeId) => {
+        query[`:has:${attributeId}`] = 't';
       });
 
     const { page, size, sort } = this.state;

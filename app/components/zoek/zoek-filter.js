@@ -1,25 +1,47 @@
+import { AGENDA_POINT_ATTRIBUTES, ENTITIES } from '../../utils/attributes';
+
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { debounce } from '@ember/runloop';
 
-/**
- * @param {fn} updateFilters
- */
-export default class ZoekZoekFilterComponent extends Component {
-  changed = {};
+const CHANGED_INITIAL = { has: {} };
 
+export default class ZoekZoekFilterComponent extends Component {
+  get AGENDA_POINT_ATTRIBUTES() {
+    return AGENDA_POINT_ATTRIBUTES;
+  }
+
+  get ENTITIES() {
+    return ENTITIES;
+  }
+
+  changed = { ...CHANGED_INITIAL };
+
+  /**
+   * For updating **root** properties in a debounced manner.
+   *
+   * @param {string} property The property to update
+   * @param {*} event The input event that triggered the update
+   */
   @action
   updatePropertyDebounced(property, event) {
-    this.updateAndPropagate(property, event.target.value, true);
+    this.changed[property] = event.target.value;
+    this.propagate({ debounced: true });
   }
 
+  /**
+   * For updating properties in the has-relation and has-attribute filter groups
+   *
+   * @param {string} property The property to update
+   * @param {Event} event The input event that triggered the update
+   */
   @action
-  updatePropertyChecked(property, event) {
-    this.updateAndPropagate(property, event.target.checked);
+  updatePropertyHas(property, event) {
+    this.changed.has[property] = event.target.checked;
+    this.propagate({ debounce: false });
   }
 
-  updateAndPropagate(property, value, debounced) {
-    this.changed[property] = value;
+  propagate({ debounced }) {
     if (debounced) {
       debounce(this, this.propagateStateUp, 250);
     } else {
@@ -29,7 +51,7 @@ export default class ZoekZoekFilterComponent extends Component {
 
   propagateStateUp() {
     const filters = { ...this.args.fields, ...this.changed };
-    this.changed = {};
+    this.changed = { ...CHANGED_INITIAL };
     this.args.updateFilters(filters);
   }
 }
