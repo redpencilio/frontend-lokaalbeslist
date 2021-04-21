@@ -36,16 +36,16 @@
         </h6>
         <ul>
           {{#each this.attributes as |attribute|}}
-            {{#unless attribute.optional}}
+            {{#unless attribute.missing.optional}}
               <li>
                 <span
                   class="icon-text {{
-                    if attribute.missing "has-text-danger" "has-text-success"
+                    if attribute.isMissing "has-text-danger" "has-text-success"
                   }}"
                 >
                   <span class="icon" {{render-feather-icons}}>
                     <i
-                      data-feather={{if attribute.missing "x" "check"}}
+                      data-feather={{if attribute.isMissing "x" "check"}}
                       height="1rem"
                     ></i>
                   </span>
@@ -65,16 +65,16 @@
         </h6>
         <ul>
           {{#each this.attributes as |attribute|}}
-            {{#if attribute.optional}}
+            {{#if attribute.missing.optional}}
               <li>
                 <span
                   class="icon-text {{
-                    if attribute.missing "has-text-danger" "has-text-success"
+                    if attribute.isMissing "has-text-danger" "has-text-success"
                   }}"
                 >
                   <span class="icon" {{render-feather-icons}}>
                     <i
-                      data-feather={{if attribute.missing "x" "check"}}
+                      data-feather={{if attribute.isMissing "x" "check"}}
                       height="1rem"
                     ></i>
                   </span>

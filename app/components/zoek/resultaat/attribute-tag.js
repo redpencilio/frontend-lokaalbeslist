@@ -24,7 +24,7 @@ export default class ZoekResultaatAttributeTagComponent extends Component {
 
   get numberOfAttrsMissing() {
     return this.attributes.filter(
-      ({ count, missing }) => count == true && missing == true
+      ({ missing: { count }, isMissing }) => count == true && isMissing == true
     ).length;
   }
 
@@ -35,8 +35,8 @@ export default class ZoekResultaatAttributeTagComponent extends Component {
       .filter(([_, { entity }]) => entity == this.args.entity)
       // Add wether it is present in the result
       .map(([key, attribute]) => {
-        const missing = result[key] === null || result[key] === undefined;
-        return { missing, ...attribute };
+        const isMissing = result[key] === null || result[key] === undefined;
+        return { isMissing, ...attribute };
       });
 
     return attributes;

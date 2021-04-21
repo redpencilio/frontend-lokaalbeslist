@@ -31,52 +31,50 @@ export const AGENDA_POINT_ATTRIBUTES = {
   // ------------------------
   uri: {
     entity: 'agendaPoint',
-    count: true,
     description: 'link naar agendapunt',
+    missing: { count: true },
     filter: { has: { name: 'link', displayAsAttribute: false } },
   },
   title: {
     entity: 'agendaPoint',
-    count: true,
     description: 'titel',
+    missing: { count: true },
     filter: { has: { name: 'titel' } },
   },
   description: {
     entity: 'agendaPoint',
-    optional: true,
-    count: false, // Optional field
     description: 'beschrijving',
+    missing: { count: false, optional: true },
     filter: { has: { name: 'beschrijving' } },
   },
   type: {
     entity: 'agendaPoint',
-    count: true,
     description: 'type van het agendapunt',
+    missing: { count: true },
     filter: { has: { name: 'type', displayAsAttribute: false } },
   },
   // typeURL: {
   //   entity: 'agendaPoint',
-  //   count: false, // We don't want to count double with `type`
+  //   missing: { count: false }, // We don't want to count double with `type`
   // },
   plannedPublic: {
     entity: 'agendaPoint',
-    count: true,
     description: 'gepland openbaar',
+    missing: { count: true },
     filter: { has: { name: 'geplande openbaarheid' } },
   },
   // id: {
   //   entity: 'agendaPoint',
-  //   count: false, // Duplicate of `uri`
+  //   missing: { count: false }, // Duplicate of `uri`
   // },
   // uuid: {
   //   entity: 'agendaPoint',
-  //   count: false, // This is always empty, and it is not important for end users anyway.
+  //   missing: { count: false, // This is always empty }, and it is not important for end users anyway.
   // },
   references: {
     entity: 'agendaPoint',
-    count: false, // Optional field
-    optional: true,
     description: 'referenties aan andere agendapunten',
+    missing: { optional: true, count: false },
     filter: { has: { name: 'referenties' } },
   },
 
@@ -85,9 +83,8 @@ export const AGENDA_POINT_ATTRIBUTES = {
   // --------------------------------
   draftResolutionURIs: {
     entity: 'draftResolution',
-    count: false, // Optional field
-    optional: true,
     description: 'heeft ontwerpbesluit',
+    missing: { count: false, optional: true },
     filter: { has: { name: 'ontwerpbesluit', displayAsAttribute: false } },
   },
 
@@ -96,63 +93,61 @@ export const AGENDA_POINT_ATTRIBUTES = {
   // ------------------------
   zittingURI: {
     entity: 'zitting',
-    count: true,
     description: 'link naar zitting',
+    missing: { count: true },
     filter: { has: { name: 'link', displayAsAttribute: false } },
   },
   zittingPlannedStart: {
     entity: 'zitting',
-    count: true,
     description: 'geplande start van de zitting',
+    missing: { count: true },
     filter: { has: { name: 'geplande start' } },
   },
   zittingStartedAtTime: {
     entity: 'zitting',
-    count: true,
     description: 'starttijd van de zitting',
+    missing: { count: true },
     filter: { has: { name: 'starttijd' } },
   },
   zittingVerslagURI: {
     entity: 'zitting',
-    count: false, // Optional field
-    optional: true,
     description: 'link naar verslag van de zitting',
+    missing: { count: false, optional: true }, // Optional field
     filter: { has: { name: 'verslag' } },
   },
   zittingNotulenURI: {
     entity: 'zitting',
-    count: false, // Optional field
-    optional: true,
     description: 'link naar de notulen van de zitting',
+    missing: { count: false, optional: true },
     filter: { has: { name: 'notulen' } },
   },
 
   // We don't want to count both the URI's and the labels, and we don't display these URI's.
-  // governingBodyURI: { entity: 'zitting', count: false },
-  // governingBodyClassificationURI: { entity: 'zitting', count: false },
-  // administrativeUnitURI: { entity: 'zitting', count: false },
-  // administrativeUnitClassificationURI: { entity: 'zitting', count: false },
+  // governingBodyURI: { entity: 'zitting', missing: { count: false } },
+  // governingBodyClassificationURI: { entity: 'zitting', missing: { count: false } },
+  // administrativeUnitURI: { entity: 'zitting', missing: { count: false } },
+  // administrativeUnitClassificationURI: { entity: 'zitting', missing: { count: false } },
 
   // governingBody: {
   //   entity: 'zitting',
-  //   count: false, // We don't display (and count) this, instead opting for `governingBodyClassification` + `administrativeUnit`.
+  //   missing: { count: false, // We don't display (and count) this , instead opting for `governingBodyClassification` + `administrativeUnit`.
   //   description: 'bestuursorgaan',
   // },
   governingBodyClassification: {
     entity: 'zitting',
-    count: true,
     description: 'type bestuursorgaan',
+    missing: { count: true },
     filter: { has: { name: 'type bestuursorgaan' } },
   },
   administrativeUnit: {
     entity: 'zitting',
-    count: true,
     description: 'bestuurseenheid',
+    missing: { count: true },
     filter: { has: { name: 'bestuurseenheid' } },
   },
   // administrativeUnitClassification: {
   //   entity: 'zitting',
-  //   count: false, // We don't display (and count) this because it should always be 'Gemeente'.
+  //   missing: { count: false }, // We don't display (and count) this because it should always be 'Gemeente'.
   //   description: 'type bestuurseenheid',
   // },
 
@@ -161,26 +156,25 @@ export const AGENDA_POINT_ATTRIBUTES = {
   // -------------------------------------------
   agendaItemHandlingURI: {
     entity: 'handling',
-    count: true,
     description: 'link naar de behandeling van het agendapunt',
+    missing: { count: true },
     filter: { has: { name: 'link', displayAsAttribute: false } },
   },
   agendaItemHandlingIsPublic: {
     entity: 'handling',
-    count: true,
     description: 'openbaarheid van de behandeling van het agendapunt',
+    missing: { count: true },
     filter: { has: { name: 'openbaarheid' } },
   },
 
   generatedResolutionURIs: {
     entity: 'handling',
-    count: false, // Optional field
-    optional: true,
     description: 'besluiten opgemaakt naar aanleiding van het agendapunt',
+    missing: { count: false, optional: true },
     filter: { has: { name: 'besluiten' } },
   },
-  // generatedResolutionTitleShorts: { entity: 'handling', count: true, description: '' },
-  // generatedResolutionDescriptions: { entity: 'handling', count: true, description: '' },
-  // generatedResolutionMotivations: { entity: 'handling', count: true, description: '' },
-  // generatedResolutionPublicationDates: { entity: 'handling', count: true, description: '' },
+  // generatedResolutionTitleShorts: { entity: 'handling', missing: { count: true, description: '' } },
+  // generatedResolutionDescriptions: { entity: 'handling', missing: { count: true, description: '' } },
+  // generatedResolutionMotivations: { entity: 'handling', missing: { count: true, description: '' } },
+  // generatedResolutionPublicationDates: { entity: 'handling', missing: { count: true, description: '' } },
 };
