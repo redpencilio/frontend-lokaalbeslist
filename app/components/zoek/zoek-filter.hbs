@@ -60,7 +60,7 @@
           }}
             <Zoek::Filter::HasAttributeCheckbox
               @label={{capitalize attribute.filter.has.name}}
-              @checked={{get @fields.has attributeId}}
+              checked={{get @fields.has attributeId}}
               {{on "input" (fn this.updatePropertyHas attributeId)}}
             />
           {{/if}}
