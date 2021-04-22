@@ -20,7 +20,7 @@ Next we clone this repository, install the dependencies, and boot the developmen
 
 ```shell
 git clone https://github.com/redpencilio/frontend-poc-participatie.git
-cd frontend-gelinkt-notuleren
+cd frontend-poc-participatie
 
 # install the dependencies
 npm install
