@@ -1,0 +1,17 @@
+<div
+  ...attributes
+  class="is-flex is-flex-wrap-wrap is-justify-content-space-between"
+>
+  <PaginationLabel
+    class="my-2 mr-4"
+    @pagination={{@pagination}}
+    @count={{@count}}
+  />
+  <Pagination class="my-2 mr-4" @pagination={{@pagination}} />
+  <SortButton
+    class="my-2"
+    @options={{@sortOptions}}
+    @currentlySelected={{@currentSortOption}}
+    @onSelected={{@updateSort}}
+  />
+</div>

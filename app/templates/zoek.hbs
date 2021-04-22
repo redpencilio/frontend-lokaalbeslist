@@ -8,24 +8,14 @@
   </div>
 
   <div class="column">
-    {{! Top Bar (with pagination and sort)}}
-    <div class="is-flex is-flex-wrap-wrap is-justify-content-space-between">
-      <PaginationLabel
-        class="my-2 mr-4"
-        @pagination={{this.model.meta.pagination}}
-        @count={{this.model.meta.count}}
-      />
-      <Pagination
-        class="my-2 mr-4"
-        @pagination={{this.model.meta.pagination}}
-      />
-      <SortButton
-        class="my-2"
-        @options={{this.SORT_OPTIONS}}
-        @currentlySelected={{this.currentSortOption}}
-        @onSelected={{this.updateSort}}
-      />
-    </div>
+    {{! Top control bar }}
+    <Zoek::ResultControlBar
+      @pagination={{this.model.meta.pagination}}
+      @count={{this.model.meta.count}}
+      @sortOptions={{this.SORT_OPTIONS}}
+      @currentSortOption={{this.currentSortOption}}
+      @updateSort={{this.updateSort}}
+    />
 
     <hr class="mt-1" />
 
@@ -33,9 +23,25 @@
     {{#each this.model.content as |result|}}
       <div class="block">
         <Zoek::ZoekResultaat @result={{result}} />
-        <hr />
+
+        {{! Bottom border, don't render on last item, use EmberArray stuff }}
+        {{#unless (eq result this.model.content.lastObject)}}
+          <hr />
+        {{/unless}}
       </div>
     {{/each}}
+
+    {{! Bottom control bar }}
+    {{#if this.model.content}}
+      <hr class="mb-1" />
+      <Zoek::ResultControlBar
+        @pagination={{this.model.meta.pagination}}
+        @count={{this.model.meta.count}}
+        @sortOptions={{this.SORT_OPTIONS}}
+        @currentSortOption={{this.currentSortOption}}
+        @updateSort={{this.updateSort}}
+      />
+    {{/if}}
   </div>
 </div>
 {{outlet}}
