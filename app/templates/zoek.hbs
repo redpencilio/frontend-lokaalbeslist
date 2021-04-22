@@ -1,47 +1,34 @@
-<div class="columns px-5 py-4">
-  {{! Filter }}
-  <div class="column is-one-quarter-desktop is-one-third-tablet">
-    <Zoek::ZoekFilter
-      @updateFilters={{this.updateFilters}}
-      @fields={{this.filterFields}}
-    />
-  </div>
+<main id="main-search">
+  <div id="main-search-columns" class="columns">
+    {{! Left column - Filter}}
+    <div id="column-left-filters" class="column">
+      <Zoek::ZoekFilter
+        id="filters"
+        @updateFilters={{this.updateFilters}}
+        @fields={{this.filterFields}}
+      />
+    </div>
 
-  <div class="column">
-    {{! Top control bar }}
-    <Zoek::ResultControlBar
-      @pagination={{this.model.meta.pagination}}
-      @count={{this.model.meta.count}}
-      @sortOptions={{this.SORT_OPTIONS}}
-      @currentSortOption={{this.currentSortOption}}
-      @updateSort={{this.updateSort}}
-    />
-
-    <hr class="mt-1" />
-
-    {{! Results }}
-    {{#each this.model.content as |result|}}
-      <div class="block">
-        <Zoek::ZoekResultaat @result={{result}} />
-
-        {{! Bottom border, don't render on last item, use EmberArray stuff }}
-        {{#unless (eq result this.model.content.lastObject)}}
-          <hr />
-        {{/unless}}
-      </div>
-    {{/each}}
-
-    {{! Bottom control bar }}
-    {{#if this.model.content}}
-      <hr class="mb-1" />
+    {{! Right column - Control + Results}}
+    <div id="column-right-results" class="column">
+      {{! Top control bar }}
       <Zoek::ResultControlBar
+        id="zoek-control-bar-top"
         @pagination={{this.model.meta.pagination}}
         @count={{this.model.meta.count}}
         @sortOptions={{this.SORT_OPTIONS}}
         @currentSortOption={{this.currentSortOption}}
         @updateSort={{this.updateSort}}
       />
-    {{/if}}
+
+      <div id="results">
+        {{! Results }}
+        {{#each this.model.content as |result|}}
+          <div class="block">
+            <Zoek::ZoekResultaat @result={{result}} />
+          </div>
+        {{/each}}
+      </div>
+    </div>
   </div>
-</div>
-{{outlet}}
+</main>

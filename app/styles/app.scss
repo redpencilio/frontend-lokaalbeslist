@@ -2,3 +2,64 @@ $footer-padding: 3rem 1.5rem 3rem;
 
 // Override Bulma theme by defining variables above here ^
 @import 'bulma';
+
+html,
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  > * {
+    overflow: auto;
+  }
+}
+
+#main-search {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  #main-search-columns {
+    overflow: hidden;
+    @extend .m-0;
+    @extend .p-0;
+
+    #column-left-filters {
+      overflow: auto;
+      background-color: $white-bis;
+
+      @extend .is-one-quarter-desktop;
+      @extend .is-one-third-tablet;
+      @extend .m-0;
+      @extend .px-4;
+      @extend .py-2;
+    }
+
+    #column-right-results {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+
+      @extend .m-0;
+      @extend .p-0;
+
+      #zoek-control-bar-top {
+        border-bottom: 2px solid $light;
+
+        @extend .px-4;
+      }
+
+      #results {
+        overflow: auto;
+        @extend .px-4;
+        @extend .py-4;
+
+        > * {
+          border-bottom: 2px solid $light;
+          @extend .pb-4;
+        }
+      }
+    }
+  }
+}
