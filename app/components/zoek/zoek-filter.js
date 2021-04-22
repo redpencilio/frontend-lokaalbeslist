@@ -27,7 +27,7 @@ export default class ZoekZoekFilterComponent extends Component {
    * @param {*} event The input event that triggered the update
    */
   @action
-  updatePropertyDebounced(property, event) {
+  updateRootDebounced(property, event) {
     this.changed[property] = event.target.value;
     this.propagate({ debounced: true });
   }
@@ -39,7 +39,7 @@ export default class ZoekZoekFilterComponent extends Component {
    * @param {Event} event The input event that triggered the update
    */
   @action
-  updatePropertyHas(property, event) {
+  updateHas(property, event) {
     this.changed.has[property] = event.target.checked;
     this.propagate({ debounce: false });
   }

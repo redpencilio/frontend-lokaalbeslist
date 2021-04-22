@@ -11,7 +11,7 @@
         aria-labbeledBy="zoekterm-label"
         type="text"
         value={{@fields.search}}
-        {{on "input" (fn this.updatePropertyDebounced "search")}}
+        {{on "input" (fn this.updateRootDebounced "search")}}
       />
     </div>
   </div>
@@ -26,7 +26,7 @@
         <Zoek::Filter::HasRelationCheckbox
           @label={{capitalize entity.nameShort}}
           checked={{get @fields.has entity.rootAttribute}}
-          {{on "input" (fn this.updatePropertyHas entity.rootAttribute)}}
+          {{on "input" (fn this.updateHas entity.rootAttribute)}}
         />
       {{/unless}}
     {{/each-in}}
@@ -61,7 +61,7 @@
             <Zoek::Filter::HasAttributeCheckbox
               @label={{capitalize attribute.filter.has.name}}
               checked={{get @fields.has attributeId}}
-              {{on "input" (fn this.updatePropertyHas attributeId)}}
+              {{on "input" (fn this.updateHas attributeId)}}
             />
           {{/if}}
         {{/each-in}}
