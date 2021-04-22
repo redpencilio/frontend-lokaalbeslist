@@ -4,6 +4,9 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { debounce } from '@ember/runloop';
 
+import cloneDeep from 'lodash.clonedeep';
+import merge from 'lodash.merge';
+
 const CHANGED_INITIAL = { has: {} };
 
 export default class ZoekZoekFilterComponent extends Component {
@@ -15,7 +18,7 @@ export default class ZoekZoekFilterComponent extends Component {
     return ENTITIES;
   }
 
-  changed = { ...CHANGED_INITIAL };
+  changed = cloneDeep(CHANGED_INITIAL);
 
   /**
    * For updating **root** properties in a debounced manner.
@@ -50,8 +53,8 @@ export default class ZoekZoekFilterComponent extends Component {
   }
 
   propagateStateUp() {
-    const filters = { ...this.args.fields, ...this.changed };
-    this.changed = { ...CHANGED_INITIAL };
+    const filters = merge(cloneDeep(this.args.fields), this.changed);
+    this.changed = cloneDeep(CHANGED_INITIAL);
     this.args.updateFilters(filters);
   }
 }
