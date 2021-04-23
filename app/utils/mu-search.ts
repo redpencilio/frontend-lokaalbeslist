@@ -2,6 +2,8 @@ import ArrayProxy from '@ember/array/proxy';
 import { A } from '@ember/array';
 import { SearchResult } from './search-result';
 
+export type Sort = undefined | { field: string; isDesc: boolean };
+
 /**
  * Source: <https://github.com/lblod/frontend-toezicht-abb/blob/master/app/utils/mu-search.js>
 
@@ -11,7 +13,7 @@ export default async function muSearch(
   basePath: string,
   page: number,
   size: number,
-  sort: string | undefined,
+  sort: Sort,
   filter: any,
   dataMapping: (item: any) => any
 ): Promise<ArrayProxy<SearchResult>> {
@@ -22,8 +24,9 @@ export default async function muSearch(
   }
 
   if (sort) {
-    let isDesc = sort.charAt(0) === '-';
-    endpoint += isDesc ? `&sort[${sort.substr(1)}]=desc` : `&sort[${sort}]=asc`;
+    endpoint += sort.isDesc
+      ? `&sort[${sort.field}]=desc`
+      : `&sort[${sort.field}]=asc`;
   }
 
   const { count, data } = await (await fetch(endpoint)).json();

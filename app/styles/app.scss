@@ -1,7 +1,21 @@
+//------
+// Bulma
+// -----
 $footer-padding: 3rem 1.5rem 3rem;
 
 // Override Bulma theme by defining variables above here ^
 @import 'bulma';
+
+//-------------------
+// Ember Power Select
+// ------------------
+
+// Override ember-power-select by definig variables above here ^
+@import 'ember-power-select';
+
+//-------------------
+// Custom
+// ------------------
 
 html,
 body {

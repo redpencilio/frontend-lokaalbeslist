@@ -10,10 +10,20 @@
         placeholder="Wilgenlaan, sport, kerkfabriek, ..."
         aria-labbeledBy="zoekterm-label"
         type="text"
-        value={{@fields.search}}
+        value={{@currentState.search}}
         {{on "input" (fn this.updateRootDebounced "search")}}
       />
     </div>
+  </div>
+
+  <div class="block">
+    <PowerSelectMultiple
+      @onChange={{this.updateAdministrativeUnits}}
+      @selected={{this.selectedAdministrativeUnits}}
+      @options={{this.administrativeUnits}} as |unit|
+    >
+      {{unit}}
+    </PowerSelectMultiple>
   </div>
 
   {{! Has-relation Filter Group }}

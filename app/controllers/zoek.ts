@@ -3,7 +3,10 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 
-import { QueryStateManager } from 'frontend-poc-participatie/routes/zoek';
+import {
+  QueryState,
+  QueryStateManager,
+} from 'frontend-poc-participatie/utils/query-state';
 
 const SORT_OPTIONS_DEFAULT = 'relevance';
 const SORT_OPTIONS = {
@@ -17,11 +20,6 @@ const SORT_OPTIONS = {
   },
 };
 
-interface Filters {
-  search: string;
-  has: { [key: string]: boolean };
-}
-
 export default class ZoekController extends Controller {
   @service declare router: RouterService;
 
@@ -34,35 +32,13 @@ export default class ZoekController extends Controller {
   // ---------
 
   @action
-  updateFilters({ search, has }: Filters) {
-    // Create array ["zitting", "handling", ...] from object {zitting: true, handling: true, ...}
-    const hasAsArray = Object.entries(has)
-      .filter(([_id, value]) => value)
-      .map(([id, _value]) => id);
-
-    this.router.transitionTo({
-      queryParams: {
-        search,
-        has: hasAsArray,
-      },
-    });
+  updateFilters(filterState: QueryState) {
+    const queryParams = this.qsm.toURLQueryParams(filterState);
+    this.router.transitionTo({ queryParams });
   }
 
-  get filterFields(): Filters {
-    // Create object {zitting: true, handling: true, ...} from ["zitting", "handling"]
-    const has = this.qsm.state.has
-      .split(',')
-      .reduce((acc: { [key: string]: boolean }, attributeId) => {
-        acc[attributeId] = true;
-        return acc;
-      }, {});
-
-    const { search } = this.qsm.state;
-
-    return {
-      search,
-      has,
-    };
+  get filterState(): QueryState {
+    return this.qsm.state;
   }
 
   // -------
@@ -83,10 +59,7 @@ export default class ZoekController extends Controller {
   }
 
   get currentSortOption() {
-    const sort = this.qsm.state.sort || SORT_OPTIONS_DEFAULT;
-
-    // Remove asc/desc sign
-    return sort[0] === '-' ? sort.substring(1) : sort;
+    return this.qsm.state.sort?.field || SORT_OPTIONS_DEFAULT;
   }
 
   get SORT_OPTIONS() {
