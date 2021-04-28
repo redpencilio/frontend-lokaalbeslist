@@ -17,13 +17,13 @@
   </div>
 
   <div class="block">
-    <PowerSelectMultiple
-      @onChange={{this.updateAdministrativeUnits}}
+    <label class="label">
+      Bestuurseenheid
+    </label>
+    <Zoek::Filter::AdministrativeUnitSelect
       @selected={{this.selectedAdministrativeUnits}}
-      @options={{this.administrativeUnits}} as |unit|
-    >
-      {{unit}}
-    </PowerSelectMultiple>
+      @onSelectionChange={{this.updateAdministrativeUnits}}
+    />
   </div>
 
   {{! Has-relation Filter Group }}

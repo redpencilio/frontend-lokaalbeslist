@@ -1,0 +1,12 @@
+<PowerSelectMultiple
+  @loadingMessage="Aan het laden..."
+  @searchPlaceholder="Typ om te zoeken..."
+  @searchEnabled={{true}}
+  @searchField="naam"
+  @search={{perform this.search}}
+  @onChange={{this.changeSelected}}
+  @selected={{this.selected}}
+  @options={{this.options}} as |unit|
+>
+  {{unit.naam}} ({{unit.classificatie.label}})
+</PowerSelectMultiple>

@@ -3,6 +3,8 @@ import { AGENDA_POINT_ATTRIBUTES, ENTITIES } from '../../utils/attributes';
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { debounce } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import Store from '@ember-data/store';
 
 import cloneDeep from 'lodash.clonedeep';
 import { QueryState } from 'frontend-poc-participatie/utils/query-state';
@@ -13,6 +15,8 @@ interface Args {
 }
 
 export default class ZoekZoekFilterComponent extends Component<Args> {
+  @service declare store: Store;
+
   state: QueryState = cloneDeep(this.args.currentState);
 
   get AGENDA_POINT_ATTRIBUTES() {
@@ -21,10 +25,6 @@ export default class ZoekZoekFilterComponent extends Component<Args> {
 
   get ENTITIES() {
     return ENTITIES;
-  }
-
-  get administrativeUnits() {
-    return ['Langemark', 'Deinze', 'Gent', 'Poelkapelle'];
   }
 
   get selectedAdministrativeUnits() {
@@ -76,6 +76,7 @@ export default class ZoekZoekFilterComponent extends Component<Args> {
   }
 
   propagate_() {
+    console.log(this.state.search);
     this.args.updateFilters(this.state);
   }
 

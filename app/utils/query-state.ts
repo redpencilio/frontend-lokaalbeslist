@@ -107,6 +107,12 @@ export class QueryStateManager {
       query[`:has:${attributeId}`] = 't';
     });
 
+    if (this.state.administrativeUnit.selected.size > 0) {
+      query[`:terms:administrativeUnitURI`] = Array.from(
+        this.state.administrativeUnit.selected
+      ).join(',');
+    }
+
     const { page, size, sort } = this.state;
     return { page, size, sort, query };
   }

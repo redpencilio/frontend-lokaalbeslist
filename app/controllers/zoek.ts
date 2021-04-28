@@ -34,6 +34,7 @@ export default class ZoekController extends Controller {
   @action
   updateFilters(filterState: QueryState) {
     const queryParams = this.qsm.toURLQueryParams(filterState);
+    console.log(queryParams);
     this.router.transitionTo({ queryParams });
   }
 
