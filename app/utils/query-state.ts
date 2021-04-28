@@ -25,18 +25,16 @@ interface ExpectedURLQueryParams {
 
 /**
  * The state of the search query.
- *
- * POJO that is a class so we can use @tracked
  */
 export class QueryState {
-  @tracked sort: Sort = DEFAULT_STATE.sort;
-  @tracked page: number = DEFAULT_STATE.page;
-  @tracked size: number = DEFAULT_STATE.size;
+  sort: Sort = DEFAULT_STATE.sort;
+  page: number = DEFAULT_STATE.page;
+  size: number = DEFAULT_STATE.size;
 
   // Filters
-  @tracked search: string | undefined = DEFAULT_STATE.search;
-  @tracked has: Set<string> = DEFAULT_STATE.has;
-  @tracked administrativeUnit: { selected: Set<string> } =
+  search: string | undefined = DEFAULT_STATE.search;
+  has: Set<string> = DEFAULT_STATE.has;
+  administrativeUnit: { selected: Set<string> } =
     DEFAULT_STATE.administrativeUnit;
 }
 
@@ -116,7 +114,10 @@ export class QueryStateManager {
   filterOutDefaultValues(params: ExpectedURLQueryParams) {
     for (let field of URL_PARAM_FIELDS) {
       if (Object.prototype.hasOwnProperty.call(params, field)) {
-        if (params[field] === DEFAULT_URL_STATE[field]) {
+        if (
+          params[field] === DEFAULT_URL_STATE[field]?.toString() ||
+          params[field] === ''
+        ) {
           params[field] = undefined;
         }
       }
