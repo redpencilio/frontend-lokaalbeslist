@@ -61,7 +61,6 @@ export default class ZoekFilterAdministrativeUnitSelect extends Component<ZoekFi
   @action
   async updateSelectedValue() {
     if (this.args.selected.length && !this.selected) {
-      console.log(this.args.selected, this.selected);
       this.selected = (
         await this.store.query('bestuurseenheid', {
           include: 'classificatie',

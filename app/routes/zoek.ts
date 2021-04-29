@@ -45,10 +45,9 @@ export default class ZoekRoute extends Route<ZoekModel> {
 
   beforeModel(transition: Transition) {
     let queryParams = transition.to.queryParams;
-
     queryParams.page = queryParams.page ? queryParams.page : undefined;
-    queryParams = this.qsm.resetPageIfFieldsChanged(queryParams);
     queryParams = this.qsm.filterOutDefaultValues(queryParams);
+    queryParams = this.qsm.resetPageIfFieldsChanged(queryParams);
 
     this.transitionTo({ queryParams });
   }

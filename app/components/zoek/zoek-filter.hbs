@@ -35,7 +35,7 @@
       {{#unless (eq entity.rootAttribute "root")}}
         <Zoek::Filter::HasRelationCheckbox
           @label={{capitalize entity.nameShort}}
-          checked={{get @fields.has entity.rootAttribute}}
+          checked={{set-contains @currentState.has entity.rootAttribute}}
           {{on "input" (fn this.updateHas entity.rootAttribute)}}
         />
       {{/unless}}
@@ -70,7 +70,7 @@
           }}
             <Zoek::Filter::HasAttributeCheckbox
               @label={{capitalize attribute.filter.has.name}}
-              checked={{get @fields.has attributeId}}
+              checked={{set-contains @currentState.has attributeId}}
               {{on "input" (fn this.updateHas attributeId)}}
             />
           {{/if}}

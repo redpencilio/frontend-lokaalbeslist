@@ -76,7 +76,6 @@ export default class ZoekZoekFilterComponent extends Component<Args> {
   }
 
   propagate_() {
-    console.log(this.state.search);
     this.args.updateFilters(this.state);
   }
 

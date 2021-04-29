@@ -81,7 +81,6 @@ export class QueryStateManager {
         ? new Set(params.administrativeUnit.split(','))
         : DEFAULT_STATE.administrativeUnit.selected,
     };
-
     this.isInitialPageLoad = false;
   }
 
@@ -154,13 +153,14 @@ export class QueryStateManager {
       return false;
     }
 
+    let state = this.toURLQueryParams(this.state);
     for (let field of Object.keys(params)) {
       if (field === 'page') {
         continue;
       }
 
       // @ts-ignore
-      if (params[field] !== this.state[field]) {
+      if (params[field] !== state[field]) {
         return true;
       }
     }
