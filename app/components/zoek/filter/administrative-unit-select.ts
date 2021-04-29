@@ -60,11 +60,12 @@ export default class ZoekFilterAdministrativeUnitSelect extends Component<ZoekFi
    */
   @action
   async updateSelectedValue() {
-    if (this.args.selected && !this.selected) {
+    if (this.args.selected.length && !this.selected) {
+      console.log(this.args.selected, this.selected);
       this.selected = (
         await this.store.query('bestuurseenheid', {
           include: 'classificatie',
-          filter: this.args.selected.join(','),
+          filter: { ':uri:': this.args.selected.join(',') },
           size: { size: this.args.selected.length },
         })
       ).toArray();
@@ -73,6 +74,3 @@ export default class ZoekFilterAdministrativeUnitSelect extends Component<ZoekFi
     }
   }
 }
-
-// "http://openbelgium-2021.lblod.info/id/bestuurseenheden/08e1b1e460bc9a9dfbd6570ab96a6b4813fbd4d9df2294dad86b11d9e4093d32"
-// "http://data.lblod.info/id/bestuurseenheden/08e1b1e460bc9a9dfbd6570ab96a6b4813fbd4d9df2294dad86b11d9e4093d32"
