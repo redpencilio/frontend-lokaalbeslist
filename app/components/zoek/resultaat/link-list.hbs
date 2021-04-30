@@ -4,12 +4,12 @@
   </a>
 
   {{! Zitting }}
-  {{#if @result.zittingURI}}
+  {{#if @result.zitting}}
     <span class="mr-2">
       -
     </span>
     <span class="mr-2">
-      <a href={{@result.zittingURI}}>
+      <a href={{@result.zitting.uri}}>
         Zitting
       </a>
 
@@ -19,20 +19,20 @@
         @embrace={{array "(" ")"}}
         @items={{
           array
-          (if @result.zittingNotulenURI (hash link=@result.zittingNotulenURI name="notulen"))
-          (if @result.zittingVerslagURI (hash link=@result.zittingVerslagURI name="verslag"))
+          (if @result.zitting.notulenURI (hash link=@result.zitting.notulenURI name="notulen"))
+          (if @result.zitting.verslagURI (hash link=@result.zitting.verslagURI name="verslag"))
         }} as |item|
       ><a href={{item.link}}>{{item.name}}</a></ItemListHorizontal>
     </span>
   {{/if}}
 
   {{! Behandeling }}
-  {{#if @result.agendaItemHandlingURI}}
+  {{#if @result.agendaItemHandling}}
     <span class="mr-2">
       -
     </span>
     <span class="mr-2">
-      <a href={{@result.agendaItemHandlingURI}}>
+      <a href={{@result.agendaItemHandling.uri}}>
         Behandeling
       </a>
       {{! prettier-ignore }}

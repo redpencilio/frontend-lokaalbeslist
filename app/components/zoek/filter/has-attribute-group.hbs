@@ -1,0 +1,50 @@
+{{! Has-relation Filter Group }}
+<div class="block">
+  <p id="has-relation-filter-group" class="label">
+    Heeft relatie
+  </p>
+  {{#each this.nonRootEntities as |entityId|}}
+    {{#let (get this.AGENDA_POINT_ATTRIBUTES.attributes entityId) as |entity|}}
+      <Zoek::Filter::HasRelationCheckbox
+        @label={{capitalize entity.config.filter.has.name}}
+        checked={{set-contains @currentState entityId}}
+        {{on "input" (fn this.update entityId)}}
+      />
+    {{/let}}
+  {{/each}}
+</div>
+
+{{! Has-attribute Filter Group}}
+<div class="block">
+  <p id="has-attribute-filter-group" class="label">
+    Heeft attribuut
+  </p>
+  {{#each this.entities as |entityId|}}
+    {{#let
+      (eq entityId "root")
+      (if
+        (eq entityId "root")
+        this.AGENDA_POINT_ATTRIBUTES
+        (get this.AGENDA_POINT_ATTRIBUTES.attributes entityId)
+      ) as |isRoot entity|
+    }}
+      {{#unless isRoot}}
+        <p id="has-attribute-zitting-filter-group" class="label is-small mt-2">
+          {{capitalize entity.config.filter.has.name}}
+        </p>
+      {{/unless}}
+      {{#each-in entity.attributes as |attributeId attribute|}}
+        {{#let (if attribute.attributes attribute.config attribute) as |config|
+        }}
+          {{#if (not (eq config.filter.has.display false))}}
+            <Zoek::Filter::HasAttributeCheckbox
+              @label={{capitalize config.filter.has.name}}
+              checked={{set-contains @currentState attributeId}}
+              {{on "input" (fn this.updateNested entityId attributeId)}}
+            />
+          {{/if}}
+        {{/let}}
+      {{/each-in}}
+    {{/let}}
+  {{/each}}
+</div>

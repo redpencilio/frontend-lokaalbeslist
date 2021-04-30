@@ -8,7 +8,7 @@
       <i data-feather="{{this.icon}}" height="1rem"></i>
     </span>
     <span>
-      {{#if this.displayEntityName}}
+      {{#if this.shouldDisplayEntityName}}
         {{#if (and this.isNested (not this.isNestedPresent))}}
           Geen {{@entityName}}
         {{else}}
@@ -36,7 +36,7 @@
         </h6>
         <ul>
           {{#each this.attributes as |attribute|}}
-            {{#unless attribute.missing.optional}}
+            {{#unless (or attribute.optional (not attribute.display))}}
               <li>
                 <span
                   class="icon-text {{
@@ -65,7 +65,7 @@
         </h6>
         <ul>
           {{#each this.attributes as |attribute|}}
-            {{#if attribute.missing.optional}}
+            {{#if (and attribute.optional attribute.display)}}
               <li>
                 <span
                   class="icon-text {{

@@ -11,7 +11,7 @@
         aria-labbeledBy="zoekterm-label"
         type="text"
         value={{@currentState.search}}
-        {{on "input" (fn this.updateRootDebounced "search")}}
+        {{on "input" this.updateSearch}}
       />
     </div>
   </div>
@@ -26,56 +26,8 @@
     />
   </div>
 
-  {{! Has-relation Filter Group }}
-  <div class="block">
-    <p id="has-relation-filter-group" class="label">
-      Heeft relatie
-    </p>
-    {{#each-in this.ENTITIES as |id entity|}}
-      {{#unless (eq entity.rootAttribute "root")}}
-        <Zoek::Filter::HasRelationCheckbox
-          @label={{capitalize entity.nameShort}}
-          checked={{set-contains @currentState.has entity.rootAttribute}}
-          {{on "input" (fn this.updateHas entity.rootAttribute)}}
-        />
-      {{/unless}}
-    {{/each-in}}
-  </div>
-
-  {{! Has-attribute Filter Group}}
-  <div class="block">
-    <p id="has-attribute-filter-group" class="label">
-      Heeft attribuut
-    </p>
-    {{#each-in this.ENTITIES as |enitityId entity|}}
-      {{#let
-        (eq entity.rootAttribute "root")
-        (eq entity.arity "multiple") as |isRoot isMultipleArity|
-      }}
-        {{#unless (or isRoot isMultipleArity)}}
-          <p
-            id="has-attribute-zitting-filter-group"
-            class="label is-small mt-2"
-          >
-            {{capitalize entity.nameShort}}
-          </p>
-        {{/unless}}
-
-        {{#each-in this.AGENDA_POINT_ATTRIBUTES as |attributeId attribute|}}
-          {{#if
-            (and
-              (eq attribute.entity enitityId)
-              (not (eq attribute.filter.has.displayAsAttribute false))
-            )
-          }}
-            <Zoek::Filter::HasAttributeCheckbox
-              @label={{capitalize attribute.filter.has.name}}
-              checked={{set-contains @currentState.has attributeId}}
-              {{on "input" (fn this.updateHas attributeId)}}
-            />
-          {{/if}}
-        {{/each-in}}
-      {{/let}}
-    {{/each-in}}
-  </div>
+  <Zoek::Filter::HasAttributeGroup
+    @currentState={{@currentState.has}}
+    @update={{fn this.update "has"}}
+  />
 </div>

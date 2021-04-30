@@ -6,44 +6,38 @@
 
   {{! Tags }}
   <div class="is-flex is-flex-direction-row is-flex-wrap-wrap">
-    {{#if @result.administrativeUnit}}
+    {{#if @result.zitting.administrativeUnit}}
       <span class="tag icon-text is-light mr-2 mb-1">
         <span class="icon" {{render-feather-icons}}>
           <i data-feather="map-pin" height="1rem"></i>
         </span>
         <span>
-          {{@result.administrativeUnit}}
+          {{@result.zitting.administrativeUnit.label}}
         </span>
       </span>
     {{/if}}
-    {{#if @result.governingBodyClassification}}
+    {{#if @result.zitting.governingBodyClassification}}
       <span class="tag icon-text is-light mr-2 mb-1">
         {{!-- <span class="icon" {{render-feather-icons}}>
           <i data-feather="pen-tool" height="1rem"></i>
         </span> --}}
         <span>
-          {{@result.governingBodyClassification}}
+          {{@result.zitting.governingBody.classification}}
         </span>
       </span>
     {{/if}}
     {{! Empty attributes warning tags }}
-    <Zoek::Resultaat::AttributeTag
-      class="mr-2 mb-1"
-      @entity="agendaPoint"
-      @result={{@result}}
-    />
+    <Zoek::Resultaat::AttributeTag class="mr-2 mb-1" @result={{@result}} />
     <Zoek::Resultaat::AttributeTag
       class="mr-2 mb-1"
       @entity="zitting"
-      @nested="zittingURI"
       @entityName="zitting"
       @result={{@result}}
     />
     <Zoek::Resultaat::AttributeTag
       class="mr-2 mb-1"
-      @entity="handling"
+      @entity="agendaItemHandling"
       @entityName="behandeling"
-      @nested="agendaItemHandlingURI"
       @result={{@result}}
     />
   </div>
@@ -61,18 +55,19 @@
       <span class="icon" {{render-feather-icons}}>
         <i data-feather="calendar" height="1rem"></i>
       </span>
-      {{#if (not (or @result.zittingPlannedStart @result.zittingStartedAtTime))
+      {{#if
+        (not (or @result.zitting.plannedStart @result.zitting.startedAtTime))
       }}
         <p>
           Geen datum bekend.
         </p>
       {{else}}
         <span>
-          {{#if @result.zittingStartedAtTime}}
-            {{date-format @result.zittingStartedAtTime}}
-          {{else if @result.zittingPlannedStart}}
+          {{#if @result.zitting.startedAtTime}}
+            {{date-format @result.zitting.startedAtTime}}
+          {{else if @result.zitting.plannedStart}}
             <span>
-              {{date-format @result.zittingPlannedStart}}
+              {{date-format @result.zitting.plannedStart}}
             </span>
             (gepland)
           {{/if}}

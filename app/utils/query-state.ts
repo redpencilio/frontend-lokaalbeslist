@@ -81,7 +81,11 @@ export class QueryStateManager {
         ? new Set(params.administrativeUnit.split(','))
         : DEFAULT_STATE.administrativeUnit.selected,
     };
+
     this.isInitialPageLoad = false;
+
+    // This way @tracked always updates
+    this.state = { ...this.state };
   }
 
   toURLQueryParams(state: QueryState): ExpectedURLQueryParams {

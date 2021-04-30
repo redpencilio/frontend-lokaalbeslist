@@ -37,10 +37,6 @@ export default class ZoekController extends Controller {
     this.router.transitionTo({ queryParams });
   }
 
-  get filterState(): QueryState {
-    return this.qsm.state;
-  }
-
   // -------
   // Sorting
   // -------

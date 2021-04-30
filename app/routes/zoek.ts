@@ -65,7 +65,7 @@ export default class ZoekRoute extends Route<ZoekModel> {
       size,
       sort,
       query,
-      function (item) {
+      (item) => {
         item.attributes.id = item.id;
         return item.attributes;
       }
