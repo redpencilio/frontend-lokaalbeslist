@@ -111,7 +111,7 @@ export class QueryStateManager {
     });
 
     if (this.state.administrativeUnit.selected.size > 0) {
-      query[`:terms:administrativeUnitURI`] = Array.from(
+      query[`:terms:zitting.administrativeUnit.uuid`] = Array.from(
         this.state.administrativeUnit.selected
       ).join(',');
     }

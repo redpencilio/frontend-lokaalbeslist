@@ -111,10 +111,7 @@ export const AGENDA_POINT_ATTRIBUTES: {
     uuid: {
       description: 'identificatienummer van het agendapunt',
       missing: {
-        // Temporarily display as optional (as opposed to not at all)
-        // for debugging purposes w.r.t. uuid issues.
-        optional: true,
-        display: true,
+        display: false,
       },
       filter: { has: { display: false } },
     },

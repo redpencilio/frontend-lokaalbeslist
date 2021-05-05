@@ -51,7 +51,7 @@ export default class ZoekFilterAdministrativeUnitSelect extends Component<ZoekFi
   @action
   changeSelected(selected: Bestuurseenheid[]) {
     this.selected = selected;
-    this.args.onSelectionChange(selected && selected.map((d) => d.get('uri')));
+    this.args.onSelectionChange(selected && selected.map((d) => d.get('id')));
   }
 
   /**
@@ -64,7 +64,7 @@ export default class ZoekFilterAdministrativeUnitSelect extends Component<ZoekFi
       this.selected = (
         await this.store.query('bestuurseenheid', {
           include: 'classificatie',
-          filter: { ':uri:': this.args.selected.join(',') },
+          filter: { ':id:': this.args.selected.join(',') },
           size: { size: this.args.selected.length },
         })
       ).toArray();
