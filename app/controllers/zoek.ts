@@ -14,7 +14,7 @@ const SORT_OPTIONS = {
     text: 'Relevantie',
     ascending: true,
   },
-  zittingPlannedStart: {
+  'zitting.plannedStart': {
     text: 'Geplande datum',
     ascending: false,
   },
@@ -42,7 +42,7 @@ export default class ZoekController extends Controller {
   // -------
 
   @action
-  updateSort(id: 'relevance' | 'zittingPlannedStart') {
+  updateSort(id: 'relevance' | 'zitting.plannedStart') {
     const option = SORT_OPTIONS[id];
     const asc = option.ascending ? '' : '-';
 
