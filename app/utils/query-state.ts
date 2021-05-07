@@ -211,7 +211,7 @@ export type ExpectedURLQueryParams = Partial<
   }
 >;
 
-function defaultQueryState(): QueryState {
+export function defaultQueryState(): QueryState {
   const qs: QueryState = {} as any;
 
   let field: keyof typeof QUERY_PARAMETERS;
@@ -337,6 +337,6 @@ export class QueryStateManager {
  * The URL version of the default state, used for checking when default values
  * should be left out.
  */
-const DEFAULT_URL_STATE = QueryStateManager.prototype.toURLQueryParams(
+export const DEFAULT_URL_STATE = QueryStateManager.prototype.toURLQueryParams(
   defaultQueryState()
 );

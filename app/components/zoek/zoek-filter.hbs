@@ -1,53 +1,60 @@
-<div ...attributes id="zoekFilters">
-  {{! Zoekterm }}
-  <div class="field block">
-    <label id="zoekterm-label" class="label">
-      Zoekterm
-    </label>
-    <div id="zoekterm" class="control">
-      <input
-        class="input"
-        placeholder="Wilgenlaan, sport, kerkfabriek, ..."
-        aria-labbeledBy="zoekterm-label"
-        type="text"
-        value={{@currentState.search}}
-        {{on "input" this.updateSearch}}
+<div ...attributes id="zoek-filters">
+  <Zoek::Filter::ControlBar
+    id="zoek-filters-control-bar-bottom"
+    @onResetFilters={{@resetFilters}}
+  />
+
+  <div id="zoek-filters-fields">
+    {{! Zoekterm }}
+    <div class="field block">
+      <label id="zoekterm-label" class="label">
+        Zoekterm
+      </label>
+      <div id="zoekterm" class="control">
+        <input
+          class="input"
+          placeholder="Wilgenlaan, sport, kerkfabriek, ..."
+          aria-labbeledBy="zoekterm-label"
+          type="text"
+          value={{@currentState.search}}
+          {{on "input" this.updateSearch}}
+        />
+      </div>
+    </div>
+
+    <Zoek::Filter::IsHandledToggles
+      class="block"
+      @currentState={{@currentState.isHandled}}
+      @update={{fn this.update "isHandled"}}
+    />
+
+    <div class="block">
+      <label class="label">
+        Werkingsgebied
+      </label>
+      <Zoek::Filter::GovernanceAreaSelect
+        @selected={{this.selectedGovernanceAreas}}
+        @onSelectionChange={{this.updateGovernanceAreas}}
       />
     </div>
-  </div>
 
-  <Zoek::Filter::IsHandledToggles
-    class="block"
-    @currentState={{@currentState.isHandled}}
-    @update={{fn this.update "isHandled"}}
-  />
+    <div class="block">
+      <label class="label">
+        Bestuurseenheid
+      </label>
+      <Zoek::Filter::AdministrativeUnitSelect
+        @selected={{this.selectedAdministrativeUnits}}
+        @onSelectionChange={{this.updateAdministrativeUnits}}
+      />
+    </div>
 
-  <div class="block">
-    <label class="label">
-      Werkingsgebied
-    </label>
-    <Zoek::Filter::GovernanceAreaSelect
-      @selected={{this.selectedGovernanceAreas}}
-      @onSelectionChange={{this.updateGovernanceAreas}}
+    <h1 class="title">
+      Development stuff
+    </h1>
+
+    <Zoek::Filter::HasAttributeGroup
+      @currentState={{@currentState.has}}
+      @update={{fn this.update "has"}}
     />
   </div>
-
-  <div class="block">
-    <label class="label">
-      Bestuurseenheid
-    </label>
-    <Zoek::Filter::AdministrativeUnitSelect
-      @selected={{this.selectedAdministrativeUnits}}
-      @onSelectionChange={{this.updateAdministrativeUnits}}
-    />
-  </div>
-
-  <h1 class="title">
-    Development stuff
-  </h1>
-
-  <Zoek::Filter::HasAttributeGroup
-    @currentState={{@currentState.has}}
-    @update={{fn this.update "has"}}
-  />
 </div>

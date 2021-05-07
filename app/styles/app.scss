@@ -60,14 +60,36 @@ body {
     @extend .p-0;
 
     #column-left-filters {
-      overflow: auto;
+      overflow: hidden;
       background-color: $white-bis;
+      display: flex;
+      flex-direction: column;
 
       @extend .is-one-quarter-desktop;
       @extend .is-one-third-tablet;
       @extend .m-0;
-      @extend .px-4;
-      @extend .py-2;
+      @extend .p-0;
+
+      #zoek-filters {
+        display: flex;
+        flex-direction: column-reverse;
+        overflow: hidden;
+        flex-grow: 1;
+
+        #zoek-filters-control-bar-bottom {
+          border-top: 1px solid $grey-lighter;
+          @extend .px-4;
+          @extend .py-2;
+        }
+
+        #zoek-filters-fields {
+          overflow: auto;
+          flex-grow: 1;
+
+          @extend .pt-2;
+          @extend .px-4;
+        }
+      }
     }
 
     #column-right-results {

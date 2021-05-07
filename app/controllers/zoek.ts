@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 import {
   QueryState,
   QueryStateManager,
+  DEFAULT_URL_STATE,
 } from 'frontend-poc-participatie/utils/query-state';
 
 const SORT_OPTIONS_DEFAULT = 'relevance';
@@ -35,6 +36,11 @@ export default class ZoekController extends Controller {
   updateFilters(filterState: QueryState) {
     const queryParams = this.qsm.toURLQueryParams(filterState);
     this.router.transitionTo({ queryParams });
+  }
+
+  @action
+  resetFilters() {
+    this.router.transitionTo({ queryParams: DEFAULT_URL_STATE });
   }
 
   // -------

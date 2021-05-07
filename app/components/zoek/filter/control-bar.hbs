@@ -1,0 +1,25 @@
+<div ...attributes class="is-flex is-justify-content-space-between">
+  <button
+    class="button is-small  has-text-info"
+    {{on "click" this.onSaveFilters}}
+  >
+    <span class="icon" {{render-feather-icons}}>
+      <i data-feather="file-plus" height="1rem"></i>
+    </span>
+    <span>
+      Bewaar filters
+    </span>
+  </button>
+
+  <button
+    class="button is-small is-light is-danger  has-text-danger"
+    {{on "click" this.onResetFilters}}
+  >
+    <span class="icon" {{render-feather-icons}}>
+      <i data-feather="refresh-ccw" height="1rem"></i>
+    </span>
+    <span>
+      Reset
+    </span>
+  </button>
+</div>
