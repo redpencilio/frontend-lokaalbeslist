@@ -24,6 +24,16 @@
 
   <div class="block">
     <label class="label">
+      Werkingsgebied
+    </label>
+    <Zoek::Filter::GovernanceAreaSelect
+      @selected={{this.selectedGovernanceAreas}}
+      @onSelectionChange={{this.updateGovernanceAreas}}
+    />
+  </div>
+
+  <div class="block">
+    <label class="label">
       Bestuurseenheid
     </label>
     <Zoek::Filter::AdministrativeUnitSelect

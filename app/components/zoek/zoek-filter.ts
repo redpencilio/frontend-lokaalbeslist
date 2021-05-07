@@ -21,6 +21,10 @@ export default class ZoekZoekFilterComponent extends Component<Args> {
     return Array.from(this.args.currentState.administrativeUnit.selected);
   }
 
+  get selectedGovernanceAreas() {
+    return Array.from(this.args.currentState.governanceArea.selected);
+  }
+
   @action
   update(property: string, value: any, config?: { debounced: boolean }) {
     // @ts-ignore
@@ -37,6 +41,12 @@ export default class ZoekZoekFilterComponent extends Component<Args> {
   @action
   updateAdministrativeUnits(administrativeUnits: string[]) {
     this.state.administrativeUnit.selected = new Set(administrativeUnits);
+    this.propagate();
+  }
+
+  @action
+  updateGovernanceAreas(governanceAreas: string[]) {
+    this.state.governanceArea.selected = new Set(governanceAreas);
     this.propagate();
   }
 

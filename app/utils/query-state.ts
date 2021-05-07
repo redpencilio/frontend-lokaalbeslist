@@ -12,6 +12,7 @@ export const URL_PARAM_FIELDS: (keyof ExpectedURLQueryParams)[] = [
   'search',
   'isHandled',
   'administrativeUnit',
+  'governanceArea',
   'has',
 ];
 interface ExpectedURLQueryParams {
@@ -22,6 +23,7 @@ interface ExpectedURLQueryParams {
   search?: string | undefined;
   isHandled?: 'no' | 'yes' | undefined;
   administrativeUnit?: string | undefined;
+  governanceArea?: string | undefined;
   has?: string | undefined;
 }
 
@@ -38,6 +40,8 @@ export class QueryState {
   isHandled: 'no' | 'yes' | undefined = DEFAULT_STATE.isHandled;
   administrativeUnit: { selected: Set<string> } =
     DEFAULT_STATE.administrativeUnit;
+  governanceArea: { selected: Set<string> } = DEFAULT_STATE.governanceArea;
+
   has: Set<string> = DEFAULT_STATE.has;
 }
 
@@ -51,6 +55,7 @@ const DEFAULT_STATE = {
   search: undefined,
   isHandled: undefined,
   administrativeUnit: { selected: new Set<string>() },
+  governanceArea: { selected: new Set<string>() },
   has: new Set<string>(),
 };
 
@@ -83,6 +88,11 @@ export class QueryStateManager {
         ? new Set(params.administrativeUnit.split(','))
         : DEFAULT_STATE.administrativeUnit.selected,
     };
+    this.state.governanceArea = {
+      selected: params.governanceArea
+        ? new Set(params.governanceArea.split(','))
+        : DEFAULT_STATE.governanceArea.selected,
+    };
     this.state.has = params.has
       ? new Set(params.has.split(','))
       : DEFAULT_STATE.has;
@@ -102,6 +112,7 @@ export class QueryStateManager {
       administrativeUnit: Array.from(state.administrativeUnit.selected).join(
         ','
       ),
+      governanceArea: Array.from(state.governanceArea.selected).join(','),
       has: Array.from(state.has).join(','),
     };
   }
@@ -118,6 +129,12 @@ export class QueryStateManager {
     if (this.state.administrativeUnit.selected.size > 0) {
       query[`:terms:zitting.administrativeUnit.uuid`] = Array.from(
         this.state.administrativeUnit.selected
+      ).join(',');
+    }
+
+    if (this.state.governanceArea.selected.size > 0) {
+      query[`zitting.governanceArea.label`] = Array.from(
+        this.state.governanceArea.selected
       ).join(',');
     }
 
