@@ -13,6 +13,24 @@ $footer-padding: 3rem 1.5rem 3rem;
 // Override ember-power-select by definig variables above here ^
 @import 'ember-power-select';
 
+/// ------------
+/// Ember-Toggle
+/// ------------
+
+// Set background color for checked box to our primary color
+.x-toggle:checked + label > .x-toggle-ios.x-toggle-btn {
+  background: $primary;
+}
+
+// Some funky sizing problems happen, just give it enough space
+.x-toggle-container.small {
+  width: 3.5rem;
+}
+
+.x-toggle-ios.x-toggle-btn {
+  background: $grey-lighter;
+}
+
 //-------------------
 // Custom
 // ------------------

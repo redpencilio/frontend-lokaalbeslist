@@ -16,6 +16,12 @@
     </div>
   </div>
 
+  <Zoek::Filter::IsHandledToggles
+    class="block"
+    @currentState={{@currentState.isHandled}}
+    @update={{fn this.update "isHandled"}}
+  />
+
   <div class="block">
     <label class="label">
       Bestuurseenheid
@@ -25,6 +31,10 @@
       @onSelectionChange={{this.updateAdministrativeUnits}}
     />
   </div>
+
+  <h1 class="title">
+    Development stuff
+  </h1>
 
   <Zoek::Filter::HasAttributeGroup
     @currentState={{@currentState.has}}

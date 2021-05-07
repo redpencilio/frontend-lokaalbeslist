@@ -22,10 +22,10 @@ export default class ZoekZoekFilterComponent extends Component<Args> {
   }
 
   @action
-  update(property: string, value: any) {
+  update(property: string, value: any, config?: { debounced: boolean }) {
     // @ts-ignore
     this.state[property] = value;
-    this.propagate();
+    this.propagate(config);
   }
 
   @action

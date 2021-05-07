@@ -16,6 +16,11 @@ module.exports = function (environment) {
         Date: false,
       },
     },
+    'ember-toggle': {
+      includedThemes: ['ios'],
+      defaultTheme: 'ios', // defaults to 'default'
+      defaultSize: 'small', // defaults to 'medium'
+    },
 
     APP: {
       // Here you can pass flags/options to your application instance

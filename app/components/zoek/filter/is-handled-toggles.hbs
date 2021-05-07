@@ -1,0 +1,22 @@
+<div ...attributes class="field">
+  <label class="checkbox is-flex mb-1 is-align-items-center">
+    <XToggle
+      @theme="ios"
+      @size="small"
+      @value={{this.isHandled}}
+      @showLabels={{false}}
+      @onToggle={{this.toggleHandled}} as |toggle|
+    />
+    Enkel behandelde punten
+  </label>
+
+  <label class="checkbox is-flex is-align-items-center">
+    <XToggle
+      @theme="ios"
+      @size="small"
+      @value={{this.isNotHandled}}
+      @onToggle={{this.toggleNotHandled}}
+    />
+    Enkel onbehandeld punten
+  </label>
+</div>

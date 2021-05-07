@@ -9,9 +9,10 @@ export const URL_PARAM_FIELDS: (keyof ExpectedURLQueryParams)[] = [
   'page',
   'size',
   'sort',
-  'has',
   'search',
+  'isHandled',
   'administrativeUnit',
+  'has',
 ];
 interface ExpectedURLQueryParams {
   sort?: string | undefined;
@@ -19,8 +20,9 @@ interface ExpectedURLQueryParams {
   size?: number | undefined;
 
   search?: string | undefined;
-  has?: string | undefined;
+  isHandled?: 'no' | 'yes' | undefined;
   administrativeUnit?: string | undefined;
+  has?: string | undefined;
 }
 
 /**
@@ -33,9 +35,10 @@ export class QueryState {
 
   // Filters
   search: string | undefined = DEFAULT_STATE.search;
-  has: Set<string> = DEFAULT_STATE.has;
+  isHandled: 'no' | 'yes' | undefined = DEFAULT_STATE.isHandled;
   administrativeUnit: { selected: Set<string> } =
     DEFAULT_STATE.administrativeUnit;
+  has: Set<string> = DEFAULT_STATE.has;
 }
 
 /**
@@ -46,8 +49,9 @@ const DEFAULT_STATE = {
   page: 0,
   size: 20,
   search: undefined,
-  has: new Set<string>(),
+  isHandled: undefined,
   administrativeUnit: { selected: new Set<string>() },
+  has: new Set<string>(),
 };
 
 /**
@@ -73,14 +77,15 @@ export class QueryStateManager {
       : DEFAULT_STATE.sort;
 
     this.state.search = params.search;
-    this.state.has = params.has
-      ? new Set(params.has.split(','))
-      : DEFAULT_STATE.has;
+    this.state.isHandled = params.isHandled || DEFAULT_STATE.isHandled;
     this.state.administrativeUnit = {
       selected: params.administrativeUnit
         ? new Set(params.administrativeUnit.split(','))
         : DEFAULT_STATE.administrativeUnit.selected,
     };
+    this.state.has = params.has
+      ? new Set(params.has.split(','))
+      : DEFAULT_STATE.has;
 
     this.isInitialPageLoad = false;
 
@@ -94,10 +99,10 @@ export class QueryStateManager {
       sort: state.sort
         ? `${state.sort.isDesc ? '-' : ''}${state.sort.field}`
         : undefined,
-      has: Array.from(state.has).join(','),
       administrativeUnit: Array.from(state.administrativeUnit.selected).join(
         ','
       ),
+      has: Array.from(state.has).join(','),
     };
   }
 
@@ -116,6 +121,22 @@ export class QueryStateManager {
       ).join(',');
     }
 
+    if (this.state.isHandled) {
+      if (this.state.isHandled === 'yes') {
+        // We expect both a zitting and a handling here, GTFO dirty data.
+        query[':has:zitting'] = 't';
+        query[':has:agendaItemHandling'] = 't';
+      } else {
+        // It could be that there is no associated agendaItemHandlingthe but the
+        // agenda item is handled in practice (e.g. in Zitting notulen).
+        // We can't filter out those out, because we can't filter out those with
+        // associated Zittingen, because the Zitting can be planned for the future.
+        // We could filter out those with Zittingen that already happened, but
+        // maybe the agenda point was not actually talked about?
+        query[':has-no:agendaItemHandling'] = 't';
+      }
+    }
+
     const { page, size, sort } = this.state;
     return { page, size, sort, query };
   }
@@ -123,11 +144,13 @@ export class QueryStateManager {
   filterOutDefaultValues(params: ExpectedURLQueryParams) {
     for (let field of URL_PARAM_FIELDS) {
       if (Object.prototype.hasOwnProperty.call(params, field)) {
-        if (
-          params[field] === DEFAULT_URL_STATE[field]?.toString() ||
-          params[field] === ''
-        ) {
-          params[field] = undefined;
+        if (params[field] !== undefined) {
+          if (
+            params[field] === DEFAULT_URL_STATE[field]?.toString() ||
+            params[field] === ''
+          ) {
+            params[field] = undefined;
+          }
         }
       }
     }
