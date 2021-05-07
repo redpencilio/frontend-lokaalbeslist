@@ -198,11 +198,6 @@ export const AGENDA_POINT_ATTRIBUTES: {
           },
 
           attributes: {
-            uri: {
-              description: 'TODO',
-              missing: { count: false },
-              filter: { has: { name: 'TODO' } },
-            },
             label: {
               description: 'bestuursorgaan',
               missing: { count: true },
@@ -227,11 +222,6 @@ export const AGENDA_POINT_ATTRIBUTES: {
           },
 
           attributes: {
-            uri: {
-              description: 'TODO',
-              missing: { count: false },
-              filter: { has: { name: 'TODO' } },
-            },
             label: {
               description: 'bestuurseenheid',
               missing: { count: true },
@@ -246,6 +236,20 @@ export const AGENDA_POINT_ATTRIBUTES: {
               description: 'TODO',
               missing: { count: false },
               filter: { has: { name: 'TODO' } },
+            },
+          },
+        },
+
+        governanceArea: {
+          config: {
+            description: 'werkingsgebied',
+            filter: { has: { name: 'werkingsgebied' } },
+          },
+          attributes: {
+            label: {
+              description: 'werkingsgebied',
+              missing: { count: true },
+              filter: { has: { name: 'werkingsgebied' } },
             },
           },
         },

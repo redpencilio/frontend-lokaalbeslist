@@ -4,7 +4,7 @@ export interface SearchResult {
   // ------------------------
   uri: string;
   id: string;
-  uuid: null | string;
+  uuid: string;
   title: null | string | string[];
   description: null | null | string | string[];
   type: null | string | string[];
@@ -22,7 +22,7 @@ export interface SearchResult {
   // ------------------------
   zitting: {
     uri: string;
-    uuid: null | string;
+    uuid: string;
     plannedStart: null | string | string[];
     startedAtTime: null | string | string[];
     verslagURI: null | string | string[];
@@ -30,7 +30,7 @@ export interface SearchResult {
 
     governingBody: {
       uri: string;
-      uuid: null | string;
+      uuid: string;
       label: null | string | string[];
       classification: null | string | string[];
       classificationURI: null | string | string[];
@@ -38,10 +38,16 @@ export interface SearchResult {
 
     administrativeUnit: {
       uri: string;
-      uuid: null | string;
+      uuid: string;
       label: null | string | string[];
       classification: null | string | string[];
       classificationURI: null | string | string[];
+    };
+
+    governanceArea: {
+      uri: string;
+      uuid: string;
+      label: null | string | string[];
     };
   };
 
@@ -50,12 +56,12 @@ export interface SearchResult {
   // -------------------------------------------
   agendaItemHandling: {
     uri: string;
-    uuid: null | string;
+    uuid: string;
     isPublic: null | boolean | boolean[];
 
     generatedResolutions: {
       uri: string;
-      uuid: null | string;
+      uuid: string;
       titleShort: null | string | string[];
       description: null | string | string[];
       motivation: null | string | string[];
