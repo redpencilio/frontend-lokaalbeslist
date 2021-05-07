@@ -36,13 +36,15 @@
       {{#each-in entity.attributes as |attributeId attribute|}}
         {{#let
           (if attribute.attributes attribute.config attribute)
-          (concat entityId "." attributeId) as |config attributePath|
+          (if
+            isRoot attributeId (concat entityId "." attributeId)
+          ) as |config attributePath|
         }}
           {{#if (not (eq config.filter.has.display false))}}
             <Zoek::Filter::HasAttributeCheckbox
               @label={{capitalize config.filter.has.name}}
               checked={{set-contains @currentState attributePath}}
-              {{on "input" (fn this.updateNested entityId attributeId)}}
+              {{on "input" (fn this.update attributePath)}}
             />
           {{/if}}
         {{/let}}

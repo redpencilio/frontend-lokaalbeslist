@@ -33,11 +33,4 @@ export default class ZoekFilterHasAttributeGroup extends Component<Args> {
     checked ? newState.add(property) : newState.delete(property);
     this.args.update(newState);
   }
-
-  @action
-  updateNested(entity: string, property: string, event: Event) {
-    entity === 'root'
-      ? this.update(property, event)
-      : this.update(`${entity}.${property}`, event);
-  }
 }
