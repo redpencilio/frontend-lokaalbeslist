@@ -5,56 +5,83 @@
   />
 
   <div id="zoek-filters-fields">
-    {{! Zoekterm }}
-    <div class="field block">
-      <label id="zoekterm-label" class="label">
-        Zoekterm
-      </label>
-      <div id="zoekterm" class="control">
-        <input
-          class="input"
-          placeholder="Wilgenlaan, sport, kerkfabriek, ..."
-          aria-labbeledBy="zoekterm-label"
-          type="text"
-          value={{@currentState.search}}
-          {{on "input" this.updateSearch}}
+    <div id="zoek-filters-basic">
+      {{! Zoekterm }}
+      <div class="field block">
+        <label id="zoekterm-label" class="label">
+          Zoekterm
+        </label>
+        <div id="zoekterm" class="control">
+          <input
+            class="input"
+            placeholder="Wilgenlaan, sport, kerkfabriek, ..."
+            aria-labbeledBy="zoekterm-label"
+            type="text"
+            value={{@currentState.search}}
+            {{on "input" this.updateSearch}}
+          />
+        </div>
+      </div>
+
+      <Zoek::Filter::IsHandledToggles
+        class="block"
+        @currentState={{@currentState.isHandled}}
+        @update={{fn this.update "isHandled"}}
+      />
+
+      <div class="block">
+        <label class="label">
+          Werkingsgebied
+        </label>
+        <Zoek::Filter::GovernanceAreaSelect
+          @selected={{this.selectedGovernanceAreas}}
+          @onSelectionChange={{this.updateGovernanceAreas}}
         />
       </div>
     </div>
 
-    <Zoek::Filter::IsHandledToggles
-      class="block"
-      @currentState={{@currentState.isHandled}}
-      @update={{fn this.update "isHandled"}}
-    />
+    <div id="zoek-filters-advanced">
+      {{! Advanced filters }}
+      <CpPanel @open={{true}} as |p|>
+        <p.toggle>
+          {{log (if p.isOpen "chevron-down" "chevron-right")}}
+          <span class="icon-text" id="filters-collapse-advanced-toggle">
+            <span class="title is-5 mb-0">
+              Geavanceerd
+            </span>
 
-    <div class="block">
-      <label class="label">
-        Werkingsgebied
-      </label>
-      <Zoek::Filter::GovernanceAreaSelect
-        @selected={{this.selectedGovernanceAreas}}
-        @onSelectionChange={{this.updateGovernanceAreas}}
-      />
+            {{#if p.isOpen}}
+              <span class="icon" {{render-feather-icons}}>
+                <i data-feather="chevron-down" height="1.25rem"></i>
+              </span>
+            {{else}}
+              <span class="icon" {{render-feather-icons}}>
+                <i data-feather="chevron-right" height="1.25rem"></i>
+              </span>
+            {{/if}}
+          </span>
+        </p.toggle>
+
+        <p.body>
+          <div class="mt-2">
+            <div class="block">
+              <label class="label">
+                Bestuurseenheid
+              </label>
+              <Zoek::Filter::AdministrativeUnitSelect
+                @selected={{this.selectedAdministrativeUnits}}
+                @onSelectionChange={{this.updateAdministrativeUnits}}
+              />
+            </div>
+
+            <Zoek::Filter::HasAttributeGroup
+              class="block"
+              @currentState={{@currentState.has}}
+              @update={{fn this.update "has"}}
+            />
+          </div>
+        </p.body>
+      </CpPanel>
     </div>
-
-    <div class="block">
-      <label class="label">
-        Bestuurseenheid
-      </label>
-      <Zoek::Filter::AdministrativeUnitSelect
-        @selected={{this.selectedAdministrativeUnits}}
-        @onSelectionChange={{this.updateAdministrativeUnits}}
-      />
-    </div>
-
-    <h1 class="title">
-      Development stuff
-    </h1>
-
-    <Zoek::Filter::HasAttributeGroup
-      @currentState={{@currentState.has}}
-      @update={{fn this.update "has"}}
-    />
   </div>
 </div>

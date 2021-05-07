@@ -86,8 +86,23 @@ body {
           overflow: auto;
           flex-grow: 1;
 
-          @extend .pt-2;
-          @extend .px-4;
+          #zoek-filters-basic {
+            @extend .pt-2;
+            @extend .px-4;
+          }
+
+          #zoek-filters-advanced {
+            @extend .mt-6;
+            @extend .pr-4;
+            @extend .pl-2;
+            @extend .ml-2;
+
+            border-left: 0.25rem solid $primary;
+
+            #filters-collapse-advanced-toggle {
+              @extend .mb-0;
+            }
+          }
         }
       }
     }
