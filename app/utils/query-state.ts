@@ -2,68 +2,233 @@ import { tracked } from '@glimmer/tracking';
 import { Sort } from './mu-search';
 
 /**
- * A list of URL parameter fields that we want to track,
- * these are the same properties of {@see QueryState}.
+ * The logic for a single query parameter,such as `search`, `isHandled` or `sort.
+ *
+ * Convert from and to URL representation, and generate mu-search filter parameters.
+ *
+ * Most of the methods should be overridden by instances
  */
-export const URL_PARAM_FIELDS: (keyof ExpectedURLQueryParams)[] = [
-  'page',
-  'size',
-  'sort',
-  'search',
-  'isHandled',
-  'administrativeUnit',
-  'governanceArea',
-  'has',
-];
-interface ExpectedURLQueryParams {
-  sort?: string | undefined;
-  page?: number | undefined;
-  size?: number | undefined;
+export class QueryParameter<ValueType, URLType> {
+  /**
+   * A default state so we can reset back each parameter when it is emptied by the user.
+   */
+  declare default: ValueType;
 
-  search?: string | undefined;
-  isHandled?: 'no' | 'yes' | undefined;
-  administrativeUnit?: string | undefined;
-  governanceArea?: string | undefined;
-  has?: string | undefined;
+  /**
+   * Convert from the URL representation of this parameter to the JS representation
+   * @param value the URL parameter value
+   */
+  fromURLParam(value: URLType): ValueType {
+    // This likely needs to be overridden by instances
+    return ((value || this.default) as unknown) as ValueType;
+  }
+
+  /**
+   * Convert from the JS representation of this parameter to the URL representation
+   * @param value the parameter value
+   */
+  toURLParam(value: ValueType): URLType {
+    // This likely needs to be overridden by instances
+    return (value as unknown) as URLType;
+  }
+
+  /**
+   * Generate mu-search query parameters with respect to the parameter value
+   *
+   * @param value the parameter value
+   */
+  toMuSearchParams(_value: ValueType): { [key: string]: string } {
+    // This likely needs to be overridden by instances
+    return {};
+  }
+
+  constructor(conf: {
+    default: ValueType;
+    fromURLParam?: (value: URLType) => ValueType;
+    toURLParam?: (value: ValueType) => URLType;
+    toMuSearchParams?: (value: ValueType) => { [key: string]: string };
+  }) {
+    Object.assign(this, conf);
+  }
 }
+
+type IsHandled = 'no' | 'yes' | undefined;
+
+const QUERY_PARAMETERS = {
+  page: new QueryParameter<number, number | undefined>({ default: 0 }),
+  size: new QueryParameter<number, number | undefined>({ default: 20 }),
+  sort: new QueryParameter<Sort, string | undefined>({
+    default: undefined,
+    fromURLParam(value: string | undefined) {
+      return value
+        ? {
+            field: value.substr(1),
+            isDesc: value[0] === '-',
+          }
+        : this.default;
+    },
+    toURLParam: (value) =>
+      value ? `${value.isDesc ? '-' : ''}${value.field}` : undefined,
+  }),
+
+  /**
+   * Main search filter
+   */
+  search: new QueryParameter<string | undefined, string | undefined>({
+    default: undefined,
+    fromURLParam: (value) => value,
+    toMuSearchParams: (value) => ({ ':sqs:': value ? value : '*' }),
+  }),
+
+  /**
+   * Wether the Agendapunt should be already be handled or not
+   */
+  isHandled: new QueryParameter<IsHandled, IsHandled>({
+    default: undefined,
+    fromURLParam(value: IsHandled) {
+      return value || this.default;
+    },
+    toMuSearchParams(value) {
+      let query: { [key: string]: string } = {};
+      if (value) {
+        if (value === 'yes') {
+          // We expect both a zitting and a handling here, GTFO dirty data.
+          query[':has:zitting'] = 't';
+          query[':has:agendaItemHandling'] = 't';
+        } else {
+          // It could be that there is no associated agendaItemHandlingthe but the
+          // agenda item is handled in practice (e.g. in Zitting notulen).
+          // We can't filter out those out, because we can't filter out those with
+          // associated Zittingen, because the Zitting can be planned for the future.
+          // We could filter out those with Zittingen that already happened, but
+          // maybe the agenda point was not actually talked about?
+          query[':has-no:agendaItemHandling'] = 't';
+        }
+      }
+      return query;
+    },
+  }),
+
+  /**
+   * What Bestuurseenheden the users cares about
+   */
+  administrativeUnit: new QueryParameter<
+    { selected: Set<string> },
+    string | undefined
+  >({
+    default: { selected: new Set<string>() },
+    fromURLParam(value) {
+      return {
+        selected: value ? new Set(value.split(',')) : this.default.selected,
+      };
+    },
+    toURLParam: (value) => Array.from(value.selected).join(','),
+    toMuSearchParams(value: { selected: Set<string> }) {
+      let query: { [key: string]: string } = {};
+      if (value.selected.size > 0) {
+        query[`:terms:zitting.administrativeUnit.uuid`] = Array.from(
+          value.selected
+        ).join(',');
+      }
+      return query;
+    },
+  }),
+
+  /**
+   * What Werkingsgebieden the users cares about
+   */
+  governanceArea: new QueryParameter<
+    { selected: Set<string> },
+    string | undefined
+  >({
+    default: { selected: new Set<string>() },
+    fromURLParam(value: string | undefined) {
+      return {
+        selected: value ? new Set(value.split(',')) : this.default.selected,
+      };
+    },
+    toURLParam(value: { selected: Set<string> }): string {
+      return Array.from(value.selected).join(',');
+    },
+    toMuSearchParams(value) {
+      let query: { [key: string]: string } = {};
+      if (value.selected.size > 0) {
+        query[`zitting.governanceArea.label`] = Array.from(value.selected).join(
+          ','
+        );
+      }
+      return query;
+    },
+  }),
+
+  /**
+   * Which fields & relations should be present
+   */
+  has: new QueryParameter<Set<string>, string | undefined>({
+    default: new Set<string>(),
+    fromURLParam(value) {
+      return value ? new Set(value.split(',')) : this.default;
+    },
+    toURLParam: (value) => Array.from(value).join(','),
+    toMuSearchParams(value) {
+      let query: { [key: string]: string } = {};
+      value.forEach((attributeId) => {
+        query[`:has:${attributeId}`] = 't';
+      });
+      return query;
+    },
+  }),
+};
 
 /**
  * The state of the search query.
  */
-export class QueryState {
-  sort: Sort = DEFAULT_STATE.sort;
-  page: number = DEFAULT_STATE.page;
-  size: number = DEFAULT_STATE.size;
-
-  // Filters
-  search: string | undefined = DEFAULT_STATE.search;
-  isHandled: 'no' | 'yes' | undefined = DEFAULT_STATE.isHandled;
-  administrativeUnit: { selected: Set<string> } =
-    DEFAULT_STATE.administrativeUnit;
-  governanceArea: { selected: Set<string> } = DEFAULT_STATE.governanceArea;
-
-  has: Set<string> = DEFAULT_STATE.has;
-}
+export type QueryState = {
+  // Construct the type of the query state, by taking the ValueType of each
+  // key in the QueryParameters.
+  // We do this through taking the return type of the fromURLParam method
+  [key in keyof typeof QUERY_PARAMETERS]: ReturnType<
+    typeof QUERY_PARAMETERS[key]['fromURLParam']
+  >;
+};
 
 /**
- * A default state so we can reset back each parameter when it is emptied by the user.
+ * A list of URL parameter fields that we want to track,
+ * these are the same properties of {@see QueryState}.
  */
-const DEFAULT_STATE = {
-  sort: undefined,
-  page: 0,
-  size: 20,
-  search: undefined,
-  isHandled: undefined,
-  administrativeUnit: { selected: new Set<string>() },
-  governanceArea: { selected: new Set<string>() },
-  has: new Set<string>(),
-};
+export const URL_PARAM_FIELDS: (keyof typeof QUERY_PARAMETERS)[] = Object.keys(
+  QUERY_PARAMETERS
+) as any;
+
+export type ExpectedURLQueryParams = Partial<
+  {
+    // Construct the type of the query state, by taking the URLType of each
+    // key in the QueryParameters.
+    // We do this through taking the return type of the toURLParam method
+    [key in keyof typeof QUERY_PARAMETERS]: ReturnType<
+      typeof QUERY_PARAMETERS[key]['toURLParam']
+    >;
+  }
+>;
+
+function defaultQueryState(): QueryState {
+  const qs: QueryState = {} as any;
+
+  let field: keyof typeof QUERY_PARAMETERS;
+  for (field in QUERY_PARAMETERS) {
+    const parameter: QueryParameter<any, any> = QUERY_PARAMETERS[field];
+    // @ts-ignore TODO Fix clone
+    qs[field] = parameter.default;
+  }
+
+  return qs;
+}
 
 /**
  * Manage query state such as filters, pagination and sorting info.
  */
 export class QueryStateManager {
-  @tracked state = new QueryState();
+  @tracked state: QueryState = defaultQueryState();
 
   // Keep track of wether this is an initial page load
   // (e.g. on page refresh or a regular initial visit),
@@ -72,86 +237,42 @@ export class QueryStateManager {
   isInitialPageLoad = true;
 
   updateFromURLQueryParams(params: ExpectedURLQueryParams) {
-    this.state.page = params.page || DEFAULT_STATE.page;
-    this.state.size = params.size || DEFAULT_STATE.size;
-    this.state.sort = params.sort
-      ? {
-          field: params.sort.substr(1),
-          isDesc: params.sort[0] === '-',
-        }
-      : DEFAULT_STATE.sort;
-
-    this.state.search = params.search;
-    this.state.isHandled = params.isHandled || DEFAULT_STATE.isHandled;
-    this.state.administrativeUnit = {
-      selected: params.administrativeUnit
-        ? new Set(params.administrativeUnit.split(','))
-        : DEFAULT_STATE.administrativeUnit.selected,
-    };
-    this.state.governanceArea = {
-      selected: params.governanceArea
-        ? new Set(params.governanceArea.split(','))
-        : DEFAULT_STATE.governanceArea.selected,
-    };
-    this.state.has = params.has
-      ? new Set(params.has.split(','))
-      : DEFAULT_STATE.has;
-
     this.isInitialPageLoad = false;
+
+    let field: keyof typeof params;
+    for (field in params) {
+      const param: any = params[field];
+      // @ts-ignore TODO fix ignore
+      this.state[field] = QUERY_PARAMETERS[field].fromURLParam(param);
+    }
 
     // This way @tracked always updates
     this.state = { ...this.state };
   }
 
   toURLQueryParams(state: QueryState): ExpectedURLQueryParams {
-    return {
-      ...state,
-      sort: state.sort
-        ? `${state.sort.isDesc ? '-' : ''}${state.sort.field}`
-        : undefined,
-      administrativeUnit: Array.from(state.administrativeUnit.selected).join(
-        ','
-      ),
-      governanceArea: Array.from(state.governanceArea.selected).join(','),
-      has: Array.from(state.has).join(','),
-    };
+    const params: ExpectedURLQueryParams = {} as any;
+
+    let field: keyof typeof state;
+    for (field in state) {
+      const param: any = state[field];
+      // @ts-ignore TODO fix ignore
+      params[field] = QUERY_PARAMETERS[field].toURLParam(param);
+    }
+
+    return params;
   }
 
   toMuSearchParams(): { page: number; size: number; sort: Sort; query: any } {
     const query: { [key: string]: string } = {};
 
-    query[':sqs:'] = this.state.search ? this.state.search : '*';
+    let field: keyof QueryStateManager['state'];
+    for (field in this.state) {
+      const param: any = this.state[field];
+      // @ts-ignore TODO fix ignore
+      const partialQuery = QUERY_PARAMETERS[field].toMuSearchParams(param);
 
-    this.state.has.forEach((attributeId) => {
-      query[`:has:${attributeId}`] = 't';
-    });
-
-    if (this.state.administrativeUnit.selected.size > 0) {
-      query[`:terms:zitting.administrativeUnit.uuid`] = Array.from(
-        this.state.administrativeUnit.selected
-      ).join(',');
-    }
-
-    if (this.state.governanceArea.selected.size > 0) {
-      query[`zitting.governanceArea.label`] = Array.from(
-        this.state.governanceArea.selected
-      ).join(',');
-    }
-
-    if (this.state.isHandled) {
-      if (this.state.isHandled === 'yes') {
-        // We expect both a zitting and a handling here, GTFO dirty data.
-        query[':has:zitting'] = 't';
-        query[':has:agendaItemHandling'] = 't';
-      } else {
-        // It could be that there is no associated agendaItemHandlingthe but the
-        // agenda item is handled in practice (e.g. in Zitting notulen).
-        // We can't filter out those out, because we can't filter out those with
-        // associated Zittingen, because the Zitting can be planned for the future.
-        // We could filter out those with Zittingen that already happened, but
-        // maybe the agenda point was not actually talked about?
-        query[':has-no:agendaItemHandling'] = 't';
-      }
+      Object.assign(query, partialQuery);
     }
 
     const { page, size, sort } = this.state;
@@ -217,5 +338,5 @@ export class QueryStateManager {
  * should be left out.
  */
 const DEFAULT_URL_STATE = QueryStateManager.prototype.toURLQueryParams(
-  DEFAULT_STATE
+  defaultQueryState()
 );
