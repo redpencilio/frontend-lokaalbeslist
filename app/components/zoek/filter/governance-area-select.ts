@@ -48,7 +48,8 @@ export default class ZoekFilterGovernanceAreaSelect extends Component<Args> {
         sort: 'naam',
       })
       .then((areas) => areas.filter(filterOutCompositeAreas))
-      .then((areas) => areas.map((area) => area.naam));
+      .then((areas) => areas.map((area) => area.naam))
+      .then((areas) => areas.uniq());
 
     // @ts-ignore
     this.options = options;
@@ -64,7 +65,8 @@ export default class ZoekFilterGovernanceAreaSelect extends Component<Args> {
         filter: term,
       })
       .then((areas) => areas.filter(filterOutCompositeAreas))
-      .then((areas) => areas.map((area) => area.naam));
+      .then((areas) => areas.map((area) => area.naam))
+      .then((areas) => areas.uniq());
   }
 
   @action
