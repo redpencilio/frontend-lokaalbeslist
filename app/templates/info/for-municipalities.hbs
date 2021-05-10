@@ -1,0 +1,126 @@
+{{! Code Snippet }}
+{{#let
+  '<iframe
+  src="http://localhost:4200/embed/zoek/langemark-poelkapelle/"
+  title="XXXParticipatie zoek interface"
+  width="100%"
+  height="800px"
+  frameborder="0"
+/>' as |snippet|
+}}
+  <h3 class="title is-3">
+    Info voor gemeentes
+  </h3>
+  <p class="subtitle is-5">
+    Deze zoekinterface aanbieden op de website van jouw gemeente in 10 minuten.
+  </p>
+
+  <div class="columns">
+    <div class="column">
+      <div class="content">
+        <p>
+          Het is heel gemakkelijk om deze zoekinterface aan te bieden op de website van jouw gemeente,
+          <strong>
+            met de data van jouw gemeente!
+          </strong>
+        </p>
+        <ol>
+          <li>
+            Selecteer hier onder jouw gemeente.
+          </li>
+          <li>
+            Kopieer de code.
+          </li>
+          <li>
+            Plak die code in de code van je website.
+          </li>
+        </ol>
+        <p>
+          Je kan hieronder ook alvast gaan gluren hoe het resultaat er uitziet voor jouw gemeente.
+        Kan je zelf niet aan de code van de website?
+        Dan zal je het aan de IT dienst moeten vragen, het is hoogstens 10 minuutjes werk.
+        </p>
+      </div>
+
+      <p class="mb-1">
+        Kies jouw gemeente:
+      </p>
+      <PowerSelect
+        @loadingMessage="Aan het laden..."
+        @searchPlaceholder="Type om te zoeken..."
+        @searchEnabled={{true}}
+        @search={{perform this.search}}
+        @onChange={{this.changeSelectedGovernanceArea}}
+        @selected={{this.selectedGovernanceArea}}
+        @options={{this.options}} as |area|
+      >
+        {{area}}
+      </PowerSelect>
+    </div>
+
+    <div class="column is-half">
+      <figure class="image">
+        <img
+          width="50%"
+          src="/assets/screenshot-embedded.png"
+          alt="Voorbeeld van de zoekinterface ingebed in de website van jouw gemeente."
+        />
+      </figure>
+    </div>
+  </div>
+
+  <h5 class="title is-5">
+    Code
+  </h5>
+
+  <div style="position: relative;">
+    {{! Code snippet  }}
+
+    {{! prettier-ignore }}
+    <pre class="block" id="embed-code-block" {{on "animationend" this.onAnimationEnd}}><code class="html">{{{this.codeSnippetHighlighted}}}</code></pre>
+
+    {{! Copy button }}
+    <button
+      style="position: absolute; bottom: 1rem; right: 1rem;"
+      class="button is-small"
+      type="button"
+      {{on "click" this.copyCodeToClipboard}}
+    >
+      <span class="icon" {{render-feather-icons}}>
+        <i data-feather="clipboard" height="1rem"></i>
+      </span>
+      <span>
+        Kopieer
+      </span>
+    </button>
+  </div>
+
+  {{#if this.rendered}}
+    <div class="is-flex is-justify-content-end mb-1">
+      <button
+        class="button is-danger is-small"
+        type="button"
+        {{on "click" this.hideEmbedded}}
+      >
+        Verberg
+      </button>
+    </div>
+  {{/if}}
+
+  <div
+    id="info-code-snippet-iframe-renderer"
+    class={{concat "block" (if this.rendered " rendered")}}
+  >
+    {{#if this.rendered}}
+      {{{this.codeSnippet}}}
+    {{else}}
+      <button
+        class="button is-success is-rounded is-medium"
+        type="button"
+        {{on "click" this.showEmbedded}}
+      >
+        Toon resulaat!
+      </button>
+    {{/if}}
+  </div>
+{{/let}}

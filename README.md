@@ -54,7 +54,7 @@ All content (things rendered to users) is in Dutch only.
 This application explicitly tries to support embedded rendering in an iframe (e.g. on the municipality website) with some filters preset (actually only the governance area currently).
 Therefore most of the search interface is in a component, as opposed to a route template, and the route templates for both embedded and not embedded search are minimal imports of that component. Route & Controller logic are identical, so it is written only once and extended for the `search` and `search-embedded` routes.
 
-To test the application as rendered in an iframe (as opposed to visiting the embed URL directly), use <./tests/embed-test.html>.
+To test the application as rendered in an iframe (as opposed to visiting the embed URL directly), use <./tests/embed-test.html>, or visit the info for municipalities.
 
 ### Name & Logo
 

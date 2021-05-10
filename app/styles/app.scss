@@ -1,10 +1,25 @@
+// Use copied stylesheet cause sass and imports don't go well together often
+@import './highlightjs-default';
+
 //------
 // Bulma
 // -----
-$footer-padding: 3rem 1.5rem 3rem;
+$footer-padding: 1rem 1.5rem 1rem;
 
 // Override Bulma theme by defining variables above here ^
 @import 'bulma';
+
+// Copy styling from `.tabs li.is-active a` as this is easier to add active
+// classes to in Ember.
+.tabs li a.is-active {
+  color: $tabs-link-active-color;
+  border-bottom-color: $tabs-link-active-border-bottom-color;
+}
+
+// No.
+.tabs {
+  @extend .mb-0;
+}
 
 //-------------------
 // Ember Power Select
@@ -133,4 +148,59 @@ body {
       }
     }
   }
+}
+
+#main-info {
+  overflow: hidden;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+
+  figure {
+    border: 1px solid $primary;
+  }
+
+  nav {
+    flex-shrink: 0;
+  }
+
+  #main-info-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+
+    main {
+      flex-grow: 1;
+    }
+  }
+}
+
+#info-code-snippet-iframe-renderer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $primary;
+
+  &:not(.rendered) {
+    background-color: $white-bis;
+    height: 300px;
+  }
+}
+
+@keyframes contentChanged {
+  0% {
+    opacity: 25%;
+  }
+  50% {
+    opacity: 75%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+.changed-content {
+  animation: contentChanged 1s linear;
 }

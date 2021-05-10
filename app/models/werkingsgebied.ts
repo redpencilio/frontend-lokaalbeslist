@@ -12,6 +12,10 @@ export default class Werkingsgebied extends Model {
   declare bestuureenheden: DS.PromiseManyArray<Bestuursorgaan>;
 }
 
+export function filterOutCompositeAreas(area: Werkingsgebied): boolean {
+  return !area.naam.includes(' - ');
+}
+
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
     werkingsgebied: Werkingsgebied;

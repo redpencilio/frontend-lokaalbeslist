@@ -5,15 +5,12 @@ import { tracked } from '@glimmer/tracking';
 import { timeout } from 'ember-concurrency';
 import { task, restartableTask } from 'ember-concurrency-decorators';
 import Store from '@ember-data/store';
-import Werkingsgebied from 'frontend-poc-participatie/models/werkingsgebied';
+
+import { filterOutCompositeAreas } from 'frontend-poc-participatie/models/werkingsgebied';
 
 interface Args {
   selected: string[];
   onSelectionChange(ids: string[]): void;
-}
-
-function filterOutCompositeAreas(area: Werkingsgebied): boolean {
-  return !area.naam.includes(' - ');
 }
 
 /**

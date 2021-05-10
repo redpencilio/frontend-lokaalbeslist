@@ -1,11 +1,29 @@
 {{page-title "Info"}}
 <Navbar />
-<main id="main">
-  <section class="section content">
-    <p>
-      TODO
-      Komt binnenkort!
-    </p>
-  </section>
-</main>
-<Footer />
+<div id="main-info">
+  <nav class="tabs is-centered">
+    <ul>
+      <li>
+        <LinkTo @route="info.for-users" @activeClass="is-active">
+          Voor gebruikers
+        </LinkTo>
+      </li>
+      <li>
+        <LinkTo @route="info.for-municipalities" @activeClass="is-active">
+          Voor gemeentes
+        </LinkTo>
+      </li>
+    </ul>
+  </nav>
+
+  <div id="main-info-wrapper">
+    <main>
+      <section class="section">
+        <div class="container">
+          {{outlet}}
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </div>
+</div>
