@@ -29,15 +29,18 @@
         @update={{fn this.update "isHandled"}}
       />
 
-      <div class="block">
-        <label class="label">
-          Werkingsgebied
-        </label>
-        <Search::Filter::GovernanceAreaSelect
-          @selected={{this.selectedGovernanceAreas}}
-          @onSelectionChange={{this.updateGovernanceAreas}}
-        />
-      </div>
+      {{! Werkingsgebied }}
+      {{#unless @currentState.embedded.isEmbedded}}
+        <div class="block">
+          <label class="label">
+            Werkingsgebied
+          </label>
+          <Search::Filter::GovernanceAreaSelect
+            @selected={{this.selectedGovernanceAreas}}
+            @onSelectionChange={{this.updateGovernanceAreas}}
+          />
+        </div>
+      {{/unless}}
     </div>
 
     <div id="search-filters-advanced">
