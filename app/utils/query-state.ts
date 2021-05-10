@@ -92,8 +92,8 @@ const QUERY_PARAMETERS = {
       let query: { [key: string]: string } = {};
       if (value) {
         if (value === 'yes') {
-          // We expect both a zitting and a handling here, GTFO dirty data.
-          query[':has:zitting'] = 't';
+          // We expect both a session and a handling here, GTFO dirty data.
+          query[':has:session'] = 't';
           query[':has:agendaItemHandling'] = 't';
         } else {
           // It could be that there is no associated agendaItemHandlingthe but the
@@ -126,7 +126,7 @@ const QUERY_PARAMETERS = {
     toMuSearchParams(value: { selected: Set<string> }) {
       let query: { [key: string]: string } = {};
       if (value.selected.size > 0) {
-        query[`:terms:zitting.administrativeUnit.uuid`] = Array.from(
+        query[`:terms:session.administrativeUnit.uuid`] = Array.from(
           value.selected
         ).join(',');
       }
@@ -153,7 +153,7 @@ const QUERY_PARAMETERS = {
     toMuSearchParams(value) {
       let query: { [key: string]: string } = {};
       if (value.selected.size > 0) {
-        query[`zitting.governanceArea.label`] = Array.from(value.selected).join(
+        query[`session.governanceArea.label`] = Array.from(value.selected).join(
           ','
         );
       }

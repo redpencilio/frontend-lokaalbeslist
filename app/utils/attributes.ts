@@ -23,11 +23,11 @@ export const ENTITIES: { [id: string]: Entity } = {
     arity: 'single',
     rootAttribute: 'root',
   },
-  zitting: {
+  session: {
     name: 'Zitting',
     nameShort: 'zitting',
     arity: 'single',
-    rootAttribute: 'zittingURI',
+    rootAttribute: 'sessionURI',
   },
   handling: {
     name: 'Behandeling van Agendapunt',
@@ -155,7 +155,7 @@ export const AGENDA_POINT_ATTRIBUTES: {
     // ------------------------
     // Attributen via `Zitting`
     // ------------------------
-    zitting: {
+    session: {
       config: {
         description: 'zitting',
         missing: { optional: true },

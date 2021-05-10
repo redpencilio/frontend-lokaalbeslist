@@ -20,7 +20,7 @@ export interface SearchResult {
   // ------------------------
   // Attributen via `Zitting`
   // ------------------------
-  zitting: {
+  session: {
     uri: string;
     uuid: string;
     plannedStart: null | string | string[];

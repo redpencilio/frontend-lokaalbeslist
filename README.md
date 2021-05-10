@@ -43,7 +43,9 @@ We use [Feather](https://github.com/feathericons/feather) icons with a [ember-mo
 ### Language
 
 We try to keep everything all code & everything internally in English. There are some exceptions, such as the [models]('./app/models/'), as it is a lot easier to work with the Ember Data & Model APIs and logic this way, combined with mu-resource JSON API that is in Dutch.
-There are also some things that are exceptions that should be removed, such as the use of 'zitting' in the mu-search results and here internally. Clean up as you see fit.
+While this is sometimes confusing, as all mu-search properties are in English, it does provide an easy way to tell with which data source you are working with in a component. It is not great for component re-use.
+
+If anything else is off, clean up as you see fit.
 
 All content (things rendered to users) is in Dutch only.
 
