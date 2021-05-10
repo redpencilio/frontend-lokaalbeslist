@@ -12,7 +12,10 @@
           <i data-feather="map-pin" height="1rem"></i>
         </span>
         <span>
-          {{@result.session.administrativeUnit.label}}
+          {{@result.session.administrativeUnit.label}}{{if
+            @result.session.administrativeUnit.classification
+            (concat " (" @result.session.administrativeUnit.classification ")")
+          }}
         </span>
       </span>
     {{/if}}
