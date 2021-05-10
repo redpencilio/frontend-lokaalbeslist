@@ -39,3 +39,17 @@ You can visit the live reloading site at `http://localhost:4200`.
 ### Icons
 
 We use [Feather](https://github.com/feathericons/feather) icons with a [ember-modifier](https://github.com/ember-modifier/ember-modifier) modifier as specified in [this issue](https://github.com/feathericons/feather/issues/506).
+
+### Language
+
+We try to keep everything all code & everything internally in English. There are some exceptions, such as the [models]('./app/models/'), as it is a lot easier to work with the Ember Data & Model APIs and logic this way, combined with mu-resource JSON API that is in Dutch.
+There are also some things that are exceptions that should be removed, such as the use of 'zitting' in the mu-search results and here internally. Clean up as you see fit.
+
+All content (things rendered to users) is in Dutch only.
+
+### Name & Logo
+
+The logo is Redpencil logo changed to the default Bulma primary color to be more politically neutral. **There is no logo in the Navbar yet**.
+
+The name is under discussion, the repo is called `frontend-poc-participation`, which should be replaced everywhere when the repo name is changed in GH as well.
+In content (e.g. rendered to users) the placeholder string `XXXParticipatie` is used, you can easily grep on it when a name is decided.
