@@ -49,6 +49,13 @@ If anything else is off, clean up as you see fit.
 
 All content (things rendered to users) is in Dutch only.
 
+### Embedded rendering
+
+This application explicitly tries to support embedded rendering in an iframe (e.g. on the municipality website) with some filters preset (actually only the governance area currently).
+Therefore most of the search interface is in a component, as opposed to a route template, and the route templates for both embedded and not embedded search are minimal imports of that component. Route & Controller logic are identical, so it is written only once and extended for the `search` and `search-embedded` routes.
+
+To test the application as rendered in an iframe (as opposed to visiting the embed URL directly), use <./tests/embed-test.html>.
+
 ### Name & Logo
 
 The logo is Redpencil logo changed to the default Bulma primary color to be more politically neutral. **There is no logo in the Navbar yet**.

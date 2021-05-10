@@ -53,6 +53,7 @@ export class QueryParameter<ValueType, URLType> {
 }
 
 type IsHandled = 'no' | 'yes' | undefined;
+type Embedded = { isEmbedded: boolean; governanceArea?: string };
 
 const QUERY_PARAMETERS = {
   page: new QueryParameter<number, number | undefined>({ default: 0 }),
@@ -178,6 +179,29 @@ const QUERY_PARAMETERS = {
       return query;
     },
   }),
+
+  /**
+   * What Werkingsgebieden the user cares about, as defined by the route
+   * for embedding a gemeente-specifieke view of this application.
+   */
+  embedded: new QueryParameter<Embedded, string | undefined>({
+    default: { isEmbedded: false },
+    fromURLParam(value) {
+      return value
+        ? { isEmbedded: true, governanceArea: value }
+        : { isEmbedded: false };
+    },
+    toURLParam(_value) {
+      return undefined;
+    },
+    toMuSearchParams(value) {
+      let query: { [key: string]: string } = {};
+      if (value.isEmbedded) {
+        query[`session.governanceArea.label`] = value.governanceArea!;
+      }
+      return query;
+    },
+  }),
 };
 
 /**
@@ -196,9 +220,11 @@ export type QueryState = {
  * A list of URL parameter fields that we want to track,
  * these are the same properties of {@see QueryState}.
  */
-export const URL_PARAM_FIELDS: (keyof typeof QUERY_PARAMETERS)[] = Object.keys(
-  QUERY_PARAMETERS
-) as any;
+export const URL_PARAM_FIELDS: (keyof typeof QUERY_PARAMETERS)[] =
+  // All query parameters
+  Object.keys(QUERY_PARAMETERS)
+    // Filter out dynamic url path segments
+    .filter((key) => key !== 'embedded') as any;
 
 export type ExpectedURLQueryParams = Partial<
   {
@@ -255,6 +281,9 @@ export class QueryStateManager {
 
     let field: keyof typeof state;
     for (field in state) {
+      if (field === 'embedded') {
+        continue;
+      }
       const param: any = state[field];
       // @ts-ignore TODO fix ignore
       params[field] = QUERY_PARAMETERS[field].toURLParam(param);

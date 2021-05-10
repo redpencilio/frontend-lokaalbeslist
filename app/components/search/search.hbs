@@ -1,0 +1,35 @@
+<main id="main-search">
+  <div id="main-search-columns" class="columns">
+    {{! Left column - Filter}}
+    <div id="column-left-filters" class="column">
+      <Search::SearchFilter
+        id="filters"
+        @updateFilters={{this.updateFilters}}
+        @resetFilters={{this.resetFilters}}
+        @currentState={{this.qsm.state}}
+      />
+    </div>
+
+    {{! Right column - Control + Results}}
+    <div id="column-right-results" class="column">
+      {{! Top control bar }}
+      <Search::ResultControlBar
+        id="search-control-bar-top"
+        @pagination={{@model.meta.pagination}}
+        @count={{@model.meta.count}}
+        @sortOptions={{this.SORT_OPTIONS}}
+        @currentSortOption={{this.currentSortOption}}
+        @updateSort={{this.updateSort}}
+      />
+
+      <div id="results">
+        {{! Results }}
+        {{#each @model.content as |result|}}
+          <div class="block">
+            <Search::SearchResult @result={{result}} />
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</main>
