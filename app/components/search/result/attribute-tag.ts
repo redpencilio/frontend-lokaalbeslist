@@ -33,7 +33,7 @@ interface Attribute {
  *
  * @see {@link AGENDA_POINT_ATTRIBUTES} and {@link SearchResult} for the data this component acts on.
  */
-export default class ZoekResultaatAttributeTagComponent extends Component<Args> {
+export default class SearchResultAttributeTagComponent extends Component<Args> {
   get ENTITIES() {
     return ENTITIES;
   }

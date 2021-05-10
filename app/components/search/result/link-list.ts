@@ -5,7 +5,7 @@ interface Args {
   result: SearchResult;
 }
 
-export default class ZoekResultaatLinkListComponent extends Component<Args> {
+export default class SearchResultLinkListComponent extends Component<Args> {
   get resolutions() {
     let resolutions = this.args.result.agendaItemHandling.generatedResolutions;
     if (!resolutions) {

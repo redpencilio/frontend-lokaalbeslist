@@ -9,4 +9,4 @@ interface Arguments {
 /**
  * A single `AgendaPoint` search result
  */
-export default class ZoekZoekResultaatComponent extends Component<Arguments> {}
+export default class SearchResultComponent extends Component<Arguments> {}

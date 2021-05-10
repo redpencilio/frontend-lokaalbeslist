@@ -70,28 +70,28 @@ body {
       @extend .m-0;
       @extend .p-0;
 
-      #zoek-filters {
+      #search-filters {
         display: flex;
         flex-direction: column-reverse;
         overflow: hidden;
         flex-grow: 1;
 
-        #zoek-filters-control-bar-bottom {
+        #search-filters-control-bar-bottom {
           border-top: 1px solid $grey-lighter;
           @extend .px-4;
           @extend .py-2;
         }
 
-        #zoek-filters-fields {
+        #search-filters-fields {
           overflow: auto;
           flex-grow: 1;
 
-          #zoek-filters-basic {
+          #search-filters-basic {
             @extend .pt-2;
             @extend .px-4;
           }
 
-          #zoek-filters-advanced {
+          #search-filters-advanced {
             @extend .mt-6;
             @extend .pr-4;
             @extend .pl-2;
@@ -115,7 +115,7 @@ body {
       @extend .m-0;
       @extend .p-0;
 
-      #zoek-control-bar-top {
+      #search-control-bar-top {
         border-bottom: 2px solid $light;
 
         @extend .px-4;

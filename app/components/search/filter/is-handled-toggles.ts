@@ -10,7 +10,7 @@ interface Args {
   ): void;
 }
 
-export default class ZoekFilterIsHandledToggles extends Component<Args> {
+export default class SearchFilterIsHandledToggles extends Component<Args> {
   @tracked
   state = this.args.currentState;
 

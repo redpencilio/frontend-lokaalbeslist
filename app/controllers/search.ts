@@ -21,10 +21,10 @@ const SORT_OPTIONS = {
   },
 };
 
-export default class ZoekController extends Controller {
+export default class SearchController extends Controller {
   @service declare router: RouterService;
 
-  // QueryStateManager, see setupController in Zoek Route.
+  // QueryStateManager, see setupController in Search Route.
   // Most of it's state properties are tracked and trigger re-renders here.
   declare qsm: QueryStateManager;
 

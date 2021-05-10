@@ -12,7 +12,7 @@ interface Args {
   updateFilters(filters: QueryState): void;
 }
 
-export default class ZoekZoekFilterComponent extends Component<Args> {
+export default class SearchFilterComponent extends Component<Args> {
   @service declare store: Store;
 
   state: QueryState = cloneDeep(this.args.currentState);

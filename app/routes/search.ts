@@ -8,16 +8,16 @@ import {
   URL_PARAM_FIELDS,
 } from 'frontend-poc-participatie/utils/query-state';
 
-import ZoekController from 'frontend-poc-participatie/controllers/zoek';
+import SearchController from 'frontend-poc-participatie/controllers/search';
 
 // import type RouterService from '@ember/routing/router-service';
 // type Transition = ReturnType<RouterService.transitionTo]>;
 type Transition = any;
 type RouteQueryParam = any;
 type RouteQueryParams = { [key: string]: RouteQueryParam };
-type ZoekModel = ArrayProxy<SearchResult>;
+type SearchModel = ArrayProxy<SearchResult>;
 
-export default class ZoekRoute extends Route<ZoekModel> {
+export default class SearchRoute extends Route<SearchModel> {
   qsm = new QueryStateManager();
 
   queryParams: RouteQueryParams = {};
@@ -35,8 +35,8 @@ export default class ZoekRoute extends Route<ZoekModel> {
 
   // Add same QueryStateManager to controller
   setupController(
-    controller: ZoekController,
-    model: ZoekModel,
+    controller: SearchController,
+    model: SearchModel,
     transition: Transition
   ) {
     super.setupController(controller, model, transition);

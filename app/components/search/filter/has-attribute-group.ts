@@ -11,7 +11,7 @@ interface Args {
   update(state: Set<string>): void;
 }
 
-export default class ZoekFilterHasAttributeGroup extends Component<Args> {
+export default class SearchFilterHasAttributeGroup extends Component<Args> {
   get AGENDA_POINT_ATTRIBUTES() {
     return AGENDA_POINT_ATTRIBUTES;
   }

@@ -2,7 +2,7 @@
   <div id="main-search-columns" class="columns">
     {{! Left column - Filter}}
     <div id="column-left-filters" class="column">
-      <Zoek::ZoekFilter
+      <Search::SearchFilter
         id="filters"
         @updateFilters={{this.updateFilters}}
         @resetFilters={{this.resetFilters}}
@@ -13,8 +13,8 @@
     {{! Right column - Control + Results}}
     <div id="column-right-results" class="column">
       {{! Top control bar }}
-      <Zoek::ResultControlBar
-        id="zoek-control-bar-top"
+      <Search::ResultControlBar
+        id="search-control-bar-top"
         @pagination={{this.model.meta.pagination}}
         @count={{this.model.meta.count}}
         @sortOptions={{this.SORT_OPTIONS}}
@@ -26,7 +26,7 @@
         {{! Results }}
         {{#each this.model.content as |result|}}
           <div class="block">
-            <Zoek::ZoekResultaat @result={{result}} />
+            <Search::SearchResult @result={{result}} />
           </div>
         {{/each}}
       </div>

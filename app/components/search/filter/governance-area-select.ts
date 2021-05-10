@@ -28,7 +28,7 @@ function filterOutCompositeAreas(area: Werkingsgebied): boolean {
  * - **Can let ElasticSearch also match composite areas ** (as opposed to matching on id's)
  *
  */
-export default class ZoekFilterGovernanceAreaSelect extends Component<Args> {
+export default class SearchFilterGovernanceAreaSelect extends Component<Args> {
   @service declare store: Store;
 
   @tracked selected: string[] | null = null;

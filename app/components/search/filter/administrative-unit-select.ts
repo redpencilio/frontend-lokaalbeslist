@@ -8,12 +8,12 @@ import Store from '@ember-data/store';
 import Bestuurseenheid from 'frontend-poc-participatie/models/bestuurseenheid';
 import ArrayProxy from '@ember/array/proxy';
 
-interface ZoekFilterAdministrativeUnitSelectArgs {
+interface SearchFilterAdministrativeUnitSelectArgs {
   selected: string[];
   onSelectionChange(ids: string[]): void;
 }
 
-export default class ZoekFilterAdministrativeUnitSelect extends Component<ZoekFilterAdministrativeUnitSelectArgs> {
+export default class SearchFilterAdministrativeUnitSelect extends Component<SearchFilterAdministrativeUnitSelectArgs> {
   @service declare store: Store;
 
   @tracked selected: Bestuurseenheid[] | null = null;

@@ -27,14 +27,14 @@
       </span>
     {{/if}}
     {{! Empty attributes warning tags }}
-    <Zoek::Resultaat::AttributeTag class="mr-2 mb-1" @result={{@result}} />
-    <Zoek::Resultaat::AttributeTag
+    <Search::Result::AttributeTag class="mr-2 mb-1" @result={{@result}} />
+    <Search::Result::AttributeTag
       class="mr-2 mb-1"
       @entity="zitting"
       @entityName="zitting"
       @result={{@result}}
     />
-    <Zoek::Resultaat::AttributeTag
+    <Search::Result::AttributeTag
       class="mr-2 mb-1"
       @entity="agendaItemHandling"
       @entityName="behandeling"
@@ -77,5 +77,5 @@
   </div>
 
   {{! Links }}
-  <Zoek::Resultaat::LinkList class="mt-2" @result={{@result}} />
+  <Search::Result::LinkList class="mt-2" @result={{@result}} />
 </div>

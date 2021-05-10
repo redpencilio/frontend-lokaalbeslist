@@ -5,7 +5,7 @@ interface Args {
   onResetFilters(): void;
 }
 
-export default class ZoekFilterControlBar extends Component<Args> {
+export default class SearchFilterControlBar extends Component<Args> {
   @action
   onResetFilters() {
     this.args.onResetFilters();

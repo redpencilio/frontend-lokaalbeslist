@@ -5,7 +5,7 @@
   </p>
   {{#each this.nonRootEntities as |entityId|}}
     {{#let (get this.AGENDA_POINT_ATTRIBUTES.attributes entityId) as |entity|}}
-      <Zoek::Filter::HasRelationCheckbox
+      <Search::Filter::HasRelationCheckbox
         @label={{capitalize entity.config.filter.has.name}}
         checked={{set-contains @currentState entityId}}
         {{on "input" (fn this.update entityId)}}
@@ -41,7 +41,7 @@
           ) as |config attributePath|
         }}
           {{#if (not (eq config.filter.has.display false))}}
-            <Zoek::Filter::HasAttributeCheckbox
+            <Search::Filter::HasAttributeCheckbox
               @label={{capitalize config.filter.has.name}}
               checked={{set-contains @currentState attributePath}}
               {{on "input" (fn this.update attributePath)}}

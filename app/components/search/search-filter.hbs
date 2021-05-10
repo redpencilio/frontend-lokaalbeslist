@@ -1,21 +1,21 @@
-<div ...attributes id="zoek-filters">
-  <Zoek::Filter::ControlBar
-    id="zoek-filters-control-bar-bottom"
+<div ...attributes id="search-filters">
+  <Search::Filter::ControlBar
+    id="search-filters-control-bar-bottom"
     @onResetFilters={{@resetFilters}}
   />
 
-  <div id="zoek-filters-fields">
-    <div id="zoek-filters-basic">
-      {{! Zoekterm }}
+  <div id="search-filters-fields">
+    <div id="search-filters-basic">
+      {{! Searchterm }}
       <div class="field block">
-        <label id="zoekterm-label" class="label">
+        <label id="searchterm-label" class="label">
           Zoekterm
         </label>
-        <div id="zoekterm" class="control">
+        <div id="searchterm" class="control">
           <input
             class="input"
             placeholder="Wilgenlaan, sport, kerkfabriek, ..."
-            aria-labbeledBy="zoekterm-label"
+            aria-labbeledBy="searchterm-label"
             type="text"
             value={{@currentState.search}}
             {{on "input" this.updateSearch}}
@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <Zoek::Filter::IsHandledToggles
+      <Search::Filter::IsHandledToggles
         class="block"
         @currentState={{@currentState.isHandled}}
         @update={{fn this.update "isHandled"}}
@@ -33,14 +33,14 @@
         <label class="label">
           Werkingsgebied
         </label>
-        <Zoek::Filter::GovernanceAreaSelect
+        <Search::Filter::GovernanceAreaSelect
           @selected={{this.selectedGovernanceAreas}}
           @onSelectionChange={{this.updateGovernanceAreas}}
         />
       </div>
     </div>
 
-    <div id="zoek-filters-advanced">
+    <div id="search-filters-advanced">
       {{! Advanced filters }}
       <CpPanel @open={{true}} as |p|>
         <p.toggle>
@@ -68,13 +68,13 @@
               <label class="label">
                 Bestuurseenheid
               </label>
-              <Zoek::Filter::AdministrativeUnitSelect
+              <Search::Filter::AdministrativeUnitSelect
                 @selected={{this.selectedAdministrativeUnits}}
                 @onSelectionChange={{this.updateAdministrativeUnits}}
               />
             </div>
 
-            <Zoek::Filter::HasAttributeGroup
+            <Search::Filter::HasAttributeGroup
               class="block"
               @currentState={{@currentState.has}}
               @update={{fn this.update "has"}}
