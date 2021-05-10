@@ -5,6 +5,7 @@ import { timeout } from 'ember-concurrency';
 import { task, restartableTask } from 'ember-concurrency-decorators';
 import { inject as service } from '@ember/service';
 import Store from '@ember-data/store';
+import RouterService from '@ember/routing/router-service';
 
 // @ts-ignore
 import hljs from 'highlight.js/lib/core';
@@ -13,6 +14,7 @@ import { filterOutCompositeAreas } from 'frontend-poc-participatie/models/werkin
 
 export default class InfoForMunicipalitiesController extends Controller {
   @service declare store: Store;
+  @service declare router: RouterService;
 
   @tracked
   rendered: boolean = false;
@@ -31,8 +33,13 @@ export default class InfoForMunicipalitiesController extends Controller {
 
   get codeSnippet(): string {
     let selected = this.selectedGovernanceArea.toLowerCase();
+
+    // Attempt at guessing the server this is running on.
+    let server = window.location.href.replace(this.router.currentURL, '');
+
+    // prettier-ignore
     return `<iframe
-  src="http://localhost:4200/embed/zoek/${selected}/"
+  src="${server}${this.router.urlFor('search-embedded', {embedded: selected})}/"
   title="XXXParticipatie"
   width="100%"
   height="800px"
