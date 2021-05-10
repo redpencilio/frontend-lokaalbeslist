@@ -1,6 +1,5 @@
 import {
   AGENDA_POINT_ATTRIBUTES,
-  ENTITIES,
   isResourceConfig,
   ResourceConfig,
 } from '../../../utils/attributes';
@@ -34,10 +33,6 @@ interface Attribute {
  * @see {@link AGENDA_POINT_ATTRIBUTES} and {@link SearchResult} for the data this component acts on.
  */
 export default class SearchResultAttributeTagComponent extends Component<Args> {
-  get ENTITIES() {
-    return ENTITIES;
-  }
-
   get AGENDA_POINT_ATTRIBUTES() {
     return AGENDA_POINT_ATTRIBUTES;
   }
