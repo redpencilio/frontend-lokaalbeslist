@@ -1,0 +1,21 @@
+<span class="icon-text is-light mr-2">
+  <span class="icon" {{render-feather-icons}}>
+    <i data-feather="calendar" height="1rem"></i>
+  </span>
+  {{#if (not (or @result.session.plannedStart @result.session.startedAtTime))}}
+    <p>
+      Geen datum bekend.
+    </p>
+  {{else}}
+    <span>
+      {{#if @result.session.startedAtTime}}
+        {{date-format @result.session.startedAtTime}}
+      {{else if @result.session.plannedStart}}
+        <span>
+          {{date-format @result.session.plannedStart}}
+        </span>
+        (gepland)
+      {{/if}}
+    </span>
+  {{/if}}
+</span>
