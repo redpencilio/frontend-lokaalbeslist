@@ -3,6 +3,7 @@ import { A } from '@ember/array';
 import { SearchResult } from './search-result';
 
 export type Sort = undefined | { field: string; isDesc: boolean };
+export type Highlight = undefined | { fields: string[] };
 
 /**
  * Source: <https://github.com/lblod/frontend-toezicht-abb/blob/master/app/utils/mu-search.js>
@@ -15,6 +16,7 @@ export default async function muSearch(
   size: number,
   sort: Sort,
   filter: any,
+  highlightParams: any,
   dataMapping: (item: any) => any
 ): Promise<ArrayProxy<SearchResult>> {
   let endpoint = `${basePath}/search?page[size]=${size}&page[number]=${page}`;
@@ -27,6 +29,10 @@ export default async function muSearch(
     endpoint += sort.isDesc
       ? `&sort[${sort.field}]=desc`
       : `&sort[${sort.field}]=asc`;
+  }
+
+  if (highlightParams) {
+    endpoint += `&highlight[:fields:]=${highlightParams.fields.join(',')}`;
   }
 
   const { count, data } = await (await fetch(endpoint)).json();

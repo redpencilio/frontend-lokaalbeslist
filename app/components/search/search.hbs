@@ -9,7 +9,6 @@
         @currentState={{this.qsm.state}}
       />
     </div>
-
     {{! Right column - Control + Results}}
     <div id="column-right-results" class="column">
       {{! Top control bar }}
@@ -26,7 +25,10 @@
         {{! Results }}
         {{#each @model.content as |result|}}
           <div class="block">
-            <Search::SearchResult @result={{result}} />
+            <Search::SearchResult
+              @result={{result.attributes}}
+              @highlight={{result.highlight}}
+            />
           </div>
         {{/each}}
       </div>

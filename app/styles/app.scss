@@ -189,6 +189,7 @@ body {
   }
 }
 
+// Content changed animation used in the info/for-municipalities page
 @keyframes contentChanged {
   0% {
     opacity: 25%;
@@ -203,4 +204,15 @@ body {
 
 .changed-content {
   animation: contentChanged 1s linear;
+}
+
+.highlight-marked {
+  > em {
+    @extend .px-1;
+    @extend .my-2;
+    font-style: normal;
+    // background-color: $primary;
+    background-color: adjust-color($color: $primary, $alpha: -0.6);
+    // background-color: $primary-light;
+  }
 }

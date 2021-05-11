@@ -57,7 +57,7 @@ export default class SearchRoute extends Route<SearchModel> {
     // See <https://guides.emberjs.com/release/routing/query-params/> and constructor.
     this.qsm.updateFromURLQueryParams(<any>params);
 
-    const { page, size, sort, query } = this.qsm.toMuSearchParams();
+    const { page, size, sort, query, highlight } = this.qsm.toMuSearchParams();
 
     return await muSearch(
       '/search/agendapunten',
@@ -65,9 +65,10 @@ export default class SearchRoute extends Route<SearchModel> {
       size,
       sort,
       query,
+      highlight,
       (item) => {
         item.attributes.id = item.id;
-        return item.attributes;
+        return item;
       }
     );
   }

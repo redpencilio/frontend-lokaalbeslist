@@ -1,8 +1,8 @@
 <div class="is-flex is-flex-direction-column">
-  {{! Title }}
-  <h6 class="title is-6 mb-3">
-    {{if @result.title @result.title "Geen titel"}}
-  </h6>
+  <Search::Result::Title
+    @title={{@result.title}}
+    @highlight={{@highlight.title}}
+  />
 
   {{! Tags }}
   <div class="is-flex is-flex-direction-row is-flex-wrap-wrap">
@@ -45,11 +45,11 @@
     />
   </div>
 
-  {{! Description }}
-  {{#if (and @result.description (not-eq @result.description @result.title))}}
-    <p class="content is-italic">
-      {{@result.description}}
-    </p>
+  {{#if (and @result.description (not this.descriptionEqualsTitle))}}
+    <Search::Result::Description
+      @description={{@result.description}}
+      @highlight={{@highlight.description}}
+    />
   {{/if}}
 
   {{! Date }}

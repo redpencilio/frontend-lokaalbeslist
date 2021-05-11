@@ -1,5 +1,5 @@
 import { tracked } from '@glimmer/tracking';
-import { Sort } from './mu-search';
+import { Highlight, Sort } from './mu-search';
 
 /**
  * The logic for a single query parameter,such as `search`, `isHandled` or `sort.
@@ -37,7 +37,7 @@ export class QueryParameter<ValueType, URLType> {
    *
    * @param value the parameter value
    */
-  toMuSearchParams(_value: ValueType): { [key: string]: string } {
+  toMuSearchFilterParams(_value: ValueType): { [key: string]: string } {
     // This likely needs to be overridden by instances
     return {};
   }
@@ -46,7 +46,7 @@ export class QueryParameter<ValueType, URLType> {
     default: ValueType;
     fromURLParam?: (value: URLType) => ValueType;
     toURLParam?: (value: ValueType) => URLType;
-    toMuSearchParams?: (value: ValueType) => { [key: string]: string };
+    toMuSearchFilterParams?: (value: ValueType) => { [key: string]: string };
   }) {
     Object.assign(this, conf);
   }
@@ -78,7 +78,7 @@ const QUERY_PARAMETERS = {
   search: new QueryParameter<string | undefined, string | undefined>({
     default: undefined,
     fromURLParam: (value) => value,
-    toMuSearchParams: (value) => ({ ':sqs:': value ? value : '*' }),
+    toMuSearchFilterParams: (value) => ({ ':sqs:': value ? value : '*' }),
   }),
 
   /**
@@ -89,7 +89,7 @@ const QUERY_PARAMETERS = {
     fromURLParam(value: IsHandled) {
       return value || this.default;
     },
-    toMuSearchParams(value) {
+    toMuSearchFilterParams(value) {
       let query: { [key: string]: string } = {};
       if (value) {
         if (value === 'yes') {
@@ -124,7 +124,7 @@ const QUERY_PARAMETERS = {
       };
     },
     toURLParam: (value) => Array.from(value.selected).join(','),
-    toMuSearchParams(value: { selected: Set<string> }) {
+    toMuSearchFilterParams(value: { selected: Set<string> }) {
       let query: { [key: string]: string } = {};
       if (value.selected.size > 0) {
         query[`:terms:session.administrativeUnit.uuid`] = Array.from(
@@ -151,7 +151,7 @@ const QUERY_PARAMETERS = {
     toURLParam(value: { selected: Set<string> }): string {
       return Array.from(value.selected).join(',');
     },
-    toMuSearchParams(value) {
+    toMuSearchFilterParams(value) {
       let query: { [key: string]: string } = {};
       if (value.selected.size > 0) {
         query[`session.governanceArea.label`] = Array.from(value.selected).join(
@@ -171,7 +171,7 @@ const QUERY_PARAMETERS = {
       return value ? new Set(value.split(',')) : this.default;
     },
     toURLParam: (value) => Array.from(value).join(','),
-    toMuSearchParams(value) {
+    toMuSearchFilterParams(value) {
       let query: { [key: string]: string } = {};
       value.forEach((attributeId) => {
         query[`:has:${attributeId}`] = 't';
@@ -194,7 +194,7 @@ const QUERY_PARAMETERS = {
     toURLParam(_value) {
       return undefined;
     },
-    toMuSearchParams(value) {
+    toMuSearchFilterParams(value) {
       let query: { [key: string]: string } = {};
       if (value.isEmbedded) {
         query[`session.governanceArea.label`] = value.governanceArea!;
@@ -292,20 +292,28 @@ export class QueryStateManager {
     return params;
   }
 
-  toMuSearchParams(): { page: number; size: number; sort: Sort; query: any } {
+  toMuSearchParams(): {
+    page: number;
+    size: number;
+    sort: Sort;
+    query: any;
+    highlight: Highlight;
+  } {
     const query: { [key: string]: string } = {};
 
     let field: keyof QueryStateManager['state'];
     for (field in this.state) {
       const param: any = this.state[field];
-      // @ts-ignore TODO fix ignore
-      const partialQuery = QUERY_PARAMETERS[field].toMuSearchParams(param);
+      const partialQuery = QUERY_PARAMETERS[field]
+        // @ts-ignore TODO fix ignore
+        .toMuSearchFilterParams(param);
 
       Object.assign(query, partialQuery);
     }
 
+    const highlight = this.state.search ? { fields: ['*'] } : undefined;
     const { page, size, sort } = this.state;
-    return { page, size, sort, query };
+    return { page, size, sort, query, highlight };
   }
 
   filterOutDefaultValues(params: ExpectedURLQueryParams) {
