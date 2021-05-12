@@ -210,8 +210,7 @@ body {
   > em {
     @extend .px-1;
     @extend .my-2;
-    font-style: normal;
-    // background-color: $primary;
+    font-style: inherit;
     background-color: adjust-color($color: $primary, $alpha: -0.6);
     // background-color: $primary-light;
   }

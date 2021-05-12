@@ -5,8 +5,7 @@ import { helper } from '@ember/component/helper';
  * mu-search to allow the highlight to be so big (yet).
  * So we replace the highlighted parts in the original text.
  */
-export default helper((params: [string, string[]]) => {
-  const [text, highlights] = params;
+export default helper(([text, highlights]: [string, string[]]) => {
   if (highlights) {
     let highlighted = text;
     highlights

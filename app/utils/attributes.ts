@@ -33,6 +33,17 @@ export interface AttributeConfig {
       display?: boolean;
     };
   };
+
+  /** Properties related to displaying match previews in this field */
+  previews?: {
+    /**
+     * Wether the attribute should be displayed among the match previews.
+     * Default is 'false'.
+     * 'if-only-match' implies it should only be rendered if this field
+     * only fields with this setting are matched.
+     */
+    display?: boolean | 'if-only-match';
+  };
 }
 
 export function isResourceConfig(
@@ -42,7 +53,40 @@ export function isResourceConfig(
 }
 
 /**
- * Attributes present in the search results ({@see })and their corresponding configuration.
+ * @param root An (nested) object of Attributes or Resources
+ * @param depth The depth until which to recurse
+ * @param prefix Prefix to at to the property path of each key
+ * @returns A flattened list of attributes and their config, with keys like 'session.governingBody.label`.
+ */
+type AnnotatedConfig = { key: string; config: AttributeConfig };
+export function iterate(
+  root: { [key: string]: AttributeConfig | ResourceConfig },
+  depth: number = -1,
+  prefix: string = '',
+  includeInner: boolean = false
+): AnnotatedConfig[] {
+  return Object.entries(root)
+    .map(([key, config]) => {
+      const path = prefix ? `${prefix}.${key}` : key;
+
+      if (!isResourceConfig(config)) {
+        return [{ key: path, config }];
+      }
+
+      const current = includeInner
+        ? [{ key: path, config: config.config }]
+        : [];
+
+      const nested = depth ? iterate(config.attributes, depth - 1, path) : [];
+
+      return current.concat(nested);
+    })
+    .flat();
+}
+
+/**
+ * Attributes present in the search results ({@see SearchResult })
+ * and their corresponding configuration for filtering and displaying.
  *
  * Each field represents a field that is also present in the search result with
  * which we want to do something.
@@ -98,12 +142,14 @@ export const AGENDA_POINT_ATTRIBUTES: {
     references: {
       description: 'referenties aan andere agendapunten',
       missing: { optional: true },
+      previews: { display: 'if-only-match' },
       filter: { has: { name: 'referenties' } },
     },
 
     draftResolutionURIs: {
       description: 'ontwerpbesluit',
       missing: { optional: true },
+      previews: { display: 'if-only-match' },
       filter: { has: { name: 'ontwerpbesluit', display: false } },
     },
 
@@ -198,12 +244,14 @@ export const AGENDA_POINT_ATTRIBUTES: {
         governanceArea: {
           config: {
             description: 'werkingsgebied',
+            previews: { display: 'if-only-match' },
             filter: { has: { name: 'werkingsgebied' } },
           },
           attributes: {
             label: {
               description: 'werkingsgebied',
               missing: { count: true },
+              previews: { display: 'if-only-match' },
               filter: { has: { name: 'werkingsgebied' } },
             },
           },
@@ -248,22 +296,25 @@ export const AGENDA_POINT_ATTRIBUTES: {
               filter: { has: { name: 'besluiten' } },
             },
             titleShort: {
-              description: 'TODO',
+              description: 'titel van het besluit',
               missing: { count: true },
+              previews: { display: true },
               filter: { has: { name: 'TODO' } },
             },
             description: {
-              description: 'TODO',
+              description: 'beschrijving van het besluit',
               missing: { count: true },
+              previews: { display: true },
               filter: { has: { name: 'TODO' } },
             },
             motivation: {
-              description: 'TODO',
+              description: 'motivatie van het besluit',
               missing: { count: true },
+              previews: { display: true },
               filter: { has: { name: 'TODO' } },
             },
             publicationDate: {
-              description: 'TODO',
+              description: 'publicatie-datum van het besluit',
               missing: { count: true },
               filter: { has: { name: 'TODO' } },
             },

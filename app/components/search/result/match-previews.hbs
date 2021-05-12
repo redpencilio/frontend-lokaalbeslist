@@ -1,0 +1,19 @@
+<div class="ml-2">
+  {{#each this.fields as |field|}}
+    <div class="content">
+      <strong>
+        {{capitalize field.config.description}}
+      </strong>
+      <p class="highlight-marked is-italic">
+        {{#let (get-dotted @highlight field.key) as |highlights|}}
+          <ItemListHorizontal
+            @items={{highlights}}
+            @sep=" ... "
+            @embrace={{array "..." "..."}} as |highlight|
+            {{!-- prettier-ignore --}}
+          >{{{highlight}}}</ItemListHorizontal>
+        {{/let}}
+      </p>
+    </div>
+  {{/each}}
+</div>

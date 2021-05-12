@@ -8,7 +8,7 @@
   {{! Tags }}
   <Search::Result::TagList @result={{@result}} />
 
-  {{#if (and @result.description (not this.descriptionEqualsTitle))}}
+  {{#if (and @result.description (not this.descriptionEqualToTitle))}}
     <Search::Result::Description
       @description={{@result.description}}
       @highlight={{@highlight.description}}
@@ -19,6 +19,16 @@
   <div class="mt-2">
     <Search::Result::Date @result={{@result}} />
   </div>
+
+  {{! Match Preview }}
+  {{#if @highlight}}
+    <div class="mt-2">
+      <Search::Result::MatchPreviews
+        @result={{@result}}
+        @highlight={{@highlight}}
+      />
+    </div>
+  {{/if}}
 
   {{! Links }}
   <Search::Result::LinkList class="mt-2" @result={{@result}} />
