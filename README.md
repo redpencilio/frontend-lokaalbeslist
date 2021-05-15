@@ -36,9 +36,23 @@ You can visit the live reloading site at `http://localhost:4200`.
 
 ## Dev Info
 
+### Architecture & Logic
+
+The app follows the typical architectural layout of an Ember app, reading an introduction to Ember might prove very useful. That said, some statements about the code base:
+
+- The entry point for the search is of course the `search` route in `/routes`, and mainly the request made to `mu-search` in the `model()` hook. A new request is made each time the query state changes (e.g. a filter is added, page is changed), as that is reflected in the URL, triggering a new `model()` call.
+- The root of rendering tree is the `components/search/search.hbs` Component. We generally need to make changes to it's 2 most relevant children: the `filters` and the `results`.
+- A lot of logic & configuration is defined in `utils/`.
+- An example is the query state mentioned above, which is generally managed through the `QueryStateManager`, which should be a singleton being accessed in both the `Route` and the `Controller`. This defines how the query state should be update, how it translates from and to the URL query parameters, and how it translates into mu-search parameters.
+- Another big item is `utils/attributes.ts`, which is a configuration for each attribute of a search result (see, and update when changed, `utils/search-result.d.ts` for that). This configuration is centralized so that when attributes are added/edited/removed, it can be done in a single place and it is clear what configuration needs to be present. A disadvantage is that logic is decoupled from the components using this configuration. We believe the benefits outweigh the disadvantages.
+
+### CSS & Styling
+
+We use [Bulma](https://bulma.io/) for styling. We try to use it as much as possible in the Glimmer templates. Only sporadically we need some custom CSS, which is all defined in `styles/app.scss`, of which currently at least half the content is making sure the scrollbar is in the component we want.
+
 ### Icons
 
-We use [Feather](https://github.com/feathericons/feather) icons with a [ember-modifier](https://github.com/ember-modifier/ember-modifier) modifier as specified in [this issue](https://github.com/feathericons/feather/issues/506).
+We use [Feather](https://github.com/feathericons/feather) icons with a [ember-modifier](https://github.com/ember-modifier/ember-modifier) modifier as specified in [this issue](https://github.com/feathericons/feather/issues/506). There are examples plenty in the code base (search for `render-feather-icons`).
 
 ### Language
 
@@ -48,6 +62,8 @@ While this is sometimes confusing, as all mu-search properties are in English, i
 If anything else is off, clean up as you see fit.
 
 All content (things rendered to users) is in Dutch only.
+
+One might need to add custom Inflector rules for pluralization to make Ember Data work nicely, see <./initializers/custom-inflector-rules.ts> for
 
 ### Embedded rendering
 
