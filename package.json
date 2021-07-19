@@ -101,7 +101,7 @@
     "highlight.js": "^10.7.2",
     "loader.js": "^4.7.0",
     "lodash.clonedeep": "^4.5.0",
-    "node-sass": "^5.0.0",
+    "node-sass": "^6.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
     "qunit": "^2.14.0",
