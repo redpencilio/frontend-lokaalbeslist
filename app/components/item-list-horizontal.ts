@@ -15,7 +15,7 @@ import Component from '@glimmer/component';
  * @param {array} embrace A 2 element array of strings embracing the full list
  * @param {string} sep A seperator element between the items
  */
-export default class ItemListHorizontalComponent extends Component {
+export default class ItemListHorizontalComponent<T> extends Component<{items: T[]}> {
   get items() {
     return this.args.items.filter((item) => !!item);
   }

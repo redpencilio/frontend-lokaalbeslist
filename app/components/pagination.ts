@@ -22,8 +22,27 @@ import Component from '@glimmer/component';
 //       }
 //     }
 //   }
+export interface PaginationData {
+  first: {
+    'number': number,
+    'size': number
+  },
+  last: {
+    'number': number,
+    'size': number
+  },
+  self: {
+    'number': number,
+    'size': number
+  },
+  next: {
+    'number': number,
+    'size': number
+  },
+}
+
 // }
-export default class PaginationComponent extends Component {
+export default class PaginationComponent extends Component<{pagination: PaginationData}> {
   // Booleans
   // ---------------------------------
   get isFirstPage() {
@@ -35,7 +54,7 @@ export default class PaginationComponent extends Component {
   }
 
   get hasMultiplePages() {
-    return this.last.number != 0;
+    return this.last.number !== 0;
   }
 
   // Numbers
@@ -50,10 +69,10 @@ export default class PaginationComponent extends Component {
   }
 
   get previousPage() {
-    if (this.currentPage == 0) {
+    if (this.currentPage === 0) {
       return 0;
     }
-    if (this.currentPage == 1) {
+    if (this.currentPage === 1) {
       // This way we drop the query parameter instead of setting it to zero
       return undefined;
     }
@@ -61,7 +80,7 @@ export default class PaginationComponent extends Component {
   }
 
   get nextPage() {
-    if (this.currentPage == this.lastPage) {
+    if (this.currentPage === this.lastPage) {
       return this.currentPage;
     }
     return this.currentPage + 1;

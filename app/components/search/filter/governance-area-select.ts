@@ -3,10 +3,12 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { timeout } from 'ember-concurrency';
-import { task, restartableTask } from 'ember-concurrency-decorators';
+import { restartableTask, task } from 'ember-concurrency-decorators';
 import Store from '@ember-data/store';
 
 import { filterOutCompositeAreas } from 'frontend-poc-participatie/models/werkingsgebied';
+import { taskFor } from 'ember-concurrency-ts';
+
 
 interface Args {
   selected: string[];
@@ -31,26 +33,24 @@ export default class SearchFilterGovernanceAreaSelect extends Component<Args> {
   @tracked selected: string[] | null = null;
   @tracked options: string[] | null = null;
 
-  constructor() {
-    // @ts-ignore
-    super(...arguments);
-    // @ts-ignore
-    this.loadData.perform();
+  constructor(owner: unknown, args: Args) {
+    super(owner, args);
+    taskFor(this.loadData).perform();
   }
 
   @task
-  *loadData(): Generator<Promise<string[]>> {
-    const options = yield this.store
+  *loadData(): Generator<string[]> {
+    this.options = this.store
       .query('werkingsgebied', {
         sort: 'naam',
       })
-      .then((areas) => areas.filter(filterOutCompositeAreas))
-      .then((areas) => areas.map((area) => area.naam))
-      .then((areas) => areas.uniq());
+      .filter(filterOutCompositeAreas)
+      .map((area) => area.naam)
+      .uniq();
 
-    // @ts-ignore
-    this.options = options;
     this.updateSelectedValue();
+
+    return this.options;
   }
 
   @restartableTask

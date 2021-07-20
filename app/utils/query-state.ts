@@ -2,218 +2,267 @@ import { tracked } from '@glimmer/tracking';
 import { Highlight, Sort } from './mu-search';
 
 /**
- * The logic for a single query parameter,such as `search`, `isHandled` or `sort.
+ * The logic for a single query parameter,such as `search`, `isHandled` or `sort`.
  *
  * Convert from and to URL representation, and generate mu-search filter parameters.
  *
  * Most of the methods should be overridden by instances
  */
-export class QueryParameter<ValueType, URLType> {
-  /**
-   * A default state so we can reset back each parameter when it is emptied by the user.
-   */
-  declare default: ValueType;
+export interface QueryParameter<ValueType, URLType> {
+  defaultValue: ValueType;
 
   /**
-   * Convert from the URL representation of this parameter to the JS representation
-   * @param value the URL parameter value
+   * Convert from the URL representation of this parameter to the JS representation.
+   *
+   * @param value The URL parameter value.
    */
-  fromURLParam(value: URLType): ValueType {
-    // This likely needs to be overridden by instances
-    return ((value || this.default) as unknown) as ValueType;
-  }
+  fromURLParam: (value: URLType | undefined) => ValueType;
 
   /**
    * Convert from the JS representation of this parameter to the URL representation
-   * @param value the parameter value
+   *
+   * @param value The parameter value.
    */
-  toURLParam(value: ValueType): URLType {
-    // This likely needs to be overridden by instances
-    return (value as unknown) as URLType;
-  }
+  toURLParam: (value: ValueType) => URLType | undefined;
 
   /**
-   * Generate mu-search query parameters with respect to the parameter value
+   * Generate mu-search query parameters with respect to the parameter value.
    *
-   * @param value the parameter value
+   * @param value The parameter value.
    */
-  toMuSearchFilterParams(_value: ValueType): { [key: string]: string } {
-    // This likely needs to be overridden by instances
+  toMuSearchFilterParams: (value: ValueType) => { [key: string]: string }
+}
+
+class SimpleQueryParameter<T> implements QueryParameter<T, T>{
+  defaultValue: T;
+
+  fromURLParam(value: T): T {
+    return value || this.defaultValue;
+  }
+
+  toURLParam(value: T): T {
+    return value;
+  }
+
+  toMuSearchFilterParams(_value: T): { [key: string]: string } {
     return {};
   }
 
-  constructor(conf: {
-    default: ValueType;
-    fromURLParam?: (value: URLType) => ValueType;
-    toURLParam?: (value: ValueType) => URLType;
-    toMuSearchFilterParams?: (value: ValueType) => { [key: string]: string };
-  }) {
-    Object.assign(this, conf);
+  constructor(defaultValue: T) {
+    this.defaultValue = defaultValue;
   }
 }
 
-type IsHandled = 'no' | 'yes' | undefined;
-type Embedded = { isEmbedded: boolean; governanceArea?: string };
+class SortQueryParameter implements QueryParameter<Sort, string> {
+  defaultValue: Sort = undefined;
+
+  fromURLParam(value: string | undefined) {
+    return value
+      ? {
+        field: value.substr(1),
+        isDesc: value[0] === '-',
+      }
+      : this.defaultValue;
+  }
+
+  toMuSearchFilterParams(_value: Sort): { [p: string]: string } {
+    return {};
+  }
+
+  toURLParam(value: Sort): string | undefined {
+    return value ? `${value.isDesc ? '-' : ''}${value.field}` : undefined
+  }
+}
+
+class SearchQueryParameter implements QueryParameter<string | undefined, string> {
+  defaultValue: string | undefined;
+
+  fromURLParam(value: string | undefined): string | undefined {
+    return value || this.defaultValue;
+  }
+
+  toMuSearchFilterParams(value: string | undefined): { [p: string]: string } {
+    return { ':sqs:': value ? value : '*' };
+  }
+
+  toURLParam(value: string | undefined): string | undefined {
+    return value;
+  }
+}
+
+/**
+ * Whether the Agendapunt should be already be handled or not
+ */
+class IsHandledQueryParameter implements QueryParameter<IsHandled | undefined, IsHandled> {
+  defaultValue: IsHandled | undefined = undefined;
+
+  fromURLParam(value: IsHandled | undefined): IsHandled | undefined {
+    return value || this.defaultValue;
+  }
+
+  toMuSearchFilterParams(value: IsHandled): { [p: string]: string } {
+    let query: { [key: string]: string } = {};
+    if (value) {
+      if (value === 'yes') {
+        // We expect both a session and a handling here, GTFO dirty data.
+        query[':has:session'] = 't';
+        query[':has:agendaItemHandling'] = 't';
+      } else {
+        // It could be that there is no associated agendaItemHandling but the
+        // agenda item is handled in practice (e.g. in Zitting notulen).
+        // We can't filter out those out, because we can't filter out those with
+        // associated Zittingen, because the Zitting can be planned for the future.
+        // We could filter out those with Zittingen that already happened, but
+        // maybe the agenda point was not actually talked about?
+        query[':has-no:agendaItemHandling'] = 't';
+      }
+    }
+    return query;
+  }
+
+  toURLParam(value: IsHandled): IsHandled | undefined {
+    return value;
+  }
+}
+
+/**
+ * What Bestuurseenheden the users cares about
+ */
+class AdministrativeUnitQueryParameter implements QueryParameter<Selection, string> {
+  defaultValue: Selection = { selected: new Set<string>() };
+
+  fromURLParam(value: string | undefined): Selection {
+    return {
+      selected: value ? new Set(value.split(',')) : this.defaultValue.selected,
+    };
+  }
+
+  toMuSearchFilterParams(value: Selection): { [p: string]: string } {
+    let query: { [key: string]: string } = {};
+    if (value.selected.size > 0) {
+      query[`:terms:session.administrativeUnit.uuid`] = Array.from(
+        value.selected
+      ).join(',');
+    }
+    return query;
+  }
+
+  toURLParam(value: Selection): string | undefined {
+    return Array.from(value.selected).join(',');
+  }
+}
+
+/**
+ * What Werkingsgebieden the users cares about
+ */
+class GovernanceAreaQueryParameter implements QueryParameter<Selection, string> {
+  defaultValue: Selection = { selected: new Set<string>() };
+
+  fromURLParam(value: string | undefined): Selection {
+    return {
+      selected: value ? new Set(value.split(',')) : this.defaultValue.selected,
+    };
+  }
+
+  toMuSearchFilterParams(value: Selection): { [p: string]: string } {
+    let query: { [key: string]: string } = {};
+    if (value.selected.size > 0) {
+      query[`session.governanceArea.label`] = Array.from(value.selected).join(
+        ','
+      );
+    }
+    return query;
+  }
+
+  toURLParam(value: Selection): string | undefined {
+    return Array.from(value.selected).join(',');
+  }
+
+}
+
+/**
+ * Which fields & relations should be present
+ */
+class HasQueryParameter implements QueryParameter<Set<String>, string> {
+  defaultValue: Set<String> = new Set<string>();
+
+  fromURLParam(value: string | undefined): Set<String> {
+    return value ? new Set(value.split(',')) : this.defaultValue;
+  }
+
+  toMuSearchFilterParams(value: Set<String>): { [p: string]: string } {
+    let query: { [key: string]: string } = {};
+    value.forEach((attributeId) => {
+      query[`:has:${attributeId}`] = 't';
+    });
+    return query;
+  }
+
+  toURLParam(value: Set<String>): string | undefined {
+    return Array.from(value).join(',');
+  }
+}
+
+/**
+ * What Werkingsgebieden the user cares about, as defined by the route
+ * for embedding a gemeente-specifieke view of this application.
+ */
+class EmbeddedQueryParameter implements QueryParameter<Embedded, string> {
+  defaultValue: Embedded = { isEmbedded: false };
+
+  fromURLParam(value: string | undefined): Embedded {
+    return value
+      ? { isEmbedded: true, governanceArea: value }
+      : { isEmbedded: false };
+  }
+
+  toMuSearchFilterParams(value: Embedded): { [p: string]: string } {
+    let query: { [key: string]: string } = {};
+    if (value.isEmbedded) {
+      query[`session.governanceArea.label`] = value.governanceArea!;
+    }
+    return query;
+  }
+
+  toURLParam(_value: Embedded): string | undefined {
+    return undefined;
+  }
+
+}
+
+type IsHandled = 'no' | 'yes';
+
+interface Embedded {
+  isEmbedded: boolean,
+  governanceArea?: string
+}
+
+interface Selection {
+  selected: Set<string>
+}
 
 const QUERY_PARAMETERS = {
-  page: new QueryParameter<number, number | undefined>({ default: 0 }),
-  size: new QueryParameter<number, number | undefined>({ default: 20 }),
-  sort: new QueryParameter<Sort, string | undefined>({
-    default: undefined,
-    fromURLParam(value: string | undefined) {
-      return value
-        ? {
-            field: value.substr(1),
-            isDesc: value[0] === '-',
-          }
-        : this.default;
-    },
-    toURLParam: (value) =>
-      value ? `${value.isDesc ? '-' : ''}${value.field}` : undefined,
-  }),
-
-  /**
-   * Main search filter
-   */
-  search: new QueryParameter<string | undefined, string | undefined>({
-    default: undefined,
-    fromURLParam: (value) => value,
-    toMuSearchFilterParams: (value) => ({ ':sqs:': value ? value : '*' }),
-  }),
-
-  /**
-   * Wether the Agendapunt should be already be handled or not
-   */
-  isHandled: new QueryParameter<IsHandled, IsHandled>({
-    default: undefined,
-    fromURLParam(value: IsHandled) {
-      return value || this.default;
-    },
-    toMuSearchFilterParams(value) {
-      let query: { [key: string]: string } = {};
-      if (value) {
-        if (value === 'yes') {
-          // We expect both a session and a handling here, GTFO dirty data.
-          query[':has:session'] = 't';
-          query[':has:agendaItemHandling'] = 't';
-        } else {
-          // It could be that there is no associated agendaItemHandlingthe but the
-          // agenda item is handled in practice (e.g. in Zitting notulen).
-          // We can't filter out those out, because we can't filter out those with
-          // associated Zittingen, because the Zitting can be planned for the future.
-          // We could filter out those with Zittingen that already happened, but
-          // maybe the agenda point was not actually talked about?
-          query[':has-no:agendaItemHandling'] = 't';
-        }
-      }
-      return query;
-    },
-  }),
-
-  /**
-   * What Bestuurseenheden the users cares about
-   */
-  administrativeUnit: new QueryParameter<
-    { selected: Set<string> },
-    string | undefined
-  >({
-    default: { selected: new Set<string>() },
-    fromURLParam(value) {
-      return {
-        selected: value ? new Set(value.split(',')) : this.default.selected,
-      };
-    },
-    toURLParam: (value) => Array.from(value.selected).join(','),
-    toMuSearchFilterParams(value: { selected: Set<string> }) {
-      let query: { [key: string]: string } = {};
-      if (value.selected.size > 0) {
-        query[`:terms:session.administrativeUnit.uuid`] = Array.from(
-          value.selected
-        ).join(',');
-      }
-      return query;
-    },
-  }),
-
-  /**
-   * What Werkingsgebieden the users cares about
-   */
-  governanceArea: new QueryParameter<
-    { selected: Set<string> },
-    string | undefined
-  >({
-    default: { selected: new Set<string>() },
-    fromURLParam(value: string | undefined) {
-      return {
-        selected: value ? new Set(value.split(',')) : this.default.selected,
-      };
-    },
-    toURLParam(value: { selected: Set<string> }): string {
-      return Array.from(value.selected).join(',');
-    },
-    toMuSearchFilterParams(value) {
-      let query: { [key: string]: string } = {};
-      if (value.selected.size > 0) {
-        query[`session.governanceArea.label`] = Array.from(value.selected).join(
-          ','
-        );
-      }
-      return query;
-    },
-  }),
-
-  /**
-   * Which fields & relations should be present
-   */
-  has: new QueryParameter<Set<string>, string | undefined>({
-    default: new Set<string>(),
-    fromURLParam(value) {
-      return value ? new Set(value.split(',')) : this.default;
-    },
-    toURLParam: (value) => Array.from(value).join(','),
-    toMuSearchFilterParams(value) {
-      let query: { [key: string]: string } = {};
-      value.forEach((attributeId) => {
-        query[`:has:${attributeId}`] = 't';
-      });
-      return query;
-    },
-  }),
-
-  /**
-   * What Werkingsgebieden the user cares about, as defined by the route
-   * for embedding a gemeente-specifieke view of this application.
-   */
-  embedded: new QueryParameter<Embedded, string | undefined>({
-    default: { isEmbedded: false },
-    fromURLParam(value) {
-      return value
-        ? { isEmbedded: true, governanceArea: value }
-        : { isEmbedded: false };
-    },
-    toURLParam(_value) {
-      return undefined;
-    },
-    toMuSearchFilterParams(value) {
-      let query: { [key: string]: string } = {};
-      if (value.isEmbedded) {
-        query[`session.governanceArea.label`] = value.governanceArea!;
-      }
-      return query;
-    },
-  }),
+  page: new SimpleQueryParameter<number>(0),
+  size: new SimpleQueryParameter<number>( 20),
+  sort: new SortQueryParameter(),
+  search: new SearchQueryParameter(),
+  isHandled: new IsHandledQueryParameter(),
+  administrativeUnit: new AdministrativeUnitQueryParameter(),
+  governanceArea: new GovernanceAreaQueryParameter(),
+  has: new HasQueryParameter(),
+  embedded: new EmbeddedQueryParameter(),
 };
+
+type QueryParameterKey = keyof typeof QUERY_PARAMETERS;
+
+type QueryParameterValueType<S> = S extends QueryParameter<infer T, infer _> ? T : never;
+type QueryParameterURLType<S> = S extends QueryParameter<infer _, infer T> ? T : never;
 
 /**
  * The state of the search query.
  */
 export type QueryState = {
-  // Construct the type of the query state, by taking the ValueType of each
-  // key in the QueryParameters.
-  // We do this through taking the return type of the fromURLParam method
-  [key in keyof typeof QUERY_PARAMETERS]: ReturnType<
-    typeof QUERY_PARAMETERS[key]['fromURLParam']
-  >;
+  [key in QueryParameterKey]: QueryParameterValueType<typeof QUERY_PARAMETERS[key]>;
 };
 
 /**
@@ -230,23 +279,20 @@ export type ExpectedURLQueryParams = Partial<
   {
     // Construct the type of the query state, by taking the URLType of each
     // key in the QueryParameters.
-    // We do this through taking the return type of the toURLParam method
-    [key in keyof typeof QUERY_PARAMETERS]: ReturnType<
-      typeof QUERY_PARAMETERS[key]['toURLParam']
-    >;
+    [key in QueryParameterKey]: QueryParameterURLType<typeof QUERY_PARAMETERS[key]>;
   }
 >;
 
 export function defaultQueryState(): QueryState {
+  //TODO use function and Partial<QueryState>
   const qs: QueryState = {} as any;
 
   let field: keyof typeof QUERY_PARAMETERS;
   for (field in QUERY_PARAMETERS) {
     const parameter: QueryParameter<any, any> = QUERY_PARAMETERS[field];
     // @ts-ignore TODO Fix clone
-    qs[field] = parameter.default;
+    qs[field] = parameter.defaultValue;
   }
-
   return qs;
 }
 
@@ -277,6 +323,7 @@ export class QueryStateManager {
   }
 
   toURLQueryParams(state: QueryState): ExpectedURLQueryParams {
+    //TODO: use Partial<>
     const params: ExpectedURLQueryParams = {} as any;
 
     let field: keyof typeof state;

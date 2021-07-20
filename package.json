@@ -27,11 +27,6 @@
     "@ember/test-helpers": "^2.2.0",
     "@glimmer/component": "^1.0.3",
     "@glimmer/tracking": "^1.0.3",
-    "@types/ember-data": "^3.16.13",
-    "@types/ember-data__model": "^3.16.2",
-    "@types/ember-data__store": "^3.16.1",
-    "@types/ember-qunit": "^3.4.13",
-    "@types/ember-resolver": "^5.0.10",
     "@types/ember__application": "^3.16.2",
     "@types/ember__array": "^3.16.4",
     "@types/ember__component": "^3.16.4",
@@ -49,6 +44,12 @@
     "@types/ember__test": "^3.16.1",
     "@types/ember__test-helpers": "^2.0.0",
     "@types/ember__utils": "^3.16.2",
+    "@types/ember-data": "^3.16.13",
+    "@types/ember-data__model": "^3.16.2",
+    "@types/ember-data__store": "^3.16.1",
+    "@types/ember-qunit": "^3.4.13",
+    "@types/ember-resolver": "^5.0.10",
+    "@types/feather-icons": "^4.7.0",
     "@types/highlight.js": "^10.1.0",
     "@types/htmlbars-inline-precompile": "^1.0.1",
     "@types/lodash.clonedeep": "^4.5.6",
@@ -98,7 +99,7 @@
     "eslint-plugin-ember": "^10.2.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "highlight.js": "^10.7.2",
+    "highlight.js": "^11.0.1",
     "loader.js": "^4.7.0",
     "lodash.clonedeep": "^4.5.0",
     "node-sass": "^6.0.0",
@@ -117,6 +118,7 @@
   },
   "dependencies": {
     "bulma": "^0.9.2",
+    "ember-concurrency-ts": "^0.3.1",
     "feather-icons": "^4.28.0"
   }
 }

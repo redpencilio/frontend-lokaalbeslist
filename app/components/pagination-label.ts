@@ -1,6 +1,12 @@
 import Component from '@glimmer/component';
+import { PaginationData } from 'frontend-poc-participatie/components/pagination';
 
-export default class PaginationLabelComponent extends Component {
+interface PaginationLabelComponentArgs {
+  pagination: PaginationData,
+  count?: number
+}
+
+export default class PaginationLabelComponent extends Component<PaginationLabelComponentArgs> {
   get from() {
     let p = this.args.pagination;
     let index = Number(p.self.number) * Number(p.first.size);
@@ -15,7 +21,7 @@ export default class PaginationLabelComponent extends Component {
 
     let p = this.args.pagination;
     let from = this.from - 1;
-    if (p.last.number == p.self.number) {
+    if (p.last.number === p.self.number) {
       return from + Number(p.last.size);
     }
     return from + Number(p.self.size);

@@ -2,8 +2,9 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { timeout } from 'ember-concurrency';
-import { task, restartableTask } from 'ember-concurrency-decorators';
+import { task, TaskGenerator, timeout } from 'ember-concurrency';
+import { taskFor } from 'ember-concurrency-ts';
+import { restartableTask } from 'ember-concurrency-decorators';
 import Store from '@ember-data/store';
 import Bestuurseenheid from 'frontend-poc-participatie/models/bestuurseenheid';
 import ArrayProxy from '@ember/array/proxy';
@@ -19,23 +20,21 @@ export default class SearchFilterAdministrativeUnitSelect extends Component<Sear
   @tracked selected: Bestuurseenheid[] | null = null;
   @tracked options: ArrayProxy<Bestuurseenheid> | null = null;
 
-  constructor() {
-    // @ts-ignore
-    super(...arguments);
-    // @ts-ignore
-    this.loadData.perform();
+  constructor(owner: unknown, args: SearchFilterAdministrativeUnitSelectArgs) {
+    super(owner, args);
+    taskFor(this.loadData).perform();
   }
 
   @task
-  *loadData(): Generator<ArrayProxy<Bestuurseenheid>> {
-    const options = yield this.store.query('bestuurseenheid', {
+  *loadData(): TaskGenerator<ArrayProxy<Bestuurseenheid>> {
+    this.options = this.store.query('bestuurseenheid', {
       sort: 'naam',
       include: 'classificatie',
     });
 
-    // @ts-ignore
-    this.options = options;
     this.updateSelectedValue();
+
+    return this.options;
   }
 
   @restartableTask

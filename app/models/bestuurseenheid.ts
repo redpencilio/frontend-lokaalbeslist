@@ -5,9 +5,9 @@ import BestuurseenheidClassificatieCode from './bestuurseenheid-classificatie-co
 import Bestuursorgaan from './bestuursorgaan';
 
 export default class Bestuurseenheid extends Model {
-  @attr() declare uri: string;
+  @attr('string') declare uri: string;
 
-  @attr() declare naam: string;
+  @attr('string') declare naam: string;
   // @attr('string-set') alternatieveNaam: string[];
 
   // @belongsTo('werkingsgebied', { inverse: null }) werkingsgebied;
@@ -22,6 +22,6 @@ export default class Bestuurseenheid extends Model {
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
-    bestuurseenheid: Bestuurseenheid;
+    'bestuurseenheid': Bestuurseenheid;
   }
 }

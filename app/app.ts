@@ -3,10 +3,8 @@ import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from 'frontend-poc-participatie/config/environment';
 
-// @ts-ignore
 import hljs from 'highlight.js/lib/core';
-// @ts-ignore
-import xml from 'highlight.js/lib/languages/xml';
+import xml from "highlight.js/lib/languages/xml";
 hljs.registerLanguage('xml', xml);
 
 export default class App extends Application {

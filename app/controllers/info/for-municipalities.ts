@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { timeout } from 'ember-concurrency';
-import { task, restartableTask } from 'ember-concurrency-decorators';
+import { restartableTask, task } from 'ember-concurrency-decorators';
 import { inject as service } from '@ember/service';
 import Store from '@ember-data/store';
 import RouterService from '@ember/routing/router-service';
@@ -64,16 +64,13 @@ export default class InfoForMunicipalitiesController extends Controller {
 
   @task
   *loadData(): Generator<Promise<string[]>> {
-    const options = yield this.store
+    this.options = this.store
       .query('werkingsgebied', {
         sort: 'naam',
       })
-      .then((areas) => areas.filter(filterOutCompositeAreas))
-      .then((areas) => areas.map((area) => area.naam))
-      .then((areas) => areas.uniq());
-
-    // @ts-ignore
-    this.options = options;
+      .filter(filterOutCompositeAreas)
+      .map((area) => area.naam)
+      .uniq();
   }
 
   @restartableTask
