@@ -10,7 +10,7 @@ import RouterService from '@ember/routing/router-service';
 // @ts-ignore
 import hljs from 'highlight.js/lib/core';
 
-import { filterOutCompositeAreas } from 'frontend-poc-participatie/models/werkingsgebied';
+import { filterOutCompositeAreas } from 'frontend-lokaalbeslist/models/werkingsgebied';
 
 export default class InfoForMunicipalitiesController extends Controller {
   @service declare store: Store;
@@ -40,7 +40,7 @@ export default class InfoForMunicipalitiesController extends Controller {
     // prettier-ignore
     return `<iframe
   src="${server}${this.router.urlFor('search-embedded', {embedded: selected})}/"
-  title="XXXParticipatie"
+  title="LokaalBeslist"
   width="100%"
   height="800px"
   frameborder="0"

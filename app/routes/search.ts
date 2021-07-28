@@ -1,14 +1,14 @@
 import Route from '@ember/routing/route';
 import ArrayProxy from '@ember/array/proxy';
 
-import { SearchResult } from 'frontend-poc-participatie/utils/search-result';
-import muSearch from 'frontend-poc-participatie/utils/mu-search';
+import { SearchResult } from 'frontend-lokaalbeslist/utils/search-result';
+import muSearch from 'frontend-lokaalbeslist/utils/mu-search';
 import {
   QueryStateManager,
   URL_PARAM_FIELDS,
-} from 'frontend-poc-participatie/utils/query-state';
+} from 'frontend-lokaalbeslist/utils/query-state';
 
-import SearchController from 'frontend-poc-participatie/controllers/search';
+import SearchController from 'frontend-lokaalbeslist/controllers/search';
 
 // import type RouterService from '@ember/routing/router-service';
 // type Transition = ReturnType<RouterService.transitionTo]>;

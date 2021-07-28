@@ -6,7 +6,7 @@ import { task, TaskGenerator, timeout } from 'ember-concurrency';
 import { taskFor } from 'ember-concurrency-ts';
 import { restartableTask } from 'ember-concurrency-decorators';
 import Store from '@ember-data/store';
-import Bestuurseenheid from 'frontend-poc-participatie/models/bestuurseenheid';
+import Bestuurseenheid from 'frontend-lokaalbeslist/models/bestuurseenheid';
 import ArrayProxy from '@ember/array/proxy';
 
 interface SearchFilterAdministrativeUnitSelectArgs {

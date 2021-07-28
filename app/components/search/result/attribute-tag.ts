@@ -5,7 +5,7 @@ import {
 } from '../../../utils/attributes';
 
 import Component from '@glimmer/component';
-import { SearchResult } from 'frontend-poc-participatie/utils/search-result';
+import { SearchResult } from 'frontend-lokaalbeslist/utils/search-result';
 
 interface Args {
   /** The search result (with all attributes) */

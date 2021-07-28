@@ -7,7 +7,7 @@ import {
   QueryState,
   QueryStateManager,
   DEFAULT_URL_STATE,
-} from 'frontend-poc-participatie/utils/query-state';
+} from 'frontend-lokaalbeslist/utils/query-state';
 
 const SORT_OPTIONS_DEFAULT = 'relevance';
 const SORT_OPTIONS = {

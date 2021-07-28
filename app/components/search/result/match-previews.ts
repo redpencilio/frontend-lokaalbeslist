@@ -2,8 +2,8 @@ import Component from '@glimmer/component';
 import {
   AGENDA_POINT_ATTRIBUTES,
   iterate,
-} from 'frontend-poc-participatie/utils/attributes';
-import { SearchResult } from 'frontend-poc-participatie/utils/search-result';
+} from 'frontend-lokaalbeslist/utils/attributes';
+import { SearchResult } from 'frontend-lokaalbeslist/utils/search-result';
 
 interface Args {
   result: SearchResult;

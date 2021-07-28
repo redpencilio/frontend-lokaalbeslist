@@ -6,7 +6,7 @@ import { timeout } from 'ember-concurrency';
 import { restartableTask, task } from 'ember-concurrency-decorators';
 import Store from '@ember-data/store';
 
-import { filterOutCompositeAreas } from 'frontend-poc-participatie/models/werkingsgebied';
+import { filterOutCompositeAreas } from 'frontend-lokaalbeslist/models/werkingsgebied';
 import { taskFor } from 'ember-concurrency-ts';
 
 

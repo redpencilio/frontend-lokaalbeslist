@@ -1,5 +1,5 @@
-import Application from 'frontend-poc-participatie/app';
-import config from 'frontend-poc-participatie/config/environment';
+import Application from 'frontend-lokaalbeslist/app';
+import config from 'frontend-lokaalbeslist/config/environment';
 import * as QUnit from 'qunit';
 import { setApplication } from '@ember/test-helpers';
 import { setup } from 'qunit-dom';

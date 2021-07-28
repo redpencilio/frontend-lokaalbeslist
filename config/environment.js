@@ -2,7 +2,7 @@
 
 module.exports = function (environment) {
   let ENV = {
-    modulePrefix: 'frontend-poc-participatie',
+    modulePrefix: 'frontend-lokaalbeslist',
     environment,
     rootURL: '/',
     locationType: 'auto',

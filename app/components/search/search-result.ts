@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 
-import { SearchResult } from 'frontend-poc-participatie/utils/search-result';
+import { SearchResult } from 'frontend-lokaalbeslist/utils/search-result';
 
 interface Arguments {
   result: SearchResult;

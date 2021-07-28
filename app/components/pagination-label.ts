@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { PaginationData } from 'frontend-poc-participatie/components/pagination';
+import { PaginationData } from 'frontend-lokaalbeslist/components/pagination';
 
 interface PaginationLabelComponentArgs {
   pagination: PaginationData,

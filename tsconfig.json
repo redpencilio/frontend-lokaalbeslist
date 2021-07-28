@@ -21,10 +21,10 @@
     "module": "es6",
     "experimentalDecorators": true,
     "paths": {
-      "frontend-poc-participatie/tests/*": [
+      "frontend-lokaalbeslist/tests/*": [
         "tests/*"
       ],
-      "frontend-poc-participatie/*": [
+      "frontend-lokaalbeslist/*": [
         "app/*"
       ],
       "*": [

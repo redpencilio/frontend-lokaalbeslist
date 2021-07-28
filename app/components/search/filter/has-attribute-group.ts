@@ -4,7 +4,7 @@ import Component from '@glimmer/component';
 import {
   AGENDA_POINT_ATTRIBUTES,
   isResourceConfig,
-} from 'frontend-poc-participatie/utils/attributes';
+} from 'frontend-lokaalbeslist/utils/attributes';
 
 interface Args {
   currentState: Set<string>;

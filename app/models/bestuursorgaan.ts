@@ -1,7 +1,7 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import DS from 'ember-data';
-import Bestuurseenheid from 'frontend-poc-participatie/models/bestuurseenheid';
-import BestuursorgaanClassificatieCode from 'frontend-poc-participatie/models/bestuursorgaan-classificatie-code';
+import Bestuurseenheid from 'frontend-lokaalbeslist/models/bestuurseenheid';
+import BestuursorgaanClassificatieCode from 'frontend-lokaalbeslist/models/bestuursorgaan-classificatie-code';
 
 export default class Bestuursorgaan extends Model {
   @attr() declare uri: string;

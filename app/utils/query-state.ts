@@ -243,7 +243,7 @@ interface Selection {
 
 const QUERY_PARAMETERS = {
   page: new SimpleQueryParameter<number>(0),
-  size: new SimpleQueryParameter<number>( 20),
+  size: new SimpleQueryParameter<number>(20),
   sort: new SortQueryParameter(),
   search: new SearchQueryParameter(),
   isHandled: new IsHandledQueryParameter(),

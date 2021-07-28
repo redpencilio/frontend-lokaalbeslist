@@ -1,4 +1,4 @@
-import muSearch from 'frontend-poc-participatie/utils/mu-search';
+import muSearch from 'frontend-lokaalbeslist/utils/mu-search';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | mu-search', function () {

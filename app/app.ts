@@ -1,7 +1,7 @@
 import Application from '@ember/application';
 import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
-import config from 'frontend-poc-participatie/config/environment';
+import config from 'frontend-lokaalbeslist/config/environment';
 
 import hljs from 'highlight.js/lib/core';
 import xml from "highlight.js/lib/languages/xml";

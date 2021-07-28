@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 
-import { QueryStateManager } from 'frontend-poc-participatie/utils/query-state';
+import { QueryStateManager } from 'frontend-lokaalbeslist/utils/query-state';
 
 export default class SearchController extends Controller {
   @service declare router: RouterService;

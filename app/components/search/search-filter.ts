@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import Store from '@ember-data/store';
 
 import cloneDeep from 'lodash.clonedeep';
-import { QueryState } from 'frontend-poc-participatie/utils/query-state';
+import { QueryState } from 'frontend-lokaalbeslist/utils/query-state';
 
 interface Args {
   currentState: QueryState;
