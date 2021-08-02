@@ -1,0 +1,27 @@
+<label class="checkbox is-flex is-align-items-center">
+  <XToggle
+    @theme="ios"
+    @size="small"
+    @value={{this.advancedFilters}}
+    @onToggle={{fn (mut this.advancedFilters)}}
+  />
+  Geavanceerde filters
+</label>
+
+{{#if this.advancedFilters}}
+  <SubscriptionFilter::ConstraintPicker/>
+{{else}}
+  Kies je gemeente:
+  <PowerSelect
+    @loadingMessage="Aan het laden..."
+    @searchPlaceholder="Typ om te zoeken..."
+    @searchEnabled={{true}}
+    @search={{perform this.searchGovernanceArea}}
+    @onChange={{this.changeSelectedGovernanceArea}}
+    @selected={{this.selectedGovernanceArea}}
+    @options={{this.governanceAreas}}
+    as |area|
+  >
+    {{area}}
+  </PowerSelect>
+{{/if}}

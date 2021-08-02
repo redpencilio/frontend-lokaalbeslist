@@ -1,0 +1,42 @@
+{{page-title "Blijf op de hoogte"}}
+<Navbar />
+
+<h3 class="title is-3">
+  Blijf op de hoogte!
+</h3>
+<p class="subtitle is-5">
+  Schrijf je in om de laatste nieuwe agendapunten in je mailbox te ontvangen.
+</p>
+
+<form>
+  Vul je e-mail adres in:
+
+  <input
+    class="input"
+    placeholder="mijn@email.be"
+    type="email"
+    required
+    {{on "input" this.updateEmail}}
+  />
+
+  Hoe vaak wil je mails ontvangen?
+
+  <PowerSelect
+    @loadingMessage="Aan het laden..."
+    @onChange={{this.changeFrequency}}
+    @selected={{this.frequency}}
+    @options={{this.frequencies}}
+    as |frequency|
+  >
+    {{frequency}}
+  </PowerSelect>
+
+  <SubscriptionFilter::Filter />
+
+  <input
+    class="input"
+    type="submit"
+    value="Abonneer"
+    {{on "click" this.submitSubscription}}
+  />
+</form>

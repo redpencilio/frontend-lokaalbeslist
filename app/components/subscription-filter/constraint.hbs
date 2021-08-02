@@ -1,0 +1,38 @@
+<PowerSelect
+  @selected={{@constraint.subject}}
+  @onChange={{fn (mut @constraint.subject)}}
+  @options={{this.subjects}}
+  as |option|
+>
+  {{translate-constraint-subject option}}
+</PowerSelect>
+
+<PowerSelect
+  @selected={{@constraint.predicate}}
+  @onChange={{fn (mut @constraint.predicate)}}
+  @options={{this.predicates}}
+  as |option|
+>
+  {{translate-constraint-predicate option}}
+</PowerSelect>
+
+{{#if this.showText}}
+  <input
+    class="input"
+    placeholder="waarde"
+    type="text"
+    value={{@constraint.object}}
+    required
+    {{on "input" this.setObject}}
+  />
+{{/if}}
+
+{{#if this.showDate}}
+  <input
+    class="input"
+    type="date"
+    value={{@constraint.object}}
+    required
+    {{on "input" this.setObject}}
+  />
+{{/if}}

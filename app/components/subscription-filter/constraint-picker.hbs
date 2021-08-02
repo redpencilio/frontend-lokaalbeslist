@@ -1,0 +1,23 @@
+<XToggle
+  @onLabel="Voldoet aan alle regels"
+  @offLabel="Voldoet aan minstens 1 regel"
+  @showLabels={{true}}
+  @value={{this.requireAll}}
+  @onToggle={{fn (mut this.requireAll)}}
+/>
+
+{{#each this.constraints as |constraint|}}
+  <SubscriptionFilter::Constraint @constraint={{constraint}} />
+
+  <input
+    type="button"
+    value="Regel verwijderen"
+    {{on "click" (fn this.removeConstraint constraint)}}
+  />
+{{/each}}
+
+<input
+  type="button"
+  value="Nieuwe regel"
+  {{on 'click' this.addConstraint}}
+/>
