@@ -2,9 +2,9 @@ import Component from '@glimmer/component';
 import {
   ConstraintObjectType,
   ConstraintPredicate,
-  constraintPredicates,
+  constraintPredicates, ConstraintSubject,
   constraintSubjects
-} from 'frontend-lokaalbeslist/utils/constraints';
+} from "frontend-lokaalbeslist/utils/constraints";
 import SubscriptionFilterConstraint from 'frontend-lokaalbeslist/models/subscription-filter-constraint';
 import { action } from '@ember/object';
 
@@ -18,16 +18,19 @@ export default class ConstraintComponent extends Component<ConstraintComponentAr
   }
 
   get predicates() {
-    return constraintPredicates.filter((pred) => this.allowedPredicate(pred));
+    return constraintPredicates.filter((pred) => this.allowedPredicate(
+      pred,
+      this.args.constraint.subject
+    ));
   }
 
-  allowedPredicate(predicate: ConstraintPredicate): boolean {
+  allowedPredicate(predicate: ConstraintPredicate, subject: ConstraintSubject): boolean {
     const type = this.predicateObjectType(predicate);
     if (type === ConstraintObjectType.None) {
       return true;
-    } else if (['title', 'description', 'sessionLocation'].includes(this.args.constraint.subject)) {
+    } else if (['title', 'description', 'sessionLocation'].includes(subject)) {
       return type === ConstraintObjectType.Text;
-    } else if (['sessionDate'].includes(this.args.constraint.subject)) {
+    } else if (['sessionDate'].includes(subject)) {
       return type === ConstraintObjectType.Date;
     }
     return false;
@@ -65,5 +68,13 @@ export default class ConstraintComponent extends Component<ConstraintComponentAr
   @action
   setObject(event: Event) {
     this.args.constraint.object = (event.target as HTMLInputElement).value;
+  }
+
+  @action
+  setSubject(subject: ConstraintSubject) {
+    this.args.constraint.subject = subject;
+    if (!this.allowedPredicate(this.args.constraint.predicate, subject)) {
+      this.args.constraint.predicate = this.predicates[0];
+    }
   }
 }

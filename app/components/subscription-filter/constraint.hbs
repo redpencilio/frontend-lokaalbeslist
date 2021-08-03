@@ -1,6 +1,6 @@
 <PowerSelect
   @selected={{@constraint.subject}}
-  @onChange={{fn (mut @constraint.subject)}}
+  @onChange={{this.setSubject}}
   @options={{this.subjects}}
   as |option|
 >
