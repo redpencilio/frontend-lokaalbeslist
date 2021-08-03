@@ -4,8 +4,11 @@ import { inject as service}  from '@ember/service';
 import SubscriptionFilterConstraint from 'frontend-lokaalbeslist/models/subscription-filter-constraint';
 import Store from '@ember-data/store';
 import { action } from '@ember/object';
+import SubscriptionFilter from "frontend-lokaalbeslist/models/subscription-filter";
 
-interface ConstraintPickerComponentArgs {}
+interface ConstraintPickerComponentArgs {
+  filter: SubscriptionFilter
+}
 
 export default class ConstraintPickerComponent extends Component<ConstraintPickerComponentArgs> {
   @service declare store: Store;
@@ -13,17 +16,8 @@ export default class ConstraintPickerComponent extends Component<ConstraintPicke
   @tracked
   requireAll: boolean = false;
 
-  @tracked
-  constraints: SubscriptionFilterConstraint[] = [];
-
   constructor(owner: unknown, args: ConstraintPickerComponentArgs) {
     super(owner, args);
-
-    const firstFilter = this.store.createRecord('subscription-filter-constraint');
-    firstFilter.subject = 'title';
-    firstFilter.predicate = 'textContains';
-    firstFilter.object = '';
-    this.constraints = [firstFilter];
   }
 
   @action
@@ -32,12 +26,11 @@ export default class ConstraintPickerComponent extends Component<ConstraintPicke
     newFilter.subject = 'title';
     newFilter.predicate = 'textContains';
     newFilter.object = '';
-    this.constraints.push(newFilter);
-    this.constraints = this.constraints;
+    this.args.filter.constraints.addObject(newFilter);
   }
 
   @action
   removeConstraint(constraint: SubscriptionFilterConstraint) {
-    this.constraints = this.constraints.filter(c => c != constraint);
+    this.args.filter.constraints.removeObject(constraint);
   }
 }

@@ -6,7 +6,7 @@
   @onToggle={{fn (mut this.requireAll)}}
 />
 
-{{#each this.constraints as |constraint|}}
+{{#each @filter.constraints as |constraint|}}
   <SubscriptionFilter::Constraint @constraint={{constraint}} />
 
   <input

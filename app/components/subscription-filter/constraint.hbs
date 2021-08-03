@@ -26,7 +26,6 @@
     {{on "input" this.setObject}}
   />
 {{/if}}
-
 {{#if this.showDate}}
   <input
     class="input"
@@ -34,5 +33,11 @@
     value={{@constraint.object}}
     required
     {{on "input" this.setObject}}
+  />
+{{/if}}
+{{#if this.showGovernanceArea}}
+  <SingleGovernanceAreaSelect
+    @onSelect={{this.setObject}}
+    @initialValue={{@constraint.object}}
   />
 {{/if}}

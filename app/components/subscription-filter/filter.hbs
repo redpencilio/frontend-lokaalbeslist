@@ -3,25 +3,16 @@
     @theme="ios"
     @size="small"
     @value={{this.advancedFilters}}
-    @onToggle={{fn (mut this.advancedFilters)}}
+    @onToggle={{this.setAdvancedFilters}}
   />
   Geavanceerde filters
 </label>
 
 {{#if this.advancedFilters}}
-  <SubscriptionFilter::ConstraintPicker/>
+  <SubscriptionFilter::ConstraintPicker
+    @filter={{@filter}}
+  />
 {{else}}
   Kies je gemeente:
-  <PowerSelect
-    @loadingMessage="Aan het laden..."
-    @searchPlaceholder="Typ om te zoeken..."
-    @searchEnabled={{true}}
-    @search={{perform this.searchGovernanceArea}}
-    @onChange={{this.changeSelectedGovernanceArea}}
-    @selected={{this.selectedGovernanceArea}}
-    @options={{this.governanceAreas}}
-    as |area|
-  >
-    {{area}}
-  </PowerSelect>
+  <SingleGovernanceAreaSelect @onSelect={{this.changeSelectedGovernanceArea}} />
 {{/if}}

@@ -1,7 +1,7 @@
 import { helper } from '@ember/component/helper';
 import { ConstraintPredicate } from 'frontend-lokaalbeslist/utils/constraints';
 
-export default helper((params) => {
+export default helper((params: ConstraintPredicate[]) => {
   const subject: ConstraintPredicate = params[0];
   switch (subject) {
     case 'textEquals': return "is"
@@ -11,6 +11,6 @@ export default helper((params) => {
     case 'dateIsAfter': return "is na"
     case 'exists': return "is bekend"
     case 'notExists': return "is niet bekend"
-    default: return "ONBEKENDE VOORWAARDE"
+    case 'governanceAreaEquals': return "is"
   }
 });

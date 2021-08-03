@@ -6,6 +6,7 @@ export default helper((params) => {
   switch (subject) {
     case 'description': return "Beschrijving"
     case 'title': return "Titel"
+    case 'governanceArea': return "Gemeente"
     case 'sessionDate': return "Zittingsdatum"
     case 'sessionLocation': return "Locatie van zitting"
   }

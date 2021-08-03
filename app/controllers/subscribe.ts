@@ -27,6 +27,10 @@ export default class SubscribeController extends Controller {
   @tracked
   frequency: Frequency = Frequency.Wekelijks;
 
+  constructor() {
+    super();
+  }
+
   get frequencies() {
     return Object.keys(Frequency).filter((x) => isNaN(Number(x)));
   }
@@ -43,9 +47,9 @@ export default class SubscribeController extends Controller {
 
   @action
   submitSubscription(event: Event) {
+    // TODO: validity message
     if ((event.target as HTMLInputElement).form?.checkValidity()) {
       console.log(this.email);
-      console.log(this.frequency);
     }
     event.preventDefault();
   }

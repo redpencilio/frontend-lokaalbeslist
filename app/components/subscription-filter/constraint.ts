@@ -1,12 +1,13 @@
-import Component from '@glimmer/component';
+import Component from "@glimmer/component";
 import {
   ConstraintObjectType,
   ConstraintPredicate,
-  constraintPredicates, ConstraintSubject,
+  constraintPredicates,
+  ConstraintSubject,
   constraintSubjects
 } from "frontend-lokaalbeslist/utils/constraints";
-import SubscriptionFilterConstraint from 'frontend-lokaalbeslist/models/subscription-filter-constraint';
-import { action } from '@ember/object';
+import SubscriptionFilterConstraint from "frontend-lokaalbeslist/models/subscription-filter-constraint";
+import { action } from "@ember/object";
 
 interface ConstraintComponentArgs {
   constraint: SubscriptionFilterConstraint;
@@ -28,12 +29,18 @@ export default class ConstraintComponent extends Component<ConstraintComponentAr
     const type = this.predicateObjectType(predicate);
     if (type === ConstraintObjectType.None) {
       return true;
-    } else if (['title', 'description', 'sessionLocation'].includes(subject)) {
-      return type === ConstraintObjectType.Text;
-    } else if (['sessionDate'].includes(subject)) {
-      return type === ConstraintObjectType.Date;
     }
-    return false;
+
+    switch (subject) {
+      case 'title':
+      case 'description':
+      case 'sessionLocation':
+        return type === ConstraintObjectType.Text
+      case "sessionDate":
+        return type === ConstraintObjectType.Date
+      case "governanceArea":
+        return type === ConstraintObjectType.GovernanceArea
+    }
   }
 
   predicateObjectType(predicate: ConstraintPredicate): ConstraintObjectType {
@@ -45,12 +52,12 @@ export default class ConstraintComponent extends Component<ConstraintComponentAr
       case 'dateIsBefore':
       case 'dateIsAfter':
         return ConstraintObjectType.Date;
+      case "governanceAreaEquals":
+        return ConstraintObjectType.GovernanceArea;
       case 'exists':
       case 'notExists':
         return ConstraintObjectType.None;
     }
-    // Should be unreachable
-    return ConstraintObjectType.None;
   }
 
   get objectType() {
@@ -63,6 +70,10 @@ export default class ConstraintComponent extends Component<ConstraintComponentAr
 
   get showDate() {
     return this.objectType == ConstraintObjectType.Date;
+  }
+
+  get showGovernanceArea() {
+    return this.objectType == ConstraintObjectType.GovernanceArea;
   }
 
   @action

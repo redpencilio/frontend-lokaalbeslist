@@ -1,50 +1,53 @@
 import Component from '@glimmer/component';
-import { restartableTask, task } from 'ember-concurrency-decorators';
-import { filterOutCompositeAreas } from 'frontend-lokaalbeslist/models/werkingsgebied';
-import { timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import Store from '@ember-data/store';
 import { action } from '@ember/object';
+import SubscriptionFilter from "frontend-lokaalbeslist/models/subscription-filter";
 
-export default class FilterComponent extends Component {
+interface FilterComponentArgs {
+  filter: SubscriptionFilter;
+}
+
+export default class FilterComponent extends Component<FilterComponentArgs> {
   @service declare store: Store;
 
-  @tracked
-  governanceAreas: string[] = [];
+  defaultGovernanceArea: string = "Langemark-Poelkapelle"
 
   @tracked
-  selectedGovernanceArea: string = 'Langemark-Poelkapelle';
+  advancedFilters: boolean = false;
 
-  @tracked
-  advancedFilters: boolean = true;
+  constructor(owner: unknown, args: FilterComponentArgs) {
+    super(owner, args);
 
-  @task
-  *loadData(): Generator<Promise<string[]>> {
-    this.governanceAreas = this.store
-      .query('werkingsgebied', {
-        sort: 'naam',
-      })
-      .filter(filterOutCompositeAreas)
-      .map((area) => area.naam)
-      .uniq();
+    this.resetFilter().catch(console.error);
   }
 
-  @restartableTask
-  *searchGovernanceArea(term: string) {
-    yield timeout(600);
-    return this.store
-      .query('werkingsgebied', {
-        sort: 'naam',
-        filter: term,
-      })
-      .then((areas) => areas.filter(filterOutCompositeAreas))
-      .then((areas) => areas.map((area) => area.naam))
-      .then((areas) => areas.uniq());
+  async resetFilter() {
+    await this.args.filter.constraints.clear();
+    await this.addGovernanceAreaConstraint(this.defaultGovernanceArea);
+  }
+
+  async addGovernanceAreaConstraint(value: string) {
+    const constraint = this.store.createRecord('subscription-filter-constraint');
+    constraint.subject = 'governanceArea';
+    constraint.predicate = 'governanceAreaEquals';
+    constraint.object = value;
+    this.args.filter.constraints.pushObject(constraint);
   }
 
   @action
-  changeSelectedGovernanceArea(value: string): void {
-    this.selectedGovernanceArea = value;
+  async changeSelectedGovernanceArea(value: string) {
+    await this.args.filter.constraints.clear();
+    await this.addGovernanceAreaConstraint(value);
+  }
+
+  @action
+  async setAdvancedFilters(value: boolean) {
+    // If we're switching back to non-advanced, reset the filters
+    if (!value) {
+      await this.resetFilter();
+    }
+    this.advancedFilters = value;
   }
 }

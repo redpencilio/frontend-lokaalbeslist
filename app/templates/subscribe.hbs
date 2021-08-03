@@ -19,7 +19,7 @@
     {{on "input" this.updateEmail}}
   />
 
-  Hoe vaak wil je mails ontvangen?
+  {{!-- Hoe vaak wil je mails ontvangen?
 
   <PowerSelect
     @loadingMessage="Aan het laden..."
@@ -29,9 +29,11 @@
     as |frequency|
   >
     {{frequency}}
-  </PowerSelect>
+  </PowerSelect> --}}
 
-  <SubscriptionFilter::Filter />
+  <SubscriptionFilter::Filter
+    @filter={{@model}}
+  />
 
   <input
     class="input"
