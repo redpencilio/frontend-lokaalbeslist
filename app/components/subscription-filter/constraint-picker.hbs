@@ -1,23 +1,47 @@
-<XToggle
-  @onLabel="Voldoet aan alle regels"
-  @offLabel="Voldoet aan minstens 1 regel"
-  @showLabels={{true}}
-  @value={{this.requireAll}}
-  @onToggle={{fn (mut this.requireAll)}}
-/>
-
-{{#each @filter.constraints as |constraint|}}
-  <SubscriptionFilter::Constraint @constraint={{constraint}} />
+<div class="panel-block flex-column is-justify-content-space-between fix-margin-3">
+  <div class="field">
+    <div class="control">
+      <label class="radio">
+        <input
+          type="radio"
+          name="question"
+          onclick={{action (mut @filter.requireAll) true}}
+          checked={{@filter.requireAll}}
+        />
+        Voldoet aan alle regels
+      </label>
+      <label class="radio">
+        <input
+          type="radio"
+          name="question"
+          onclick={{action (mut @filter.requireAll) false}}
+          checked={{not @filter.requireAll}}
+        />
+        Voldoet aan minstens 1 regel
+      </label>
+    </div>
+  </div>
 
   <input
+    class="button"
     type="button"
-    value="Regel verwijderen"
-    {{on "click" (fn this.removeConstraint constraint)}}
+    value="Nieuwe regel"
+    {{on "click" this.addConstraint}}
   />
-{{/each}}
+</div>
 
-<input
-  type="button"
-  value="Nieuwe regel"
-  {{on 'click' this.addConstraint}}
-/>
+{{#each @filter.constraints as |constraint|}}
+  <div class="panel-block columns">
+    <div class="column is-flex-grow-5">
+      <SubscriptionFilter::Constraint @constraint={{constraint}} />
+    </div>
+    <div class="column">
+      <input
+        class="button"
+        type="button"
+        value="Regel verwijderen"
+        {{on "click" (fn this.removeConstraint constraint)}}
+      />
+    </div>
+  </div>
+{{/each}}

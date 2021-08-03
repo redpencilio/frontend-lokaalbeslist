@@ -1,18 +1,31 @@
-<label class="checkbox is-flex is-align-items-center">
-  <XToggle
-    @theme="ios"
-    @size="small"
-    @value={{this.advancedFilters}}
-    @onToggle={{this.setAdvancedFilters}}
-  />
-  Geavanceerde filters
-</label>
-
-{{#if this.advancedFilters}}
-  <SubscriptionFilter::ConstraintPicker
-    @filter={{@filter}}
-  />
-{{else}}
-  Kies je gemeente:
-  <SingleGovernanceAreaSelect @onSelect={{this.changeSelectedGovernanceArea}} />
-{{/if}}
+<nav class="panel">
+  <p class="panel-heading">
+    <div class="columns is-justify-content-space-between">
+      Filters
+      <p class="is-size-6">
+        <XToggle
+          @theme="ios"
+          @size="small"
+          @value={{this.advancedFilters}}
+          @offLabel="Toon geavanceerde filters"
+          @onLabel=""
+          @showLabels={{true}}
+          @onToggle={{this.setAdvancedFilters}}
+        />
+      </p>
+    </div>
+  </p>
+  {{#if this.advancedFilters}}
+    <SubscriptionFilter::ConstraintPicker @filter={{@filter}}/>
+  {{else}}
+    <div class="panel-block">
+      <label class="label" for="governance-area-select">Kies je gemeente:</label>
+      <div class="control">
+        <SingleGovernanceAreaSelect
+          id="governance-area-select"
+          @onSelect={{this.changeSelectedGovernanceArea}}
+        />
+      </div>
+    </div>
+  {{/if}}
+</nav>

@@ -18,6 +18,9 @@ module.exports = function (defaults) {
     'ember-cli-string-helpers': {
       only: ['capitalize', 'dasherize'],
     },
+    'ember-power-select': {
+      theme: 'bootstrap'
+    }
   });
 
   // Use `app.import` to add additional libraries to the generated

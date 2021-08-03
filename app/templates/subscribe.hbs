@@ -1,44 +1,73 @@
 {{page-title "Blijf op de hoogte"}}
 <Navbar />
 
-<h3 class="title is-3">
-  Blijf op de hoogte!
-</h3>
-<p class="subtitle is-5">
-  Schrijf je in om de laatste nieuwe agendapunten in je mailbox te ontvangen.
-</p>
+<main>
+  <section class="section">
+    <h3 class="title is-3">
+      Blijf op de hoogte!
+    </h3>
+    <p class="subtitle is-5">
+      Schrijf je in om de laatste nieuwe agendapunten in je mailbox te ontvangen.
+    </p>
+  </section>
 
-<form>
-  Vul je e-mail adres in:
+  <section class="section">
+    <form>
+      <div class="columns">
+        <div class="column">
+          <div class="content">
+            <div class="control">
+              <label for="email-input" class="label">
+                E-mail adres:
+              </label>
 
-  <input
-    class="input"
-    placeholder="mijn@email.be"
-    type="email"
-    required
-    {{on "input" this.updateEmail}}
-  />
+              <input
+                id="email-input"
+                class="input"
+                placeholder="mijn@email.be"
+                type="email"
+                required
+                {{on "input" this.updateEmail}}
+              />
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="content">
+            <label for="frequency-input" class="label">
+              Hoe vaak wil je (maximaal) mails ontvangen?
+            </label>
+            <div class="control">
 
-  {{!-- Hoe vaak wil je mails ontvangen?
+              <PowerSelect
+                id="frequency-input"
+                class="select"
+                @loadingMessage="Aan het laden..."
+                @onChange={{this.changeFrequency}}
+                @selected={{this.frequency}}
+                @options={{this.frequencies}}
+                as |frequency|
+              >
+                {{frequency}}
+              </PowerSelect>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <PowerSelect
-    @loadingMessage="Aan het laden..."
-    @onChange={{this.changeFrequency}}
-    @selected={{this.frequency}}
-    @options={{this.frequencies}}
-    as |frequency|
-  >
-    {{frequency}}
-  </PowerSelect> --}}
+      <div class="content">
+        <SubscriptionFilter::Filter
+          @filter={{@model}}
+        />
+      </div>
 
-  <SubscriptionFilter::Filter
-    @filter={{@model}}
-  />
 
-  <input
-    class="input"
-    type="submit"
-    value="Abonneer"
-    {{on "click" this.submitSubscription}}
-  />
-</form>
+      <input
+        class="input is-link"
+        type="submit"
+        value="Abonneer"
+        {{on "click" this.submitSubscription}}
+      />
+    </form>
+  </section>
+</main>

@@ -13,9 +13,6 @@ interface ConstraintPickerComponentArgs {
 export default class ConstraintPickerComponent extends Component<ConstraintPickerComponentArgs> {
   @service declare store: Store;
 
-  @tracked
-  requireAll: boolean = false;
-
   constructor(owner: unknown, args: ConstraintPickerComponentArgs) {
     super(owner, args);
   }
