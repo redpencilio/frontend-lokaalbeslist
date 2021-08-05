@@ -20,9 +20,6 @@ export default class SubscribeController extends Controller {
   @service declare router: RouterService;
 
   @tracked
-  email: string = '';
-
-  @tracked
   frequency: Frequency = Frequency.Wekelijks;
 
   constructor() {
@@ -47,7 +44,6 @@ export default class SubscribeController extends Controller {
   submitSubscription(event: Event) {
     // TODO: validity message
     if ((event.target as HTMLInputElement).form?.checkValidity()) {
-      console.log(this.email);
       Promise.all(this.model.constraints.map(
         (constraint: SubscriptionFilterConstraint) => constraint.save().catch(console.error)
       )).then(() => {

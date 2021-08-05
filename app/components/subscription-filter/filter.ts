@@ -12,20 +12,14 @@ interface FilterComponentArgs {
 export default class FilterComponent extends Component<FilterComponentArgs> {
   @service declare store: Store;
 
-  defaultGovernanceArea: string = "Langemark-Poelkapelle"
-
   @tracked
   advancedFilters: boolean = false;
 
+  @tracked
+  selectedGovernanceAreas: string[] = [];
+
   constructor(owner: unknown, args: FilterComponentArgs) {
     super(owner, args);
-
-    this.resetFilter().catch(console.error);
-  }
-
-  async resetFilter() {
-    await this.args.filter.constraints.clear();
-    await this.addGovernanceAreaConstraint(this.defaultGovernanceArea);
   }
 
   async addGovernanceAreaConstraint(value: string) {
@@ -37,16 +31,17 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
   }
 
   @action
-  async changeSelectedGovernanceArea(value: string) {
+  async changeSelectedGovernanceAreas(values: string[]) {
     await this.args.filter.constraints.clear();
-    await this.addGovernanceAreaConstraint(value);
+    await Promise.all(values.map((value) =>  this.addGovernanceAreaConstraint(value)));
   }
 
   @action
   async setAdvancedFilters(value: boolean) {
-    // If we're switching back to non-advanced, reset the filters
+    // If we're switching back to non-advanced, reset the filter
     if (!value) {
-      await this.resetFilter();
+        await this.args.filter.constraints.clear();
+        this.args.filter.requireAll = false;
     }
     this.advancedFilters = value;
   }

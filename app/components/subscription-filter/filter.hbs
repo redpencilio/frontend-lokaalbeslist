@@ -19,11 +19,12 @@
     <SubscriptionFilter::ConstraintPicker @filter={{@filter}}/>
   {{else}}
     <div class="panel-block">
-      <label class="label" for="governance-area-select">Kies je gemeente:</label>
+      <label class="label" for="governance-area-select">Kies je gemeente(s):</label>
       <div class="control">
-        <SingleGovernanceAreaSelect
+        <Search::Filter::GovernanceAreaSelect
           id="governance-area-select"
-          @onSelect={{this.changeSelectedGovernanceArea}}
+          @onSelectionChange={{this.changeSelectedGovernanceAreas}}
+          @selected={{this.selectedGovernanceAreas}}
         />
       </div>
     </div>
