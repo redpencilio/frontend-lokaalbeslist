@@ -7,6 +7,7 @@ import RouterService from '@ember/routing/router-service';
 
 // @ts-ignore
 import hljs from 'highlight.js/lib/core';
+import SubscriptionFilterConstraint from "frontend-lokaalbeslist/models/subscription-filter-constraint";
 
 enum Frequency {
   Dagelijks = 'dagelijks',
@@ -17,9 +18,6 @@ enum Frequency {
 export default class SubscribeController extends Controller {
   @service declare store: Store;
   @service declare router: RouterService;
-
-  @tracked
-  rendered: boolean = false;
 
   @tracked
   email: string = '';
@@ -42,7 +40,7 @@ export default class SubscribeController extends Controller {
 
   @action
   updateEmail(event: Event) {
-    this.email = (event.target as HTMLInputElement).value;
+    this.model.email = (event.target as HTMLInputElement).value;
   }
 
   @action
@@ -50,6 +48,11 @@ export default class SubscribeController extends Controller {
     // TODO: validity message
     if ((event.target as HTMLInputElement).form?.checkValidity()) {
       console.log(this.email);
+      Promise.all(this.model.constraints.map(
+        (constraint: SubscriptionFilterConstraint) => constraint.save().catch(console.error)
+      )).then(() => {
+        this.model.save().catch(console.error);
+      });
     }
     event.preventDefault();
   }

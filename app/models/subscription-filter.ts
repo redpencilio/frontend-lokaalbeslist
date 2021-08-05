@@ -4,6 +4,7 @@ import DS from 'ember-data';
 
 export default class SubscriptionFilter extends Model {
   @attr('boolean') declare requireAll: boolean;
+  @attr('string') declare email: string;
 
   @hasMany('subscription-filter-constraint') declare constraints:
     DS.PromiseManyArray<SubscriptionFilterConstraint>;

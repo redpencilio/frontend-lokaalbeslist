@@ -1,5 +1,4 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { inject as service}  from '@ember/service';
 import SubscriptionFilterConstraint from 'frontend-lokaalbeslist/models/subscription-filter-constraint';
 import Store from '@ember-data/store';
