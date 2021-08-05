@@ -1,0 +1,12 @@
+<PowerSelect
+  @loadingMessage="Aan het laden..."
+  @searchPlaceholder="Typ om te zoeken..."
+  @searchEnabled={{true}}
+  @search={{perform this.searchGovernanceArea}}
+  @onChange={{this.changeGovernanceArea}}
+  @selected={{this.selectedGovernanceArea}}
+  @options={{this.governanceAreas}}
+  as |area|
+>
+  {{area}}
+</PowerSelect>

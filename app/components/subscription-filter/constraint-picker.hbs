@@ -1,0 +1,47 @@
+<div class="panel-block flex-column is-justify-content-space-between fix-margin-3">
+  <div class="field">
+    <div class="control">
+      <label class="radio">
+        <input
+          type="radio"
+          name="question"
+          onclick={{action (mut @filter.requireAll) true}}
+          checked={{@filter.requireAll}}
+        />
+        Voldoet aan alle regels
+      </label>
+      <label class="radio">
+        <input
+          type="radio"
+          name="question"
+          onclick={{action (mut @filter.requireAll) false}}
+          checked={{not @filter.requireAll}}
+        />
+        Voldoet aan minstens 1 regel
+      </label>
+    </div>
+  </div>
+
+  <input
+    class="button"
+    type="button"
+    value="Nieuwe regel"
+    {{on "click" this.addConstraint}}
+  />
+</div>
+
+{{#each @filter.constraints as |constraint|}}
+  <div class="panel-block columns">
+    <div class="column is-flex-grow-5">
+      <SubscriptionFilter::Constraint @constraint={{constraint}} />
+    </div>
+    <div class="column">
+      <input
+        class="button"
+        type="button"
+        value="Regel verwijderen"
+        {{on "click" (fn this.removeConstraint constraint)}}
+      />
+    </div>
+  </div>
+{{/each}}
