@@ -39,17 +39,4 @@ export default class SubscribeController extends Controller {
   updateEmail(event: Event) {
     this.model.email = (event.target as HTMLInputElement).value;
   }
-
-  @action
-  submitSubscription(event: Event) {
-    // TODO: validity message
-    if ((event.target as HTMLInputElement).form?.checkValidity()) {
-      Promise.all(this.model.constraints.map(
-        (constraint: SubscriptionFilterConstraint) => constraint.save().catch(console.error)
-      )).then(() => {
-        this.model.save().catch(console.error);
-      });
-    }
-    event.preventDefault();
-  }
 }

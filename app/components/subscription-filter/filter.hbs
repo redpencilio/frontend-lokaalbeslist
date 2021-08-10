@@ -31,4 +31,13 @@
       </div>
     </div>
   {{/if}}
+  <div class="panel-block">
+    <button
+      class="button is-success"
+      {{on "click" this.saveFilter}}
+    >Opslaan</button>
+    {{#if @allowDelete}}
+      <button class="button is-danger">Verwijderen</button>
+    {{/if}}
+  </div>
 </nav>

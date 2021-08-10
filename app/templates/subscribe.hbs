@@ -58,16 +58,9 @@
       <div class="content">
         <SubscriptionFilter::Filter
           @filter={{@model}}
+          @allowDelete={{false}}
         />
       </div>
-
-
-      <input
-        class="input is-link"
-        type="submit"
-        value="Abonneer"
-        {{on "click" this.submitSubscription}}
-      />
     </form>
   </section>
 </main>

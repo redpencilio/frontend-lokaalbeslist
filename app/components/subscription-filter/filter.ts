@@ -8,6 +8,7 @@ import SubscriptionFilterConstraint from "frontend-lokaalbeslist/models/subscrip
 
 interface FilterComponentArgs {
   filter: SubscriptionFilter;
+  allowDelete: boolean;
   title?: string;
 }
 
@@ -82,5 +83,14 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
         this.toSimpleFilters();
     }
     this.advancedFiltersSetting = value;
+  }
+
+  @action
+  saveFilter(event: Event) {
+    //TODO: validate & error messages
+    event.preventDefault();
+    Promise.all(this.args.filter.constraints.map((x) => x.save())).then(() => {
+      this.args.filter.save()
+    });
   }
 }
