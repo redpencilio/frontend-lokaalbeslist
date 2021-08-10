@@ -10,6 +10,7 @@ Router.map(function () {
   this.route('search', { path: '/zoek' });
   this.route('search-embedded', { path: '/embed/zoek/:embedded/' });
   this.route('subscribe', { path: '/subscribe' });
+  this.route('subscriptions', { path: '/subscriptions' });
   this.route('info', function () {
     this.route('for-users', { path: 'voor-gebruikers' });
     this.route('for-municipalities', { path: 'voor-gemeentes' });

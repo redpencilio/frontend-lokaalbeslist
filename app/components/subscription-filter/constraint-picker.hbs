@@ -4,7 +4,6 @@
       <label class="radio">
         <input
           type="radio"
-          name="question"
           onclick={{action (mut @filter.requireAll) true}}
           checked={{@filter.requireAll}}
         />
@@ -13,7 +12,6 @@
       <label class="radio">
         <input
           type="radio"
-          name="question"
           onclick={{action (mut @filter.requireAll) false}}
           checked={{not @filter.requireAll}}
         />

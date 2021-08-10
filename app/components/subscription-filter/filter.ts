@@ -4,22 +4,61 @@ import { inject as service } from '@ember/service';
 import Store from '@ember-data/store';
 import { action } from '@ember/object';
 import SubscriptionFilter from "frontend-lokaalbeslist/models/subscription-filter";
+import SubscriptionFilterConstraint from "frontend-lokaalbeslist/models/subscription-filter-constraint";
 
 interface FilterComponentArgs {
   filter: SubscriptionFilter;
+  title?: string;
 }
 
 export default class FilterComponent extends Component<FilterComponentArgs> {
   @service declare store: Store;
 
   @tracked
-  advancedFilters: boolean = false;
+  advancedFiltersSetting: boolean = false;
 
   @tracked
   selectedGovernanceAreas: string[] = [];
 
   constructor(owner: unknown, args: FilterComponentArgs) {
     super(owner, args);
+
+    if (!this.containsAdvancedFilters) {
+      this.toSimpleFilters();
+    }
+  }
+
+  async toSimpleFilters() {
+    this.args.filter.requireAll = false;
+    this.selectedGovernanceAreas.clear();
+    this.args.filter.constraints.forEach((constraint) => {
+      if (constraint.subject === 'governanceArea' &&
+          constraint.predicate === 'governanceAreaEquals' &&
+          constraint.object !== undefined) {
+        this.selectedGovernanceAreas.addObject(constraint.object);
+      }
+    })
+  }
+
+  get title() {
+    return this.args.title || "Filters";
+  }
+
+  get containsAdvancedFilters() {
+    const advancedConstraints = this.args.filter.constraints.filter(
+      (constraint: SubscriptionFilterConstraint) => {
+        return constraint.subject !== 'governanceArea' ||
+               constraint.predicate !== 'governanceAreaEquals';
+      }
+    );
+    return advancedConstraints.length !== 0;
+  }
+
+  get advancedFilters() {
+    if (this.containsAdvancedFilters) {
+      this.advancedFiltersSetting = true;
+    }
+    return this.advancedFiltersSetting;
   }
 
   async addGovernanceAreaConstraint(value: string) {
@@ -40,9 +79,8 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
   async setAdvancedFilters(value: boolean) {
     // If we're switching back to non-advanced, reset the filter
     if (!value) {
-        await this.args.filter.constraints.clear();
-        this.args.filter.requireAll = false;
+        this.toSimpleFilters();
     }
-    this.advancedFilters = value;
+    this.advancedFiltersSetting = value;
   }
 }

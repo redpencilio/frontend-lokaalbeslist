@@ -1,0 +1,15 @@
+{{page-title "Mijn notificaties"}}
+<Navbar />
+
+<section class="section">
+  <h3 class="title is-3"> Notificaties aanpassen </h3>
+  <p class="subtitle is-5"> Hieronder kan je notificatie-instellingen aanpassen,
+  verwijderen en toevoegen. </p>
+
+  {{#each @model as |filter|}}
+   <SubscriptionFilter::Filter
+     @filter={{filter}}
+     @title="Notificatie"
+    />
+  {{/each}}
+</section>

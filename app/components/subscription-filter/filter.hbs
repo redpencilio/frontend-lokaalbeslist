@@ -1,7 +1,8 @@
 <nav class="panel">
   <p class="panel-heading">
     <div class="columns is-justify-content-space-between">
-      Filters
+      {{this.title}}
+
       <p class="is-size-6">
         <XToggle
           @theme="ios"
@@ -11,6 +12,7 @@
           @onLabel=""
           @showLabels={{true}}
           @onToggle={{this.setAdvancedFilters}}
+          @disabled={{this.containsAdvancedFilters}}
         />
       </p>
     </div>
