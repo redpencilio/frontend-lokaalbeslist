@@ -37,7 +37,10 @@
       {{on "click" this.saveFilter}}
     >Opslaan</button>
     {{#if @allowDelete}}
-      <button class="button is-danger">Verwijderen</button>
+      <button
+        class="button is-danger"
+        {{on "click" this.deleteFilter}}
+      >Verwijderen</button>
     {{/if}}
   </div>
 </nav>

@@ -93,4 +93,13 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
       this.args.filter.save()
     });
   }
+
+  @action
+  deleteFilter(event: Event) {
+    event.preventDefault();
+    this.selectedGovernanceAreas.clear();
+    Promise.all(this.args.filter.constraints.map((x) => x.destroyRecord())).then(() => {
+      this.args.filter.destroyRecord();
+    });
+  }
 }

@@ -3,8 +3,8 @@
 
 <section class="section">
   <h3 class="title is-3"> Notificaties aanpassen </h3>
-  <p class="subtitle is-5"> Hieronder kan je notificatie-instellingen aanpassen,
-  verwijderen en toevoegen. </p>
+  <p class="subtitle is-5"> Hieronder kan je notificatie-instellingen aanpassen
+  of verwijderen. </p>
 
   {{#each @model as |filter|}}
    <SubscriptionFilter::Filter
@@ -12,5 +12,7 @@
      @title="Notificatie"
      @allowDelete={{true}}
     />
+  {{else}}
+    <i> U hebt geen notificaties ingesteld. </i>
   {{/each}}
 </section>
