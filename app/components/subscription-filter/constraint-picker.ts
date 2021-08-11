@@ -16,17 +16,53 @@ export default class ConstraintPickerComponent extends Component<ConstraintPicke
     super(owner, args);
   }
 
+  get isChild() {
+    return !!this.args.filter.parentFilter?.content;
+  }
+
   @action
-  addConstraint(_event: Event) {
-    const newFilter = this.store.createRecord('subscription-filter-constraint')
-    newFilter.subject = 'title';
-    newFilter.predicate = 'textContains';
-    newFilter.object = '';
-    this.args.filter.constraints.addObject(newFilter);
+  addConstraint(event: Event) {
+    event.preventDefault();
+    const newConstraint = this.store.createRecord(
+      'subscription-filter-constraint',
+      {
+        subject: 'title',
+        predicate: 'textContains',
+        object: '',
+      }
+    );
+    this.args.filter.constraints.addObject(newConstraint);
+  }
+
+  @action
+  addFilter(event: Event) {
+    event.preventDefault();
+    const constraint = this.store.createRecord(
+      'subscription-filter-constraint',
+      {
+        subject: 'title',
+        predicate: 'textEquals',
+        object: '',
+      }
+    )
+    const newFilter = this.store.createRecord(
+      'subscription-filter',
+      {
+        requireAll: true,
+        constraints: [constraint],
+      }
+    );
+
+    this.args.filter.subFilters.addObject(newFilter);
   }
 
   @action
   removeConstraint(constraint: SubscriptionFilterConstraint) {
     this.args.filter.constraints.removeObject(constraint);
+  }
+
+  @action
+  removeFilter() {
+    this.args.filter.destroyRecord();
   }
 }

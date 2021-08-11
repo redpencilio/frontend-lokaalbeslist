@@ -52,7 +52,8 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
                constraint.predicate !== 'governanceAreaEquals';
       }
     );
-    return advancedConstraints.length !== 0;
+
+    return this.args.filter.subFilters.length !== 0 || advancedConstraints.length !== 0;
   }
 
   get advancedFilters() {
@@ -90,7 +91,9 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
     //TODO: validate & error messages
     event.preventDefault();
     Promise.all(this.args.filter.constraints.map((x) => x.save())).then(() => {
-      this.args.filter.save()
+      Promise.all(this.args.filter.subFilters.map((x) => x.save())).then(() => {
+        this.args.filter.save()
+      });
     });
   }
 

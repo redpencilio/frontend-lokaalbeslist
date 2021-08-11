@@ -1,4 +1,4 @@
-<div class="panel-block flex-column is-justify-content-space-between fix-margin-3">
+<div class="{{ if this.isChild 'panel-heading' }} panel-block flex-column is-justify-content-space-between">
   <div class="field">
     <div class="control">
       <label class="radio">
@@ -20,12 +20,28 @@
     </div>
   </div>
 
-  <input
-    class="button"
-    type="button"
-    value="Nieuwe regel"
-    {{on "click" this.addConstraint}}
-  />
+  <div>
+    <input
+      class="button"
+      type="button"
+      value="Nieuwe groep"
+      {{on "click" this.addFilter}}
+    />
+    <input
+      class="button"
+      type="button"
+      value="Nieuwe regel"
+      {{on "click" this.addConstraint}}
+    />
+    {{#if this.isChild}}
+      <input
+        class="button is-danger"
+        type="button"
+        value="Groep verwijderen"
+        {{on "click" this.removeFilter}}
+      />
+    {{/if}}
+  </div>
 </div>
 
 {{#each @filter.constraints as |constraint|}}
@@ -42,4 +58,8 @@
       />
     </div>
   </div>
+{{/each}}
+
+{{#each @filter.subFilters as |subfilter|}}
+  <SubscriptionFilter::ConstraintPicker @filter={{subfilter}} />
 {{/each}}
