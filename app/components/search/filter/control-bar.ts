@@ -3,6 +3,7 @@ import { action } from '@ember/object';
 
 interface Args {
   onResetFilters(): void;
+  onSaveFilters(): void;
 }
 
 export default class SearchFilterControlBar extends Component<Args> {
@@ -13,9 +14,6 @@ export default class SearchFilterControlBar extends Component<Args> {
 
   @action
   onSaveFilters() {
-    // TODO
-    alert(
-      'Dit is nog niet geïmplementeerd. U kan momenteel deze pagina toevoegen aan uw bladwijzers om deze filters te bewaren.'
-    );
+    this.args.onSaveFilters();
   }
 }

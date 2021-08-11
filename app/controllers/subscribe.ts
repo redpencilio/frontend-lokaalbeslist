@@ -7,7 +7,6 @@ import RouterService from '@ember/routing/router-service';
 
 // @ts-ignore
 import hljs from 'highlight.js/lib/core';
-import SubscriptionFilterConstraint from "frontend-lokaalbeslist/models/subscription-filter-constraint";
 
 enum Frequency {
   Dagelijks = 'dagelijks',
@@ -18,6 +17,14 @@ enum Frequency {
 export default class SubscribeController extends Controller {
   @service declare store: Store;
   @service declare router: RouterService;
+
+  queryParams = ['search', 'governanceAreas'];
+
+  @tracked
+  search: string = "";
+
+  @tracked
+  governanceAreas: string[] = [];
 
   @tracked
   frequency: Frequency = Frequency.Wekelijks;

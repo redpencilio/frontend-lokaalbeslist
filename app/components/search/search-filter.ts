@@ -6,14 +6,18 @@ import Store from '@ember-data/store';
 
 import cloneDeep from 'lodash.clonedeep';
 import { QueryState } from 'frontend-lokaalbeslist/utils/query-state';
+import Router from 'frontend-lokaalbeslist/router';
 
 interface Args {
   currentState: QueryState;
   updateFilters(filters: QueryState): void;
+  resetFilters(): void;
 }
 
 export default class SearchFilterComponent extends Component<Args> {
   @service declare store: Store;
+
+  @service declare router: Router;
 
   state: QueryState = cloneDeep(this.args.currentState);
 
@@ -48,6 +52,16 @@ export default class SearchFilterComponent extends Component<Args> {
   updateGovernanceAreas(governanceAreas: string[]) {
     this.state.governanceArea.selected = new Set(governanceAreas);
     this.propagate();
+  }
+
+  @action
+  saveFilters() {
+    this.router.transitionTo('subscribe',  {
+      queryParams: {
+        search: this.state.search,
+        governanceAreas: Array.from(this.state.governanceArea.selected),
+      }
+    });
   }
 
   propagate({ debounced }: { debounced: boolean } = { debounced: false }) {
