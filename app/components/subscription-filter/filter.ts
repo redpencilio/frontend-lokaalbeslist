@@ -78,7 +78,7 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
   }
 
   @action
-  async setAdvancedFilters(value: boolean) {
+  setAdvancedFilters(value: boolean) {
     // If we're switching back to non-advanced, reset the filter
     if (!value) {
         this.toSimpleFilters();
@@ -87,14 +87,26 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
   }
 
   @action
-  saveFilter(event: Event) {
+  async saveFilter(event: Event) {
     //TODO: validate & error messages
+    if (!this.args.filter.email) {
+      alert("Vul aub een e-mail adres in");
+    }
     event.preventDefault();
-    Promise.all(this.args.filter.constraints.map((x) => x.save())).then(() => {
-      Promise.all(this.args.filter.subFilters.map((x) => x.save())).then(() => {
-        this.args.filter.save()
-      });
-    });
+    return await this.recursiveSave(this.args.filter);
+  }
+
+  async recursiveSave(filter: SubscriptionFilter) {
+    await Promise.all(
+      filter.subFilters.map(async (subFilter) => {
+        await this.recursiveSave(subFilter)
+      })
+    );
+    await Promise.all(
+      filter.constraints.map(async (x) => await x.save())
+    )
+
+    await filter.save()
   }
 
   @action

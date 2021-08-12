@@ -20,7 +20,7 @@ export default class SubscribeRoute extends Route {
       requireAll: true,
     });
 
-    if (params.governanceAreas) {
+    if (params.governanceAreas && params.governanceAreas.length > 0) {
       let governanceAreaFilter = this.store.createRecord(
         'subscription-filter',
         {

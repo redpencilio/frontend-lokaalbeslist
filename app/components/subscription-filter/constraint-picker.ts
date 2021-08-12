@@ -6,7 +6,8 @@ import { action } from '@ember/object';
 import SubscriptionFilter from "frontend-lokaalbeslist/models/subscription-filter";
 
 interface ConstraintPickerComponentArgs {
-  filter: SubscriptionFilter
+  filter: SubscriptionFilter,
+  isChild: boolean
 }
 
 export default class ConstraintPickerComponent extends Component<ConstraintPickerComponentArgs> {
@@ -14,10 +15,6 @@ export default class ConstraintPickerComponent extends Component<ConstraintPicke
 
   constructor(owner: unknown, args: ConstraintPickerComponentArgs) {
     super(owner, args);
-  }
-
-  get isChild() {
-    return !!this.args.filter.parentFilter?.content;
   }
 
   @action

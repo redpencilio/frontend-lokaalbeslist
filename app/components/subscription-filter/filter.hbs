@@ -18,7 +18,7 @@
     </div>
   </p>
   {{#if this.advancedFilters}}
-    <SubscriptionFilter::ConstraintPicker @filter={{@filter}}/>
+    <SubscriptionFilter::ConstraintPicker @filter={{@filter}} @isChild={{false}}/>
   {{else}}
     <div class="panel-block">
       <label class="label" for="governance-area-select">Kies je gemeente(s):</label>
