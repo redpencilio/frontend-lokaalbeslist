@@ -9,7 +9,27 @@ import SubscriptionFilterConstraint from "frontend-lokaalbeslist/models/subscrip
 interface FilterComponentArgs {
   filter: SubscriptionFilter;
   allowDelete: boolean;
+  requireEmail: boolean;
   title?: string;
+  setErrors?: (errors: FilterFormErrors) => void;
+}
+
+export interface FilterFormErrors {
+  email?: string;
+  simpleGovernanceArea?: string;
+  filter?: SubscriptionFilterError;
+}
+
+export interface SubscriptionFilterError {
+  subFilterErrors: SubscriptionFilterError[];
+  constraintErrors: SubscriptionFilterConstraintError[];
+  errorMessage?: string;
+}
+
+export interface SubscriptionFilterConstraintError {
+  subjectError?: string;
+  predicateError?: string;
+  objectError?: string;
 }
 
 export default class FilterComponent extends Component<FilterComponentArgs> {
@@ -20,6 +40,9 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
 
   @tracked
   selectedGovernanceAreas: string[] = [];
+
+  @tracked
+  errors: FilterFormErrors = {};
 
   constructor(owner: unknown, args: FilterComponentArgs) {
     super(owner, args);
@@ -75,6 +98,7 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
   async changeSelectedGovernanceAreas(values: string[]) {
     await this.args.filter.constraints.clear();
     await Promise.all(values.map((value) =>  this.addGovernanceAreaConstraint(value)));
+    this.selectedGovernanceAreas = values;
   }
 
   @action
@@ -86,14 +110,86 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
     this.advancedFiltersSetting = value;
   }
 
-  @action
-  async saveFilter(event: Event) {
-    //TODO: validate & error messages
-    if (!this.args.filter.email) {
-      alert("Vul aub een e-mail adres in");
+  validate() {
+    this.errors = {};
+    if (this.args.requireEmail && !this.args.filter.email) {
+      this.errors.email = "Vul een e-mail adres in."
     }
+
+    if (this.advancedFilters) {
+      this.errors.filter = this.validateSubscriptionFilter(this.args.filter);
+    } else {
+      if (this.selectedGovernanceAreas.length === 0) {
+        this.errors.simpleGovernanceArea = "Selecteer minstens 1."
+      }
+    }
+
+    this.errors = this.errors;
+
+    if (this.args.setErrors) {
+      this.args.setErrors(this.errors);
+    }
+  }
+
+  validateSubscriptionFilter(filter: SubscriptionFilter): SubscriptionFilterError {
+    let ret: SubscriptionFilterError = {
+      subFilterErrors: filter.subFilters.map(this.validateSubscriptionFilter.bind(this)),
+      constraintErrors: filter.constraints.map(this.validateSubscriptionFilterConstraint.bind(this)),
+    };
+
+    if (filter.subFilters.length === 0 && filter.constraints.length === 0) {
+      ret.errorMessage = "Lege groepen zijn niet toegestaan";
+    }
+
+    return ret;
+  }
+
+  validateSubscriptionFilterConstraint(constraint: SubscriptionFilterConstraint): SubscriptionFilterConstraintError {
+    let ret: SubscriptionFilterConstraintError = {}
+
+    if (!constraint.subject) {
+      ret.subjectError = 'Kies een onderwerp'
+    }
+
+    if (!constraint.predicate) {
+      ret.predicateError = 'Kies een eigenschap'
+    }
+
+    if (!constraint.object && (
+      constraint.predicate !== 'exists' &&
+      constraint.predicate !== 'notExists'
+    )) {
+      ret.objectError = 'Kies een waarde'
+    }
+
+    return ret;
+  }
+
+  @action
+  saveFilter(event: Event) {
     event.preventDefault();
-    return await this.recursiveSave(this.args.filter);
+    this.validate();
+
+    if (this.hasErrors) {
+      return;
+    }
+
+    return this.recursiveSave(this.args.filter);
+  }
+
+  get hasErrors(): boolean {
+    return !!this.errors.email || !!this.errors.simpleGovernanceArea || this.hasFilterErrors(this.errors.filter);
+  }
+
+  hasFilterErrors(filterError: SubscriptionFilterError | undefined): boolean {
+    if (!filterError) {
+      return false;
+    }
+
+    return filterError.subFilterErrors.any(this.hasFilterErrors) ||
+      filterError.constraintErrors.any((constraint) => {
+        return (!!constraint.subjectError || !!constraint.predicateError || !!constraint.objectError)
+      })
   }
 
   async recursiveSave(filter: SubscriptionFilter) {

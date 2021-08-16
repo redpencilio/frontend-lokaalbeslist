@@ -18,6 +18,9 @@
         Voldoet aan minstens 1 regel
       </label>
     </div>
+    {{#if @errors.errorMessage}}
+      <p class="help is-danger">{{@errors.errorMessage}}</p>
+    {{/if}}
   </div>
 
   <div>
@@ -44,10 +47,13 @@
   </div>
 </div>
 
-{{#each @filter.constraints as |constraint|}}
+{{#each @filter.constraints as |constraint index|}}
   <div class="panel-block columns">
     <div class="column is-flex-grow-5">
-      <SubscriptionFilter::Constraint @constraint={{constraint}} />
+      <SubscriptionFilter::Constraint
+        @constraint={{constraint}}
+        @errors={{get @errors.constraintErrors (concat index)}}
+      />
     </div>
     <div class="column">
       <input
@@ -60,6 +66,10 @@
   </div>
 {{/each}}
 
-{{#each @filter.subFilters as |subfilter|}}
-  <SubscriptionFilter::ConstraintPicker @filter={{subfilter}} @isChild={{true}} />
+{{#each @filter.subFilters as |subfilter index|}}
+  <SubscriptionFilter::ConstraintPicker
+    @filter={{subfilter}}
+    @isChild={{true}}
+    @errors={{get @errors.subFilterErrors (concat index)}}
+  />
 {{/each}}

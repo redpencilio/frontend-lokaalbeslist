@@ -8,9 +8,11 @@ import {
 } from "frontend-lokaalbeslist/utils/constraints";
 import SubscriptionFilterConstraint from "frontend-lokaalbeslist/models/subscription-filter-constraint";
 import { action } from "@ember/object";
+import { SubscriptionFilterConstraintError } from "./filter";
 
 interface ConstraintComponentArgs {
   constraint: SubscriptionFilterConstraint;
+  errors: SubscriptionFilterConstraintError;
 }
 
 export default class ConstraintComponent extends Component<ConstraintComponentArgs> {

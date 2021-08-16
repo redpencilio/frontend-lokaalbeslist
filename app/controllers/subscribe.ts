@@ -7,6 +7,7 @@ import RouterService from '@ember/routing/router-service';
 
 // @ts-ignore
 import hljs from 'highlight.js/lib/core';
+import { FilterFormErrors } from 'frontend-lokaalbeslist/components/subscription-filter/filter';
 
 enum Frequency {
   Dagelijks = 'dagelijks',
@@ -29,6 +30,9 @@ export default class SubscribeController extends Controller {
   @tracked
   frequency: Frequency = Frequency.Wekelijks;
 
+  @tracked
+  errors: FilterFormErrors | undefined;
+
   constructor() {
     super();
   }
@@ -45,5 +49,10 @@ export default class SubscribeController extends Controller {
   @action
   updateEmail(event: Event) {
     this.model.email = (event.target as HTMLInputElement).value;
+  }
+
+  @action
+  setErrors(errors: FilterFormErrors) {
+    this.errors = errors;
   }
 }

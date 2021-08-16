@@ -18,7 +18,7 @@
     </div>
   </p>
   {{#if this.advancedFilters}}
-    <SubscriptionFilter::ConstraintPicker @filter={{@filter}} @isChild={{false}}/>
+    <SubscriptionFilter::ConstraintPicker @filter={{@filter}} @isChild={{false}} @errors={{this.errors.filter}}/>
   {{else}}
     <div class="panel-block">
       <label class="label" for="governance-area-select">Kies je gemeente(s):</label>
@@ -28,6 +28,10 @@
           @onSelectionChange={{this.changeSelectedGovernanceAreas}}
           @selected={{this.selectedGovernanceAreas}}
         />
+
+        {{#if this.errors.simpleGovernanceArea}}
+        <p class="help is-danger">{{this.errors.simpleGovernanceArea}}</p>
+        {{/if}}
       </div>
     </div>
   {{/if}}
@@ -42,5 +46,5 @@
         {{on "click" this.deleteFilter}}
       >Verwijderen</button>
     {{/if}}
-  </div>
+</div>
 </nav>

@@ -29,6 +29,10 @@
                 required
                 {{on "input" this.updateEmail}}
               />
+
+              {{#if this.errors.email}}
+                <p class="help is-danger">{{this.errors.email}}</p>
+              {{/if}}
             </div>
           </div>
         </div>
@@ -59,6 +63,8 @@
         <SubscriptionFilter::Filter
           @filter={{@model}}
           @allowDelete={{false}}
+          @requireEmail={{true}}
+          @setErrors={{this.setErrors}}
         />
       </div>
     </form>

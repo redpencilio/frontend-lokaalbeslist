@@ -8,6 +8,9 @@
     >
       {{translate-constraint-subject option}}
     </PowerSelect>
+    {{#if @errors.subjectError}}
+      <p class="help is-danger">{{@errors.subjectError}}</p>
+    {{/if}}
   </div>
   <div class="column">
     <PowerSelect
@@ -18,6 +21,10 @@
     >
       {{translate-constraint-predicate option}}
     </PowerSelect>
+
+    {{#if @errors.predicateError}}
+      <p class="help is-danger">{{@errors.predicateError}}</p>
+    {{/if}}
   </div>
   <div class="column">
     {{#if this.showText}}
@@ -44,6 +51,9 @@
         @onSelect={{fn (mut @constraint.object)}}
         @initialValue={{@constraint.object}}
       />
+    {{/if}}
+    {{#if @errors.objectError}}
+      <p class="help is-danger">{{@errors.objectError}}</p>
     {{/if}}
   </div>
 </div>

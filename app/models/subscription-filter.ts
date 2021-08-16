@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+import Model, { attr, hasMany } from '@ember-data/model';
 import SubscriptionFilterConstraint from 'frontend-lokaalbeslist/models/subscription-filter-constraint';
 import DS from 'ember-data';
 

@@ -4,10 +4,12 @@ import SubscriptionFilterConstraint from 'frontend-lokaalbeslist/models/subscrip
 import Store from '@ember-data/store';
 import { action } from '@ember/object';
 import SubscriptionFilter from "frontend-lokaalbeslist/models/subscription-filter";
+import { SubscriptionFilterError } from './filter';
 
 interface ConstraintPickerComponentArgs {
   filter: SubscriptionFilter,
-  isChild: boolean
+  isChild: boolean,
+  errors: SubscriptionFilterError,
 }
 
 export default class ConstraintPickerComponent extends Component<ConstraintPickerComponentArgs> {
