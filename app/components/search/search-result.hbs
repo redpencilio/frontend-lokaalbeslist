@@ -6,7 +6,7 @@
   />
 
   {{! Tags }}
-  <Search::Result::TagList @result={{@result}} />
+  <Search::Result::TagList @result={{@result}} @advanced={{@advanced}} />
 
   {{#if (and @result.description (not this.descriptionEqualToTitle))}}
     <Search::Result::Description
@@ -30,6 +30,8 @@
     </div>
   {{/if}}
 
-  {{! Links }}
-  <Search::Result::LinkList class="mt-2" @result={{@result}} />
+  {{#if @advanced}}
+    {{! Links }}
+    <Search::Result::LinkList class="mt-2" @result={{@result}} />
+  {{/if}}
 </div>

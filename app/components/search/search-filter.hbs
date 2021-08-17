@@ -24,12 +24,6 @@
         </div>
       </div>
 
-      <Search::Filter::IsHandledToggles
-        class="block"
-        @currentState={{@currentState.isHandled}}
-        @update={{fn this.update "isHandled"}}
-      />
-
       {{! Werkingsgebied }}
       {{#unless @currentState.embedded.isEmbedded}}
         <div class="block">
@@ -45,46 +39,43 @@
     </div>
 
     <div id="search-filters-advanced">
-      {{! Advanced filters }}
-      <CpPanel @open={{true}} as |p|>
-        <p.toggle>
-          <span class="icon-text" id="filters-collapse-advanced-toggle">
-            <span class="title is-5 mb-0">
-              Geavanceerd
-            </span>
-
-            {{#if p.isOpen}}
-              <span class="icon" {{render-feather-icons}}>
-                <i data-feather="chevron-down" height="1.25rem"></i>
-              </span>
-            {{else}}
-              <span class="icon" {{render-feather-icons}}>
-                <i data-feather="chevron-right" height="1.25rem"></i>
-              </span>
-            {{/if}}
-          </span>
-        </p.toggle>
-
-        <p.body>
-          <div class="mt-2">
-            <div class="block">
-              <label class="label">
-                Bestuurseenheid
-              </label>
-              <Search::Filter::AdministrativeUnitSelect
-                @selected={{this.selectedAdministrativeUnits}}
-                @onSelectionChange={{this.updateAdministrativeUnits}}
-              />
-            </div>
-
-            <Search::Filter::HasAttributeGroup
-              class="block"
-              @currentState={{@currentState.has}}
-              @update={{fn this.update "has"}}
+      <label class="checkbox is-flex is-align-items-center">
+        <span class="title is-5 mb-0">
+          Geavanceerd
+        </span>
+        <XToggle
+          @theme="ios"
+          @size="small"
+          @value={{@currentState.advanced}}
+          @onToggle={{fn this.update "advanced"}}
+        />
+      </label>
+      {{#if @currentState.advanced}}
+        {{! Advanced filters }}
+        <div class="mt-2">
+          <div class="block">
+            <label class="label">
+              Bestuurseenheid
+            </label>
+            <Search::Filter::AdministrativeUnitSelect
+              @selected={{this.selectedAdministrativeUnits}}
+              @onSelectionChange={{this.updateAdministrativeUnits}}
             />
           </div>
-        </p.body>
-      </CpPanel>
+
+          <Search::Filter::IsHandledToggles
+            class="block"
+            @currentState={{@currentState.isHandled}}
+            @update={{fn this.update "isHandled"}}
+          />
+
+          <Search::Filter::HasAttributeGroup
+            class="block"
+            @currentState={{@currentState.has}}
+            @update={{fn this.update "has"}}
+          />
+        </div>
+      {{/if}}
     </div>
   </div>
 </div>

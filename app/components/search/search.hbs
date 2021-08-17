@@ -28,6 +28,7 @@
             <Search::SearchResult
               @result={{result.attributes}}
               @highlight={{result.highlight}}
+              @advanced={{this.qsm.state.advanced}}
             />
           </div>
         {{/each}}

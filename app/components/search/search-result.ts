@@ -5,6 +5,7 @@ import { SearchResult } from 'frontend-lokaalbeslist/utils/search-result';
 interface Arguments {
   result: SearchResult;
   highlight: { [key: string]: string };
+  advanced: boolean;
 }
 
 /**

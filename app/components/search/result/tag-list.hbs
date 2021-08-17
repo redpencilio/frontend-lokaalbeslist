@@ -12,28 +12,30 @@
       </span>
     </span>
   {{/if}}
-  {{#if @result.session.governingBody.classification}}
-    <span class="tag icon-text is-light mr-2 mb-1">
-      {{!-- <span class="icon" {{render-feather-icons}}>
-          <i data-feather="pen-tool" height="1rem"></i>
-        </span> --}}
-      <span>
-        {{@result.session.governingBody.classification}}
+  {{#if @advanced}}
+    {{#if @result.session.governingBody.classification}}
+      <span class="tag icon-text is-light mr-2 mb-1">
+        {{!-- <span class="icon" {{render-feather-icons}}>
+            <i data-feather="pen-tool" height="1rem"></i>
+          </span> --}}
+        <span>
+          {{@result.session.governingBody.classification}}
+        </span>
       </span>
-    </span>
+    {{/if}}
+    {{! Empty attributes warning tags }}
+    <Search::Result::AttributeTag class="mr-2 mb-1" @result={{@result}} />
+    <Search::Result::AttributeTag
+      class="mr-2 mb-1"
+      @entity="session"
+      @entityName="zitting"
+      @result={{@result}}
+    />
+    <Search::Result::AttributeTag
+      class="mr-2 mb-1"
+      @entity="agendaItemHandling"
+      @entityName="behandeling"
+      @result={{@result}}
+    />
   {{/if}}
-  {{! Empty attributes warning tags }}
-  <Search::Result::AttributeTag class="mr-2 mb-1" @result={{@result}} />
-  <Search::Result::AttributeTag
-    class="mr-2 mb-1"
-    @entity="session"
-    @entityName="zitting"
-    @result={{@result}}
-  />
-  <Search::Result::AttributeTag
-    class="mr-2 mb-1"
-    @entity="agendaItemHandling"
-    @entityName="behandeling"
-    @result={{@result}}
-  />
 </div>
