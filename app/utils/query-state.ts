@@ -184,10 +184,19 @@ class GovernanceAreaQueryParameter implements QueryParameter<Selection, string> 
  * Which fields & relations should be present
  */
 class HasQueryParameter implements QueryParameter<Set<String>, string> {
-  defaultValue: Set<String> = new Set<string>();
+  defaultValue: Set<String> = new Set<string>([
+    'title',
+    'session.governanceArea'
+  ]);
 
   fromURLParam(value: string | undefined): Set<String> {
-    return value ? new Set(value.split(',')) : this.defaultValue;
+    if (value === '') {
+      return new Set();
+    } else if (value) {
+      return new Set(value.split(','));
+    } else {
+      return this.defaultValue;
+    }
   }
 
   toMuSearchFilterParams(value: Set<String>): { [p: string]: string } {
@@ -369,8 +378,7 @@ export class QueryStateManager {
       if (Object.prototype.hasOwnProperty.call(params, field)) {
         if (params[field] !== undefined) {
           if (
-            params[field] === DEFAULT_URL_STATE[field]?.toString() ||
-            params[field] === ''
+            params[field] === DEFAULT_URL_STATE[field]?.toString()
           ) {
             params[field] = undefined;
           }
