@@ -8,6 +8,7 @@ export function initialize(_application: Application): void {
   // matches 'agendapunt' and 'behandeling-van-agendapunt'
   inflector.irregular('behandeling-van-agendapunt', 'behandelingen-van-agendapunten');
   inflector.irregular('agendapunt', 'agendapunten');
+  inflector.irregular('zitting', 'zittingen');
   inflector.irregular('bestuursorgaan', 'bestuursorganen');
   inflector.irregular('bestuurseenheid', 'bestuurseenheden');
   inflector.irregular('werkingsgebied', 'werkingsgebieden');

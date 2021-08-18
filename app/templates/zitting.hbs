@@ -1,0 +1,11 @@
+<Navbar />
+
+{{@model.bestuursorgaan.bestuurseenheid.naam}}
+
+<ul>
+{{#each @model.agendapunten as |agendapunt|}}
+    <li><LinkTo @route="agendapunt" @model={{agendapunt}}>
+        {{agendapunt.titel}}
+      </LinkTo></li>
+{{/each}}
+</ul>

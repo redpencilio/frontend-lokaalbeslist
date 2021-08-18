@@ -4,8 +4,8 @@ import Bestuurseenheid from 'frontend-lokaalbeslist/models/bestuurseenheid';
 import BestuursorgaanClassificatieCode from 'frontend-lokaalbeslist/models/bestuursorgaan-classificatie-code';
 
 export default class Bestuursorgaan extends Model {
-  @attr() declare uri: string;
-  @attr() declare naam: string;
+  @attr('string') declare uri: string;
+  @attr('string') declare naam: string;
   @attr('date') declare bindingStart: Date;
   @attr('date') declare bindingEinde: Date;
 
