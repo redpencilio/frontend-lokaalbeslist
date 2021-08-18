@@ -1,0 +1,14 @@
+<Navbar />
+
+<div class="section">
+  <h1 class="title">{{@model.titel}}</h1>
+
+  {{@model.beschrijving}}
+
+  {{#if @model.vorigeAgendapunt}}
+    <LinkTo @route="agendapunt" @model={{@model.vorigeAgendapunt}}>
+      Vorig agendapunt:
+      {{@model.vorigeAgendapunt.titel}}
+    </LinkTo>
+  {{/if}}
+</div>

@@ -11,6 +11,7 @@ Router.map(function () {
   this.route('search-embedded', { path: '/embed/zoek/:embedded/' });
   this.route('subscribe', { path: '/subscribe' });
   this.route('subscriptions', { path: '/subscriptions' });
+  this.route('agendapunt', { path: '/agendapunt/:agendapunt_id' });
   this.route('info', function () {
     this.route('for-users', { path: 'voor-gebruikers' });
     this.route('for-municipalities', { path: 'voor-gemeentes' });
