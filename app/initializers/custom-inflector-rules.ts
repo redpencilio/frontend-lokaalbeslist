@@ -9,6 +9,8 @@ export function initialize(_application: Application): void {
   inflector.irregular('behandeling-van-agendapunt', 'behandelingen-van-agendapunten');
   inflector.irregular('agendapunt', 'agendapunten');
   inflector.irregular('zitting', 'zittingen');
+  inflector.irregular('persoon', 'personen');
+  inflector.irregular('mandataris', 'mandatarissen');
   inflector.irregular('bestuursorgaan', 'bestuursorganen');
   inflector.irregular('bestuurseenheid', 'bestuurseenheden');
   inflector.irregular('werkingsgebied', 'werkingsgebieden');
