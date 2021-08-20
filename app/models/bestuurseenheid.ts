@@ -3,6 +3,7 @@ import DS from 'ember-data';
 
 import BestuurseenheidClassificatieCode from './bestuurseenheid-classificatie-code';
 import Bestuursorgaan from './bestuursorgaan';
+import Werkingsgebied from './werkingsgebied';
 
 export default class Bestuurseenheid extends Model {
   @attr('string') declare uri: string;
@@ -10,8 +11,10 @@ export default class Bestuurseenheid extends Model {
   @attr('string') declare naam: string;
   // @attr('string-set') alternatieveNaam: string[];
 
-  // @belongsTo('werkingsgebied', { inverse: null }) werkingsgebied;
-  // @belongsTo('werkingsgebied', { inverse: null }) provincie;
+  @belongsTo('werkingsgebied', { inverse: null }) declare werkingsgebied:
+  DS.PromiseObject<Werkingsgebied>;
+  @belongsTo('werkingsgebied', { inverse: null }) declare provincie:
+  DS.PromiseObject<Werkingsgebied>;
 
   @belongsTo('bestuurseenheid-classificatie-code', { inverse: null })
   declare classificatie: DS.PromiseObject<BestuurseenheidClassificatieCode>;

@@ -5,11 +5,9 @@
   <h2 class="title is-2">Zitting</h2>
 
   {{! ---- BESTUURSEENHEID ---- }}
-  {{#if @model.zitting.bestuursorgaan.bestuurseenheid.naam}}
-    <Tag
-      @icon="map-pin"
-    >{{@model.zitting.bestuursorgaan.bestuurseenheid.naam}}</Tag>
-  {{/if}}
+  <Tag @icon="map">
+    {{this.bestuursNaam}}
+  </Tag>
 
   {{! ---- LOCATIE ---- }}
   {{#if @model.zitting.opLocatie}}

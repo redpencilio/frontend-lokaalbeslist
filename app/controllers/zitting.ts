@@ -14,4 +14,16 @@ export default class SearchController extends Controller {
 
         return count;
     }
+
+    get bestuursNaam() {
+        // Try to get the most specific name
+        const bestuursorgaan = this.model.zitting.get('bestuursorgaan');
+        const bestuurseenheid = bestuursorgaan?.get('bestuurseenheid');
+        const werkingsgebied = bestuurseenheid?.get('werkingsgebied');
+
+        return werkingsgebied?.get('naam') ||
+               bestuurseenheid?.get('naam') ||
+               bestuursorgaan?.get('naam') ||
+               'onbekend';
+    }
 }
