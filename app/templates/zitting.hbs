@@ -2,52 +2,70 @@
 
 <div class="content">
 
-  <h2 class="title is-2">
-    Zitting
-    {{#if @model.zitting.bestuursorgaan.bestuurseenheid.naam}}
-      <Tag
-        @icon="map-pin"
-      >{{@model.zitting.bestuursorgaan.bestuurseenheid.naam}}</Tag>
-    {{/if}}
-    {{#if @model.zitting.opLocatie}}
-      <Tag @icon="map-pin">{{@model.zitting.opLocatie}}</Tag>
-    {{/if}}
-    {{#if @model.zitting.gestartOpTijdstip}}
-      <Tag @icon="calendar">
-        {{date-range-format
-          @model.zitting.gestartOpTijdstip
-          @model.zitting.geeindigdOpTijdstip
-        }}
-      </Tag>
-    {{else if @model.zitting.geplandeStart}}
-      <Tag @icon="calendar">
-        {{date-format @model.zitting.geplandeStart}}
-        (gepland)
-      </Tag>
-    {{/if}}
-  </h2>
+  <h2 class="title is-2">Zitting</h2>
 
-  <h3 class="title is-3">Aanwezigen</h3>
-  <ul>
-    {{#if @model.aanwezigen.voorzitter}}
-      <li>{{displayName @model.aanwezigen.voorzitter}} (voorzitter)</li>
-    {{/if}}
-    {{#if @model.aanwezigen.secretaris}}
-      <li>{{displayName @model.aanwezigen.secretaris}} (secretaris)</li>
-    {{/if}}
-    {{#each @model.aanwezigen.other as |aanwezige|}}
-      <li>{{displayName aanwezige}}</li>
-    {{else}}
-      <li><i>Aanwezigen (nog) niet bekend</i></li>
-    {{/each}}
-  </ul>
+  {{! ---- BESTUURSEENHEID ---- }}
+  {{#if @model.zitting.bestuursorgaan.bestuurseenheid.naam}}
+    <Tag
+      @icon="map-pin"
+    >{{@model.zitting.bestuursorgaan.bestuurseenheid.naam}}</Tag>
+  {{/if}}
+
+  {{! ---- LOCATIE ---- }}
+  {{#if @model.zitting.opLocatie}}
+    <Tag @icon="map-pin">{{@model.zitting.opLocatie}}</Tag>
+  {{/if}}
+
+  {{! ---- START- EN EINDTIJD ---- }}
+  {{#if @model.zitting.gestartOpTijdstip}}
+    <Tag @icon="calendar">
+      {{date-range-format
+        @model.zitting.gestartOpTijdstip
+        @model.zitting.geeindigdOpTijdstip
+      }}
+    </Tag>
+  {{else if @model.zitting.geplandeStart}}
+    <Tag @icon="calendar">
+      {{date-format @model.zitting.geplandeStart}}
+      (gepland)
+    </Tag>
+  {{/if}}
+
+  {{! ---- AANWEZIGEN ---- }}
+  <Tag @icon="user">
+    {{this.aanwezigenCount}}
+    {{if (eq this.aanwezigenCount 1) "aanwezige" "aanwezigen"}}
+    <EmberPopover @side="bottom" as |popover|>
+      <ul>
+        {{#if @model.aanwezigen.voorzitter}}
+          <li>{{displayName @model.aanwezigen.voorzitter}} (voorzitter)</li>
+        {{/if}}
+        {{#if @model.aanwezigen.secretaris}}
+          <li>{{displayName @model.aanwezigen.secretaris}} (secretaris)</li>
+        {{/if}}
+        {{#each @model.aanwezigen.other as |aanwezige|}}
+          <li>{{displayName aanwezige}}</li>
+        {{else}}
+          <li><i>Aanwezigen (nog) niet bekend</i></li>
+        {{/each}}
+      </ul>
+      <button
+        class="button is-small"
+        type="button"
+        {{action "hide" target=popover}}
+        {{! template-lint-disable no-action }}
+      >
+        Verberg
+      </button>
+    </EmberPopover>
+  </Tag>
 
   <h3 class="title is-3">Agendapunten</h3>
   <ul>
     {{#each @model.zitting.agendapunten as |agendapunt|}}
       <li><LinkTo @route="agendapunt" @model={{agendapunt}}>
           {{agendapunt.titel}}
-      </LinkTo></li>
+        </LinkTo></li>
     {{else}}
       <li><i>Agendapunten (nog) niet bekend</i></li>
     {{/each}}

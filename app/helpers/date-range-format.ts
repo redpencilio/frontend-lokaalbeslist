@@ -4,8 +4,6 @@ export default helper((params) => {
   const [startDateTimeString, endDateTimeString] = params;
   const startDate = new Date(startDateTimeString);
 
-  console.log(startDateTimeString, endDateTimeString);
-
   const startString = startDate.toLocaleTimeString('nl-be', {
       year: 'numeric',
       month: 'short',
