@@ -1,6 +1,6 @@
 <Navbar />
 
-<div class="content">
+<section class="section">
 
   <h2 class="title is-2">Zitting</h2>
 
@@ -34,38 +34,42 @@
     {{this.aanwezigenCount}}
     {{if (eq this.aanwezigenCount 1) "aanwezige" "aanwezigen"}}
     <EmberPopover @side="bottom" as |popover|>
-      <ul>
-        {{#if @model.aanwezigen.voorzitter}}
-          <li>{{displayName @model.aanwezigen.voorzitter}} (voorzitter)</li>
-        {{/if}}
-        {{#if @model.aanwezigen.secretaris}}
-          <li>{{displayName @model.aanwezigen.secretaris}} (secretaris)</li>
-        {{/if}}
-        {{#each @model.aanwezigen.other as |aanwezige|}}
-          <li>{{displayName aanwezige}}</li>
-        {{else}}
-          <li><i>Aanwezigen (nog) niet bekend</i></li>
-        {{/each}}
-      </ul>
-      <button
-        class="button is-small"
-        type="button"
-        {{action "hide" target=popover}}
-        {{! template-lint-disable no-action }}
-      >
-        Verberg
-      </button>
+      <div class="content">
+        <ul>
+          {{#if @model.aanwezigen.voorzitter}}
+            <li>{{displayName @model.aanwezigen.voorzitter}} (voorzitter)</li>
+          {{/if}}
+          {{#if @model.aanwezigen.secretaris}}
+            <li>{{displayName @model.aanwezigen.secretaris}} (secretaris)</li>
+          {{/if}}
+          {{#each @model.aanwezigen.other as |aanwezige|}}
+            <li>{{displayName aanwezige}}</li>
+          {{else}}
+            <li><i>Aanwezigen (nog) niet bekend</i></li>
+          {{/each}}
+        </ul>
+        <button
+          class="button is-small"
+          type="button"
+          {{action "hide" target=popover}}
+          {{! template-lint-disable no-action }}
+        >
+          Verberg
+        </button>
+      </div>
     </EmberPopover>
   </Tag>
 
   <h3 class="title is-3">Agendapunten</h3>
-  <ul>
-    {{#each @model.zitting.agendapunten as |agendapunt|}}
-      <li><LinkTo @route="agendapunt" @model={{agendapunt}}>
-          {{agendapunt.titel}}
-        </LinkTo></li>
-    {{else}}
-      <li><i>Agendapunten (nog) niet bekend</i></li>
-    {{/each}}
-  </ul>
-</div>
+  <div class="content">
+    <ul>
+      {{#each @model.zitting.agendapunten as |agendapunt|}}
+        <li><LinkTo @route="agendapunt" @model={{agendapunt}}>
+            {{default-value agendapunt.titel "Agendapunt zonder titel"}}
+          </LinkTo></li>
+      {{else}}
+        <li><i>Agendapunten (nog) niet bekend</i></li>
+      {{/each}}
+    </ul>
+  </div>
+</section>
