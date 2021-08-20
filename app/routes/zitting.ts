@@ -3,9 +3,11 @@ import Persoon from 'frontend-lokaalbeslist/models/persoon';
 import Zitting from 'frontend-lokaalbeslist/models/zitting';
 import RSVP from 'rsvp';
 
+type MaybePromise<A> = PromiseLike<A> | A;
+
 interface ZittingModel {
-    zitting: PromiseLike<Zitting> | Zitting;
-    aanwezigen: PromiseLike<Aanwezigen> | Aanwezigen;
+    zitting: MaybePromise<Zitting>;
+    aanwezigen: MaybePromise<Aanwezigen>;
 }
 
 interface ZittingQueryParams {
@@ -13,9 +15,9 @@ interface ZittingQueryParams {
 }
 
 interface Aanwezigen {
-    voorzitter?: Persoon;
-    secretaris?: Persoon;
-    other: Persoon[];
+    voorzitter?: MaybePromise<Persoon>;
+    secretaris?: MaybePromise<Persoon>;
+    other: MaybePromise<Persoon[]>;
 }
 
 export default class ZittingRoute extends Route<ZittingModel> {
@@ -36,12 +38,12 @@ export default class ZittingRoute extends Route<ZittingModel> {
             zitting.secretaris,
             zitting.aanwezigenBijStart
         ]);
-        return await RSVP.hash({
-            voorzitter: voorzitter.isBestuurlijkeAliasVan,
-            secretaris: secretaris.isBestuurlijkeAliasVan,
-            other: aanwezigenBijStart.filter(
+        return RSVP.hash({
+            voorzitter: voorzitter?.isBestuurlijkeAliasVan,
+            secretaris: secretaris?.isBestuurlijkeAliasVan,
+            other: Promise.all(aanwezigenBijStart.filter(
                 (x) => (!!x && x !== voorzitter && x !== secretaris)
-            ).map((mandataris) => mandataris.isBestuurlijkeAliasVan)
+            ).map((mandataris) => mandataris.isBestuurlijkeAliasVan))
         });
     }
 }

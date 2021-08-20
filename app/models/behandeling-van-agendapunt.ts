@@ -1,6 +1,5 @@
 
-import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
-import DS from 'ember-data';
+import Model, { attr } from '@ember-data/model';
 
 export default class BehandelingVanAgendapunt extends Model {
     @attr('boolean') declare openbaar: boolean;

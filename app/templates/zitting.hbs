@@ -2,7 +2,30 @@
 
 <div class="content">
 
-  {{@model.zitting.bestuursorgaan.bestuurseenheid.naam}}
+  <h2 class="title is-2">
+    Zitting
+    {{#if @model.zitting.bestuursorgaan.bestuurseenheid.naam}}
+      <Tag
+        @icon="map-pin"
+      >{{@model.zitting.bestuursorgaan.bestuurseenheid.naam}}</Tag>
+    {{/if}}
+    {{#if @model.zitting.opLocatie}}
+      <Tag @icon="map-pin">{{@model.zitting.opLocatie}}</Tag>
+    {{/if}}
+    {{#if @model.zitting.gestartOpTijdstip}}
+      <Tag @icon="calendar">
+        {{date-range-format
+          @model.zitting.gestartOpTijdstip
+          @model.zitting.geeindigdOpTijdstip
+        }}
+      </Tag>
+    {{else if @model.zitting.geplandeStart}}
+      <Tag @icon="calendar">
+        {{date-format @model.zitting.geplandeStart}}
+        (gepland)
+      </Tag>
+    {{/if}}
+  </h2>
 
   <h3 class="title is-3">Aanwezigen</h3>
   <ul>

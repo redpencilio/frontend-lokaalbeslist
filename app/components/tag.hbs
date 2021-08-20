@@ -1,0 +1,10 @@
+<span class="tag icon-text is-light mr-2 mb-1">
+  {{#if @icon}}
+    <span class="icon {{@iconColor}}" {{render-feather-icons}}>
+      <i data-feather={{@icon}} height="1rem"></i>
+    </span>
+  {{/if}}
+  <span>
+    {{yield}}
+  </span>
+</span>

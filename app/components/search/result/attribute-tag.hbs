@@ -4,10 +4,7 @@
   ) as |missingAttributesText|
 }}
   <span ...attributes class="tag icon-text is-light">
-    <span class="icon {{this.iconColor}}" {{render-feather-icons}}>
-      <i data-feather="{{this.icon}}" height="1rem"></i>
-    </span>
-    <span>
+    <Tag @icon={{this.icon}} @iconColor={{this.iconColor}}>
       {{#if this.shouldDisplayEntityName}}
         {{#if (and this.isNested (not this.isNestedPresent))}}
           Geen {{@entityName}}
@@ -27,7 +24,7 @@
           {{missingAttributesText}}
         {{/if}}
       {{/if}}
-    </span>
+    </Tag>
 
     <EmberPopover @side="bottom" as |popover|>
       <div class="block">

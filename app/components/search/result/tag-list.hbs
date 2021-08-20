@@ -1,27 +1,17 @@
 <div class="is-flex is-flex-direction-row is-flex-wrap-wrap">
   {{#if @result.session.administrativeUnit}}
-    <span class="tag icon-text is-light mr-2 mb-1">
-      <span class="icon" {{render-feather-icons}}>
-        <i data-feather="map-pin" height="1rem"></i>
-      </span>
-      <span>
-        {{@result.session.administrativeUnit.label}}{{if
-          @result.session.administrativeUnit.classification
-          (concat " (" @result.session.administrativeUnit.classification ")")
-        }}
-      </span>
-    </span>
+      <Tag @icon='map-pin'>
+        {{@result.session.administrativeUnit.label}}
+        {{#if @result.session.administrativeUnit.classification}}
+          ({{@result.session.administrativeUnit.classification}})
+        {{/if}}
+      </Tag>
   {{/if}}
   {{#if @advanced}}
     {{#if @result.session.governingBody.classification}}
-      <span class="tag icon-text is-light mr-2 mb-1">
-        {{!-- <span class="icon" {{render-feather-icons}}>
-            <i data-feather="pen-tool" height="1rem"></i>
-          </span> --}}
-        <span>
-          {{@result.session.governingBody.classification}}
-        </span>
-      </span>
+      <Tag @icon=''>
+        {{@result.session.governingBody.classification}}
+      </Tag>
     {{/if}}
     {{! Empty attributes warning tags }}
     <Search::Result::AttributeTag class="mr-2 mb-1" @result={{@result}} />
