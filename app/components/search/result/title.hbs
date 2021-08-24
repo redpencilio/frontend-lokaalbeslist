@@ -1,7 +1,9 @@
-<h6 class="title is-6 mb-3 highlight-marked">
-  {{#if @highlight}}
-    {{{get @highlight 0}}}
-  {{else}}
-    {{if @title @title "Geen titel"}}
-  {{/if}}
-</h6>
+<LinkTo @route="agendapunt" @model={{@id}}>
+  <h6 class="title is-6 mb-3 highlight-marked">
+    {{#if @highlight}}
+      {{{get @highlight 0}}}
+    {{else}}
+      {{if @title @title "Geen titel"}}
+    {{/if}}
+  </h6>
+</LinkTo>
