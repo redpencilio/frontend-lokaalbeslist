@@ -24,34 +24,6 @@
 {{/if}}
 
 {{! ---- AANWEZIGEN ---- }}
-{{#if this.aanwezigen}}
-  <Tag @icon="user">
-    {{this.aanwezigenCount}}
-    {{if (eq this.aanwezigenCount 1) "aanwezige" "aanwezigen"}}
-    <EmberPopover @side="bottom" as |popover|>
-      <div class="content">
-        <ul>
-          {{#if this.aanwezigen.voorzitter}}
-            <li>{{displayName this.aanwezigen.voorzitter}} (voorzitter)</li>
-          {{/if}}
-          {{#if this.aanwezigen.secretaris}}
-            <li>{{displayName this.aanwezigen.secretaris}} (secretaris)</li>
-          {{/if}}
-          {{#each this.aanwezigen.other as |aanwezige|}}
-            <li>{{displayName aanwezige}}</li>
-          {{else}}
-            <li><i>Aanwezigen (nog) niet bekend</i></li>
-          {{/each}}
-        </ul>
-        <button
-          class="button is-small"
-          type="button"
-          {{action "hide" target=popover}}
-          {{! template-lint-disable no-action }}
-        >
-          Verberg
-        </button>
-      </div>
-    </EmberPopover>
-  </Tag>
+{{#if @showAanwezigen}}
+  <AanwezigenTags @model={{@zitting}} />
 {{/if}}

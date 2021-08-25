@@ -1,22 +1,27 @@
 <Navbar />
 
 <div class="section">
-  <h2 class="title is-2">
+  <h3 class="title is-3">
     {{default-value @model.titel "Agendapunt zonder titel"}}
-  </h2>
+  </h3>
 
   {{#if @model.zitting}}
-    <ZittingTags @zitting={{@model.zitting}} />
+    <ZittingTags @zitting={{@model.zitting}} @showAanwezigen={{false}} />
   {{else}}
     <Tag @icon="help-circle">
       Zitting onbekend
     </Tag>
   {{/if}}
 
+  {{#if @model.behandeling}}
+    <AanwezigenTags @model={{@model.behandeling}} />
+  {{/if}}
+
   <div class="content">
     {{default-value @model.beschrijving "Geen beschrijving"}}
   </div>
 
+  {{! ----- Navigation ----- }}
   {{#if @model.vorigeAgendapunt}}
     <LinkTo @route="agendapunt" @model={{@model.vorigeAgendapunt}}>
       <Tag @icon="chevron-left">

@@ -1,5 +1,7 @@
 
-import Model, { attr } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+import DS from 'ember-data';
+import Mandataris from './mandataris';
 
 export default class BehandelingVanAgendapunt extends Model {
     @attr('boolean') declare openbaar: boolean;
@@ -7,7 +9,9 @@ export default class BehandelingVanAgendapunt extends Model {
     @attr('string') declare afgeleidUit: string;
     @attr('number') declare position: number;
 
-    // TODO: relations
+    @hasMany('mandataris', { inverse: null }) declare aanwezigen: DS.PromiseArray<Mandataris>;
+    @belongsTo('mandataris', { inverse: null }) declare voorzitter: DS.PromiseObject<Mandataris>;
+    @belongsTo('mandataris', { inverse: null }) declare secretaris: DS.PromiseObject<Mandataris>;
 }
 
 declare module 'ember-data/types/registries/model' {
