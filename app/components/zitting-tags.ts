@@ -14,7 +14,7 @@ interface Aanwezigen {
 }
 
 interface Arguments {
-    zitting: Zitting
+    zitting?: Zitting
 }
 
 export default class ZittingTagsComponent extends Component<Arguments> {
@@ -47,7 +47,7 @@ export default class ZittingTagsComponent extends Component<Arguments> {
 
     get bestuursNaam() {
         // Try to get the most specific name
-        const bestuursorgaan = this.args.zitting.get('bestuursorgaan');
+        const bestuursorgaan = this.args.zitting?.get('bestuursorgaan');
         const bestuurseenheid = bestuursorgaan?.get('bestuurseenheid');
         const werkingsgebied = bestuurseenheid?.get('werkingsgebied');
 
@@ -60,19 +60,19 @@ export default class ZittingTagsComponent extends Component<Arguments> {
     @task
     *getAanwezigen() {
         const zitting: Zitting = yield this.args.zitting;
-        const voorzitter: Mandataris = yield zitting.voorzitter;
-        const secretaris: Mandataris = yield zitting.secretaris;
-        const aanwezigenBijStart: Mandataris[] = yield zitting.aanwezigenBijStart;
+        const voorzitter: Mandataris = yield zitting?.voorzitter;
+        const secretaris: Mandataris = yield zitting?.secretaris;
+        let aanwezigenBijStart: Mandataris[] = yield zitting?.aanwezigenBijStart;
+
+        if (!aanwezigenBijStart) {
+            aanwezigenBijStart = [];
+        }
 
         const voorzitterPerson: Persoon = yield voorzitter?.isBestuurlijkeAliasVan;
         const secretarisPerson: Persoon = yield secretaris?.isBestuurlijkeAliasVan;
         const otherPersons: Persoon[] = yield Promise.all(aanwezigenBijStart.map(
             (mandataris) => mandataris.isBestuurlijkeAliasVan
         ));
-
-        console.log(voorzitterPerson)
-        console.log(secretarisPerson)
-        console.log(otherPersons)
 
         this.aanwezigen = {
             voorzitter: voorzitterPerson,

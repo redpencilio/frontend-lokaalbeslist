@@ -5,23 +5,40 @@
     {{default-value @model.titel "Agendapunt zonder titel"}}
   </h2>
 
-  <ZittingTags @zitting={{@model.zitting}} />
+  {{#if @model.zitting}}
+    <ZittingTags @zitting={{@model.zitting}} />
+  {{else}}
+    <Tag @icon="help-circle">
+      Zitting onbekend
+    </Tag>
+  {{/if}}
 
   <div class="content">
-    {{@model.beschrijving}}
+    {{default-value @model.beschrijving "Geen beschrijving"}}
   </div>
 
   {{#if @model.vorigeAgendapunt}}
     <LinkTo @route="agendapunt" @model={{@model.vorigeAgendapunt}}>
-      Vorig agendapunt:
-      {{@model.vorigeAgendapunt.titel}}
+      <Tag @icon="chevron-left">
+        Vorig agendapunt
+      </Tag>
+    </LinkTo>
+  {{/if}}
+
+  {{#if @model.zitting}}
+    {{! I'm using @model.zitting.id instead of @model.zitting as the latter gave undefined as model...}}
+    <LinkTo @route="zitting" @model={{@model.zitting.id}}>
+      <Tag @icon="chevron-up">
+        Naar zitting
+      </Tag>
     </LinkTo>
   {{/if}}
 
   {{#if @model.volgendAgendapunt}}
     <LinkTo @route="agendapunt" @model={{@model.volgendAgendapunt}}>
-      Volgend agendapunt:
-      {{@model.volgendAgendapunt.titel}}
+      <Tag @icon="chevron-right">
+        Volgend agendapunt
+      </Tag>
     </LinkTo>
   {{/if}}
 </div>
