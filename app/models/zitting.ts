@@ -10,7 +10,7 @@ export default class Zitting extends Model {
     @attr('date') declare geeindigdOpTijdstip: Date;
     @attr('string') declare opLocatie: string;
 
-    @hasMany('agendapunt', { inverse: null }) declare agendapunten:
+    @hasMany('agendapunt', { inverse: 'zitting' }) declare agendapunten:
     DS.PromiseArray<Agendapunt>;
     @hasMany('mandataris', { inverse: null }) declare aanwezigenBijStart:
     DS.PromiseArray<Mandataris>;

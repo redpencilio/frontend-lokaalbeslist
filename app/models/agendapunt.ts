@@ -1,7 +1,7 @@
-
 import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
 import DS from 'ember-data';
 import BehandelingVanAgendapunt from './behandeling-van-agendapunt';
+import Zitting from './zitting';
 
 export default class Agendapunt extends Model {
   @attr('string') declare beschrijving: string;
@@ -14,7 +14,11 @@ export default class Agendapunt extends Model {
   //TODO: publications
   @hasMany('agendapunt', { inverse: null }) declare referenties:
     DS.PromiseManyArray<Agendapunt>;
-  @belongsTo('agendapunt', { inverse: null }) declare vorigeAgendapunt:
+  @belongsTo('agendapunt', { inverse: 'volgendAgendapunt' }) declare vorigeAgendapunt:
+    DS.PromiseObject<Agendapunt>;
+  @belongsTo('zitting', { inverse: 'agendapunten' }) declare zitting:
+    DS.PromiseObject<Zitting>;
+  @belongsTo('agendapunt', { inverse: 'vorigeAgendapunt' }) declare volgendAgendapunt:
     DS.PromiseObject<Agendapunt>;
   @belongsTo('behandeling-van-agendapunt', { inverse: null }) declare behandeling:
     DS.PromiseObject<BehandelingVanAgendapunt>;

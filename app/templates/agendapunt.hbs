@@ -1,14 +1,27 @@
 <Navbar />
 
 <div class="section">
-  <h1 class="title">{{@model.titel}}</h1>
+  <h2 class="title is-2">
+    {{default-value @model.titel "Agendapunt zonder titel"}}
+  </h2>
 
-  {{@model.beschrijving}}
+  <ZittingTags @zitting={{@model.zitting}} />
+
+  <div class="content">
+    {{@model.beschrijving}}
+  </div>
 
   {{#if @model.vorigeAgendapunt}}
     <LinkTo @route="agendapunt" @model={{@model.vorigeAgendapunt}}>
       Vorig agendapunt:
       {{@model.vorigeAgendapunt.titel}}
+    </LinkTo>
+  {{/if}}
+
+  {{#if @model.volgendAgendapunt}}
+    <LinkTo @route="agendapunt" @model={{@model.volgendAgendapunt}}>
+      Volgend agendapunt:
+      {{@model.volgendAgendapunt.titel}}
     </LinkTo>
   {{/if}}
 </div>

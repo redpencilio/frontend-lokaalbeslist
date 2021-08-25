@@ -1,0 +1,57 @@
+{{! ---- BESTUURSEENHEID ---- }}
+<Tag @icon="map">
+  {{this.bestuursNaam}}
+</Tag>
+
+{{! ---- LOCATIE ---- }}
+{{#if @zitting.opLocatie}}
+  <Tag @icon="map-pin">{{@zitting.opLocatie}}</Tag>
+{{/if}}
+
+{{! ---- START- EN EINDTIJD ---- }}
+{{#if @zitting.gestartOpTijdstip}}
+  <Tag @icon="calendar">
+    {{date-range-format
+      @zitting.gestartOpTijdstip
+      @zitting.geeindigdOpTijdstip
+    }}
+  </Tag>
+{{else if @zitting.geplandeStart}}
+  <Tag @icon="calendar">
+    {{date-format @zitting.geplandeStart}}
+    (gepland)
+  </Tag>
+{{/if}}
+
+{{! ---- AANWEZIGEN ---- }}
+{{#if this.aanwezigen}}
+  <Tag @icon="user">
+    {{this.aanwezigenCount}}
+    {{if (eq this.aanwezigenCount 1) "aanwezige" "aanwezigen"}}
+    <EmberPopover @side="bottom" as |popover|>
+      <div class="content">
+        <ul>
+          {{#if this.aanwezigen.voorzitter}}
+            <li>{{displayName this.aanwezigen.voorzitter}} (voorzitter)</li>
+          {{/if}}
+          {{#if this.aanwezigen.secretaris}}
+            <li>{{displayName this.aanwezigen.secretaris}} (secretaris)</li>
+          {{/if}}
+          {{#each this.aanwezigen.other as |aanwezige|}}
+            <li>{{displayName aanwezige}}</li>
+          {{else}}
+            <li><i>Aanwezigen (nog) niet bekend</i></li>
+          {{/each}}
+        </ul>
+        <button
+          class="button is-small"
+          type="button"
+          {{action "hide" target=popover}}
+          {{! template-lint-disable no-action }}
+        >
+          Verberg
+        </button>
+      </div>
+    </EmberPopover>
+  </Tag>
+{{/if}}
