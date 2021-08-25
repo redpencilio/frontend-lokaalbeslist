@@ -82,7 +82,5 @@ export default class AanwezigenTagsComponent extends Component<Arguments> {
                 )
             )
         }
-
-        console.log(this.aanwezigen);
     }
 }

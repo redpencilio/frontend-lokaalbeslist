@@ -14,6 +14,8 @@ export function initialize(_application: Application): void {
   inflector.irregular('bestuursorgaan', 'bestuursorganen');
   inflector.irregular('bestuurseenheid', 'bestuurseenheden');
   inflector.irregular('werkingsgebied', 'werkingsgebieden');
+  inflector.irregular('besluit', 'besluiten');
+  inflector.irregular('motivering', 'motiveringen');
 }
 
 export default {
