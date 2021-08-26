@@ -1,75 +1,77 @@
-<div class="{{ if @isChild 'panel-heading' }} panel-block flex-column is-justify-content-space-between">
-  <div class="field">
-    <div class="control">
-      <label class="radio">
-        <input
-          type="radio"
-          onclick={{action (mut @filter.requireAll) true}}
-          checked={{@filter.requireAll}}
-        />
-        Voldoet aan alle regels
-      </label>
-      <label class="radio">
-        <input
-          type="radio"
-          onclick={{action (mut @filter.requireAll) false}}
-          checked={{not @filter.requireAll}}
-        />
-        Voldoet aan minstens 1 regel
-      </label>
+<div class="content m-1 ml-4">
+  <div class="{{ if @isChild 'panel-heading' }} panel-block flex-column is-justify-content-space-between">
+    <div class="field">
+      <div class="control">
+        <label class="radio">
+          <input
+            type="radio"
+            onclick={{action (mut @filter.requireAll) true}}
+            checked={{@filter.requireAll}}
+          />
+          Voldoet aan alle regels
+        </label>
+        <label class="radio">
+          <input
+            type="radio"
+            onclick={{action (mut @filter.requireAll) false}}
+            checked={{not @filter.requireAll}}
+          />
+          Voldoet aan minstens 1 regel
+        </label>
+      </div>
+      {{#if @errors.errorMessage}}
+        <p class="help is-danger">{{@errors.errorMessage}}</p>
+      {{/if}}
     </div>
-    {{#if @errors.errorMessage}}
-      <p class="help is-danger">{{@errors.errorMessage}}</p>
-    {{/if}}
-  </div>
 
-  <div>
-    <input
-      class="button"
-      type="button"
-      value="Nieuwe groep"
-      {{on "click" this.addFilter}}
-    />
-    <input
-      class="button"
-      type="button"
-      value="Nieuwe regel"
-      {{on "click" this.addConstraint}}
-    />
-    {{#if @isChild}}
-      <input
-        class="button is-danger"
-        type="button"
-        value="Groep verwijderen"
-        {{on "click" this.removeFilter}}
-      />
-    {{/if}}
-  </div>
-</div>
-
-{{#each @filter.constraints as |constraint index|}}
-  <div class="panel-block columns">
-    <div class="column is-flex-grow-5">
-      <SubscriptionFilter::Constraint
-        @constraint={{constraint}}
-        @errors={{get @errors.constraintErrors (concat index)}}
-      />
-    </div>
-    <div class="column">
+    <div>
       <input
         class="button"
         type="button"
-        value="Regel verwijderen"
-        {{on "click" (fn this.removeConstraint constraint)}}
+        value="Nieuwe groep"
+        {{on "click" this.addFilter}}
       />
+      <input
+        class="button"
+        type="button"
+        value="Nieuwe regel"
+        {{on "click" this.addConstraint}}
+      />
+      {{#if @isChild}}
+        <input
+          class="button is-danger"
+          type="button"
+          value="Groep verwijderen"
+          {{on "click" this.removeFilter}}
+        />
+      {{/if}}
     </div>
   </div>
-{{/each}}
 
-{{#each @filter.subFilters as |subfilter index|}}
-  <SubscriptionFilter::ConstraintPicker
-    @filter={{subfilter}}
-    @isChild={{true}}
-    @errors={{get @errors.subFilterErrors (concat index)}}
-  />
-{{/each}}
+  {{#each @filter.constraints as |constraint index|}}
+    <div class="panel-block columns">
+      <div class="column is-flex-grow-5">
+        <SubscriptionFilter::Constraint
+          @constraint={{constraint}}
+          @errors={{get @errors.constraintErrors (concat index)}}
+        />
+      </div>
+      <div class="column">
+        <input
+          class="button"
+          type="button"
+          value="Regel verwijderen"
+          {{on "click" (fn this.removeConstraint constraint)}}
+        />
+      </div>
+    </div>
+  {{/each}}
+
+  {{#each @filter.subFilters as |subfilter index|}}
+    <SubscriptionFilter::ConstraintPicker
+      @filter={{subfilter}}
+      @isChild={{true}}
+      @errors={{get @errors.subFilterErrors (concat index)}}
+    />
+  {{/each}}
+</div>
