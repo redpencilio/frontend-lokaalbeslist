@@ -1,15 +1,18 @@
 <div
   ...attributes
-  class="is-flex is-flex-wrap-wrap is-justify-content-space-between"
+  class="is-flex is-flex-wrap-wrap"
 >
   <PaginationLabel
-    class="my-2 mr-4"
+    class="my-2 mr-4 is-flex-1 is-flex is-justify-content-flex-start"
     @pagination={{@pagination}}
     @count={{@count}}
   />
-  <Pagination class="my-2 mr-4" @pagination={{@pagination}} />
+  <Pagination
+    class="my-2 mr-4 is-flex-1 is-flex is-justify-content-center"
+    @pagination={{@pagination}}
+  />
   <SortButton
-    class="my-2"
+    class="my-2 is-flex-1 is-justify-content-flex-end"
     @options={{@sortOptions}}
     @currentlySelected={{@currentSortOption}}
     @onSelected={{@updateSort}}
