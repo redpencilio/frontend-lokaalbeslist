@@ -1,7 +1,7 @@
 <span class="content">
   <StemmingVoters
     @icon="check"
-    @count={{@stemming.aantalVoorstanders}}
+    @count={{this.aantalVoorstanders}}
     @nameSingular="voorstander"
     @namePlural="voorstanders"
     @hasMandatarissen={{this.hasMandatarissen}}
@@ -9,7 +9,7 @@
   />
   <StemmingVoters
     @icon="x"
-    @count={{@stemming.aantalTegenstanders}}
+    @count={{this.aantalTegenstanders}}
     @nameSingular="tegenstander"
     @namePlural="tegenstanders"
     @hasMandatarissen={{this.hasMandatarissen}}
@@ -17,7 +17,7 @@
   />
   <StemmingVoters
     @icon="more-horizontal"
-    @count={{@stemming.aantalOnthouders}}
+    @count={{this.aantalOnthouders}}
     @nameSingular="onthouder"
     @namePlural="onthouders"
     @hasMandatarissen={{this.hasMandatarissen}}

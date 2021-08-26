@@ -23,6 +23,7 @@ export default class ZittingRoute extends Route<ZittingModel> {
     }
 }
 async function getAgendapuntenSorted(zittingPromise: PromiseLike<Zitting>): Promise<Agendapunt[]> {
+    // TODO: This is slow on the deployed version
     const zitting = await zittingPromise;
     const agendapunten = await zitting.agendapunten;
 
