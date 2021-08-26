@@ -27,4 +27,16 @@ export default class StemmingComponentComponent extends Component<StemmingCompon
     get onthouderPersonen() {
         return this.getStemmingPersonen('onthouders');
     }
+
+    get aantalVoorstanders() {
+        return this.args.stemming.aantalVoorstanders || this.args.stemming.voorstanders.length;
+    }
+
+    get aantalTegenstanders() {
+        return this.args.stemming.aantalTegenstanders || this.args.stemming.tegenstanders.length;
+    }
+
+    get aantalOnthouders() {
+        return this.args.stemming.aantalOnthouders || this.args.stemming.onthouders.length;
+    }
 }
