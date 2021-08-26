@@ -21,10 +21,19 @@
     {{default-value @model.beschrijving "Geen beschrijving"}}
   </div>
 
-  {{#if @model.behandeling.besluiten}}
-      <h4 class="title is-4">
-        {{pluralize (length @model.behandeling.besluiten) "Besluit" "Besluiten"}}
-      </h4>
+  {{#if @model.behandeling}}
+    <div class="content">
+      <span class="title is-4">
+        {{pluralize
+          (length @model.behandeling.besluiten)
+          "Besluit"
+          "Besluiten"
+        }}
+      </span>
+      {{#each @model.behandeling.stemmingen as |stemming|}}
+        <Stemming @stemming={{stemming}} />
+      {{/each}}
+    </div>
 
     {{#each @model.behandeling.besluiten as |besluit|}}
       <h5 class="subtitle is-5">{{{ htmlize besluit.beschrijving }}}</h5>

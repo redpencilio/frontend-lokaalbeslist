@@ -1,0 +1,26 @@
+<span class="content">
+  <StemmingVoters
+    @icon="check"
+    @count={{@stemming.aantalVoorstanders}}
+    @nameSingular="voorstander"
+    @namePlural="voorstanders"
+    @hasMandatarissen={{this.hasMandatarissen}}
+    @personen={{this.voorstanderPersonen}}
+  />
+  <StemmingVoters
+    @icon="x"
+    @count={{@stemming.aantalTegenstanders}}
+    @nameSingular="tegenstander"
+    @namePlural="tegenstanders"
+    @hasMandatarissen={{this.hasMandatarissen}}
+    @personen={{this.tegenstanderPersonen}}
+  />
+  <StemmingVoters
+    @icon="more-horizontal"
+    @count={{@stemming.aantalOnthouders}}
+    @nameSingular="onthouder"
+    @namePlural="onthouders"
+    @hasMandatarissen={{this.hasMandatarissen}}
+    @personen={{this.onthouderPersonen}}
+  />
+</span>

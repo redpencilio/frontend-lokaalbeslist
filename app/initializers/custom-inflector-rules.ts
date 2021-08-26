@@ -16,6 +16,7 @@ export function initialize(_application: Application): void {
   inflector.irregular('werkingsgebied', 'werkingsgebieden');
   inflector.irregular('besluit', 'besluiten');
   inflector.irregular('motivering', 'motiveringen');
+  inflector.irregular('stemming', 'stemmingen');
 }
 
 export default {

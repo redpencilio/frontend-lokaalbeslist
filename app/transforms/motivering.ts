@@ -12,3 +12,9 @@ export default class MotiveringTransform extends Transform {
     }
 
 }
+
+declare module 'ember-data/types/registries/transform' {
+    export default interface TransformRegistry {
+        'motivering': MotiveringTransform
+    }
+}
