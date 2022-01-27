@@ -18,6 +18,7 @@ export default class SubscribeRoute extends Route {
   model(params: SubscribeRouteParams) {
     let filter = this.store.createRecord('subscription-filter', {
       requireAll: true,
+      frequency: 'weekly',
     });
 
     if (params.governanceAreas && params.governanceAreas.length > 0) {
@@ -42,7 +43,7 @@ export default class SubscribeRoute extends Route {
 
     if (params.search) {
       let searchFilter = this.store.createRecord('subscription-filter', {
-        requireAll: false,
+        requireAll: false
       });
       searchFilter.constraints.addObject(
         this.store.createRecord('subscription-filter-constraint', {

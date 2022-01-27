@@ -10,6 +10,7 @@ Router.map(function () {
   this.route('search', { path: '/zoek' });
   this.route('search-embedded', { path: '/embed/zoek/:embedded/' });
   this.route('subscribe', { path: '/subscribe' });
+  this.route('subscription-succesful', { path: '/subscription-succesful' });
   this.route('subscriptions', { path: '/subscriptions' });
   this.route('agendapunt', { path: '/agendapunt/:agendapunt_id' });
   this.route('zitting', { path: '/zitting/:zitting_id' });

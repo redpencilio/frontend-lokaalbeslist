@@ -5,15 +5,7 @@ import { inject as service } from '@ember/service';
 import Store from '@ember-data/store';
 import RouterService from '@ember/routing/router-service';
 
-// @ts-ignore
-import hljs from 'highlight.js/lib/core';
 import { FilterFormErrors } from 'frontend-lokaalbeslist/components/subscription-filter/filter';
-
-enum Frequency {
-  Dagelijks = 'dagelijks',
-  Wekelijks = 'wekelijks',
-  Maandelijks = 'maandelijks',
-}
 
 export default class SubscribeController extends Controller {
   @service declare store: Store;
@@ -28,22 +20,10 @@ export default class SubscribeController extends Controller {
   governanceAreas: string[] = [];
 
   @tracked
-  frequency: Frequency = Frequency.Wekelijks;
-
-  @tracked
   errors: FilterFormErrors | undefined;
 
   constructor() {
     super();
-  }
-
-  get frequencies() {
-    return Object.keys(Frequency).filter((x) => isNaN(Number(x)));
-  }
-
-  @action
-  changeFrequency(value: Frequency): void {
-    this.frequency = value;
   }
 
   @action
@@ -55,4 +35,5 @@ export default class SubscribeController extends Controller {
   setErrors(errors: FilterFormErrors) {
     this.errors = errors;
   }
+
 }

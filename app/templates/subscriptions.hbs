@@ -1,15 +1,15 @@
-{{page-title "Mijn notificaties"}}
+{{page-title "Mijn abonnementen"}}
 <Navbar />
 
 <section class="section">
-  <h3 class="title is-3"> Notificaties aanpassen </h3>
-  <p class="subtitle is-5"> Hieronder kan je notificatie-instellingen aanpassen
+  <h3 class="title is-3"> Abonnementen aanpassen </h3>
+  <p class="subtitle is-5"> Hieronder kan je abonnement-instellingen aanpassen
   of verwijderen. </p>
 
-  {{#each @model as |filter|}}
+  {{#each @model as |filter idx|}}
    <SubscriptionFilter::Filter
      @filter={{filter}}
-     @title="Notificatie"
+     @title="Abonnement {{inc idx}}"
      @allowDelete={{true}}
      @requireEmail={{false}}
     />
