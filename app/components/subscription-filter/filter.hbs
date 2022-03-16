@@ -1,20 +1,38 @@
 <nav class="panel">
   <p class="panel-heading">
     <div class="columns is-justify-content-space-between">
-      {{this.title}}
+      <div class="column">
+        {{this.title}}
+      </div>
 
-      <p class="is-size-6">
-        <XToggle
-          @theme="ios"
-          @size="small"
-          @value={{this.advancedFilters}}
-          @offLabel="Toon geavanceerde filters"
-          @onLabel=""
-          @showLabels={{true}}
-          @onToggle={{this.setAdvancedFilters}}
-          @disabled={{this.containsAdvancedFilters}}
-        />
-      </p>
+      <div class="column is-flex is-justify-content-flex-end">
+        <div class="control pr-4" style="min-width: 10rem;">
+          <PowerSelect
+            id="frequency-input"
+            class="select"
+            @loadingMessage="Aan het laden..."
+            @onChange={{this.changeFrequency}}
+            @selected={{this.args.filter.frequency}}
+            @options={{this.frequencies}}
+            as |frequency|
+          >
+            {{get this.freqDisplayValues frequency}}
+          </PowerSelect>
+        </div>
+
+        <p class="is-size-6">
+          <XToggle
+            @theme="ios"
+            @size="small"
+            @value={{this.advancedFilters}}
+            @offLabel="Toon geavanceerde filters"
+            @onLabel=""
+            @showLabels={{true}}
+            @onToggle={{this.setAdvancedFilters}}
+            @disabled={{this.containsAdvancedFilters}}
+          />
+        </p>
+      </div>
     </div>
   </p>
   {{#if this.advancedFilters}}

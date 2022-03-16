@@ -5,6 +5,7 @@ import Store from '@ember-data/store';
 import { action } from '@ember/object';
 import SubscriptionFilter from "frontend-lokaalbeslist/models/subscription-filter";
 import SubscriptionFilterConstraint from "frontend-lokaalbeslist/models/subscription-filter-constraint";
+import RouterService from '@ember/routing/router-service';
 
 interface FilterComponentArgs {
   filter: SubscriptionFilter;
@@ -12,6 +13,11 @@ interface FilterComponentArgs {
   requireEmail: boolean;
   title?: string;
   setErrors?: (errors: FilterFormErrors) => void;
+
+  // https://www.youtube.com/watch?v=eVTXPUF4Oz4
+  // We tried. So hard. To just have onSave?: () => void;
+  // But ember. Dear Ember. Does not kindle our flames.
+  transitionToOnSave: string | undefined;
 }
 
 export interface FilterFormErrors {
@@ -32,8 +38,12 @@ export interface SubscriptionFilterConstraintError {
   objectError?: string;
 }
 
+const FREQUENCIES: Frequency[] = ['daily', 'weekly', 'monthly'];
+type Frequency = 'daily' | 'weekly' | 'monthly'
+
 export default class FilterComponent extends Component<FilterComponentArgs> {
   @service declare store: Store;
+  @service declare router: RouterService;
 
   @tracked
   advancedFiltersSetting: boolean = false;
@@ -43,6 +53,16 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
 
   @tracked
   errors: FilterFormErrors = {};
+
+  freqDisplayValues: {[key in Frequency]: string} = {
+    'daily': 'Dagelijks',
+    'weekly': 'Wekelijks',
+    'monthly': 'Maandelijks',
+  }
+
+  get frequencies() {
+    return FREQUENCIES;
+  }
 
   constructor(owner: unknown, args: FilterComponentArgs) {
     super(owner, args);
@@ -64,8 +84,13 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
     })
   }
 
+  @action
+  changeFrequency(value: Frequency): void {
+    this.args.filter.frequency = value;
+  }
+
   get title() {
-    return this.args.title || "Filters";
+    return this.args.title || "Abonnement";
   }
 
   get containsAdvancedFilters() {
@@ -174,7 +199,13 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
       return;
     }
 
-    return this.recursiveSave(this.args.filter);
+    let result = this.recursiveSave(this.args.filter);
+    result = result.then(() => {
+      if (this.args.transitionToOnSave) {
+        this.router.transitionTo(this.args.transitionToOnSave);
+      }
+    })
+    return result;
   }
 
   get hasErrors(): boolean {
@@ -182,6 +213,7 @@ export default class FilterComponent extends Component<FilterComponentArgs> {
   }
 
   hasFilterErrors(filterError: SubscriptionFilterError | undefined): boolean {
+    
     if (!filterError) {
       return false;
     }

@@ -5,6 +5,7 @@ import DS from 'ember-data';
 export default class SubscriptionFilter extends Model {
   @attr('boolean') declare requireAll: boolean;
   @attr('string') declare email: string;
+  @attr('string') declare frequency: string;
 
   @hasMany('subscription-filter', { inverse: null }) declare subFilters:
     DS.PromiseManyArray<SubscriptionFilter>;

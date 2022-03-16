@@ -36,29 +36,6 @@
             </div>
           </div>
         </div>
-        {{!--
-        <div class="column">
-          <div class="content">
-            <label for="frequency-input" class="label">
-              Hoe vaak wil je (maximaal) mails ontvangen?
-            </label>
-            <div class="control">
-
-              <PowerSelect
-                id="frequency-input"
-                class="select"
-                @loadingMessage="Aan het laden..."
-                @onChange={{this.changeFrequency}}
-                @selected={{this.frequency}}
-                @options={{this.frequencies}}
-                as |frequency|
-              >
-                {{frequency}}
-              </PowerSelect>
-            </div>
-          </div>
-        </div>
-        --}}
       </div>
 
       <div class="content">
@@ -67,6 +44,7 @@
           @allowDelete={{false}}
           @requireEmail={{true}}
           @setErrors={{this.setErrors}}
+          @transitionToOnSave={{"subscription-succesful"}}
         />
       </div>
     </form>
