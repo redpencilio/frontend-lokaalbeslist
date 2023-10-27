@@ -1,0 +1,56 @@
+.redirect-page {
+  --default-text-color: #4a4a4a;
+
+  .footer {
+    background-color: white;
+  }
+
+  a.highlight { color: red; }
+  a { color: var(--default-text-color); }
+}
+
+@media (min-width: 700px) {
+  .redirect-page {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+
+    .lokaalbeslist-groeide-door {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .redirect-page {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+
+    .lokaalbeslist-groeide-door {
+      flex-grow: 3;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .footer {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      justify-content: space-between;
+    }
+  }
+}
