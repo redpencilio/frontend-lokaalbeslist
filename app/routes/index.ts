@@ -9,6 +9,6 @@ export default class IndexRoute extends Route {
 
   deactivate() {
     const controller: Controller = this.controller;
-    controller.stopCounter();
+    controller.resetCounter();
   }
 }
