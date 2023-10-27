@@ -34,7 +34,8 @@
 @media (max-width: 700px) {
   .redirect-page {
     display: flex;
-    min-height: 100vh;
+    min-height: 80vh;
+    min-height: 100svh;
     flex-direction: column;
 
     .lokaalbeslist-groeide-door {
